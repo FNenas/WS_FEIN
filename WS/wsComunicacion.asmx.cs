@@ -2685,7 +2685,7 @@ AND	Salidas.SucursalesID =" +pSucursalesID;
         [WebMethod(Description = "regresa el precio de articulo contemplando ofertas (Precio|Nivel)")]
         public String PrecioArticulo(String sArticuloID, String sSucursalesID)
         {
-            return "39.80|P";
+            return "39.90|P";
         }
 
         }
