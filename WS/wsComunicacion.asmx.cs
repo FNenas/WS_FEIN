@@ -2687,6 +2687,75 @@ AND	Salidas.SucursalesID =" +pSucursalesID;
         {
             return "39.90|P";
         }
+        [WebMethod(Description = "QRY_Salidas_X_ArticuloID_S_Fecha")]
+        public String QRY_DetalleSalidas_Por_SalidasID(String pSucursalesID, string pSalidasID)
+        {
+            String q = "";
+            try
+            {
+                q = @" SELECT 
+	Salidas.SucursalesID AS SucursalesID,		
+	SalidasArticulos.ArticulosID AS ArticulosID,	
+	SalidasArticulos.PresentacionesID AS PresentacionesID,	
+	Articulos.LineaID AS LineaID,	
+	Articulos.Codigo AS Codigo,	
+	Articulos.Nombre AS Nombre,	
+	SalidasArticulos.CostoSIVA AS CostoSIVA,	
+	SalidasArticulos.Costo AS Costo,	
+	SUM(SalidasArticulos.Cantidad) AS sum_Cantidad
+FROM 
+	Articulos,	
+	SalidasArticulos,	
+	Salidas
+WHERE 
+	Articulos.ArticulosID = SalidasArticulos.ArticulosID
+	AND		Salidas.SalidasID = SalidasArticulos.SalidasID
+	and
+	(
+			Salidas.SucursalesID ="+pSucursalesID+@"
+		AND	SalidasArticulos.SalidasID IN ("+pSalidasID+@")
+		
+	)
+GROUP BY 
+	Salidas.SucursalesID,		
+	SalidasArticulos.ArticulosID,	
+	SalidasArticulos.PresentacionesID,	
+	Articulos.LineaID,	
+	Articulos.Codigo,	
+	Articulos.Nombre,	
+	SalidasArticulos.CostoSIVA,	
+	SalidasArticulos.Costo
+ORDER BY 
+	
+	Nombre ASC";
 
+
+               
+
+
+
+
+                System.Data.DataSet ds = qryToDataSet(q);
+
+
+                if (ds.Tables.Count > 0)
+                {
+
+
+                    System.Xml.XmlElement xmlElement = Serialize(ds.Tables[0]);
+
+                    return xmlElement.OuterXml.ToString();
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "QRY_DetalleSalidas_Por_SalidasID:" + ex.Message + ex.StackTrace + ex.InnerException + "\n" + q);
+
+            }
+
+            return "";
         }
+    }
 }
