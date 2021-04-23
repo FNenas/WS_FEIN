@@ -2758,7 +2758,7 @@ ORDER BY
             return "";
         }
         [WebMethod(Description = "Obtene los articulos de los pedidos enviados IN")]
-        public String obtenerHistorialEntradasPedidosDetalle(String pSucursalesID, String pInPedidosID)
+        public String obtenerHistorialEntradasPedidosDetalle( String pInPedidosID)
         {
 
             try
@@ -2775,13 +2775,13 @@ FROM
 	Pedidos,Pedidos_Articulos,Articulos
 		
 WHERE 
-        Pedidos.PedidosID=Pedidos_Articulos.PresentacionesID
+        Pedidos.PedidosID=Pedidos_Articulos.PedidosID
 	and Pedidos_Articulos.ArticulosID=Articulos.ArticulosID
 	AND
 	(
-		Pedidos.SucursalesID = " + pSucursalesID + @"
-		AND Pedidos.Estatus_PedidosID = 3 
-        AND Pedidos.PedidosID in ("+pInPedidosID+ @")
+	
+		 Pedidos.Estatus_PedidosID = 3 
+        AND Pedidos.PedidosID in (" + pInPedidosID+ @")
 ) GROUP by 
 Pedidos_Articulos.ArticulosID ,
      Articulos.Codigo,
