@@ -2757,5 +2757,116 @@ ORDER BY
 
             return "";
         }
+        [WebMethod(Description = "Obtene los articulos de los pedidos enviados IN")]
+        public String obtenerHistorialEntradasPedidosDetalle(String pSucursalesID, String pInPedidosID)
+        {
+
+            try
+            {
+                String q = @"SELECT 
+	Pedidos_Articulos.ArticulosID as ArticulosID,
+     Articulos.Codigo as Codigo,
+   Articulos.Nombre as Nombre,
+  sum(Pedidos_Articulos.PiezasSurtidas) as SUM_PiezasSurtidas,
+  avG(Pedidos_Articulos.CostoConIvaUnitario) as AVG_CostoCIVA,
+  sum( Pedidos_Articulos.ImporteIVACosto) as SUN_ImporteCostoCIVA
+FROM 
+	
+	Pedidos,Pedidos_Articulos,Articulos
+		
+WHERE 
+        Pedidos.PedidosID=Pedidos_Articulos.PresentacionesID
+	and Pedidos_Articulos.ArticulosID=Articulos.ArticulosID
+	AND
+	(
+		Pedidos.SucursalesID = " + pSucursalesID + @"
+		AND Pedidos.Estatus_PedidosID = 3 
+        AND Pedidos.PedidosID in ("+pInPedidosID+ @")
+) GROUP by 
+Pedidos_Articulos.ArticulosID ,
+     Articulos.Codigo,
+   Articulos.Nombre ";
+
+
+
+
+                System.Data.DataSet ds = qryToDataSet(q);
+
+
+                if (ds.Tables.Count > 0)
+                {
+
+
+                    System.Xml.XmlElement xmlElement = Serialize(ds.Tables[0]);
+
+                    return xmlElement.OuterXml.ToString();
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "obtenerHistorialEntradasPedidosDetalle:" + ex.Message + ex.StackTrace);
+
+            }
+
+            return "";
+        }
+        [WebMethod(Description = "Regresa un xml la informacion de Tabla")]
+        public String obtenerArticulosIN_Entradas(String psINEntradasID)
+        {
+            String q = "";
+            try
+            {
+                q = @"SELECT 
+    EntradasArticulos.ArticulosID AS ArticulosID,	
+    Articulos.Codigo AS Codigo,
+    Articulos.Nombre AS Nombre,	
+    sum(EntradasArticulos.CantidadRecibida) as SUM_CantidadRecibida,	
+    AVG(EntradasArticulos.Costo) AS AVG_Costo,	
+    Sum(	EntradasArticulos.ImporteIVACosto) AS SUM_ImporteIVACosto	
+	
+    FROM 
+	Articulos,	
+	EntradasArticulos
+    
+    WHERE 
+	Articulos.ArticulosID = EntradasArticulos.ArticulosID
+	AND
+	(
+		EntradasArticulos.EntradasID IN (" + psINEntradasID + @")
+        
+    )
+    group by
+    EntradasArticulos.ArticulosID,
+    Articulos.Codigo ,
+    Articulos.Nombre	
+   ";
+
+
+
+
+                System.Data.DataSet ds = qryToDataSet(q);
+
+
+                if (ds.Tables.Count > 0)
+                {
+
+
+                    System.Xml.XmlElement xmlElement = Serialize(ds.Tables[0]);
+
+                    return xmlElement.OuterXml.ToString();
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "obtenerArticulosIN_Entradas:" + ex.Message + ex.StackTrace + "\n" + q);
+
+            }
+
+            return "";
+        }
     }
 }
