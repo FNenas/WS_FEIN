@@ -744,6 +744,8 @@ namespace WS
             String query = "SELECT * FROM [Clientes] WHERE (Activo='1') and esMayoreoAprobado=1 and esMayoreo=1 ";
 
 
+            
+
             System.Data.DataSet ds = qryToDataSet(query);
 
 
@@ -994,36 +996,58 @@ namespace WS
 
             return xmlElement.OuterXml.ToString();
         }
-
-        [WebMethod]
-        public Boolean guardarFotoCliente(String imagBase64,String sClienteID) {
-            // revisar  marca  error  10/12/2020
-
+        public System.Drawing. Image byteArrayToImage(byte[] byteArrayIn)
+        {
+            System.Drawing.Image returnImage=null;
 
 
-
-         /*   MemoryStream ms = new MemoryStream(img);
-            Bitmap bmp = new Bitmap(ms);
-
-            bmp.Save(path + imagen.ToString(), bmp.RawFormat);
-*/
-
-            Boolean bRespuesta = false;
-
-            byte[] img = Convert.FromBase64String(imagBase64);
-            System.Data.Odbc.OdbcTransaction transaction = null;
-            System.Data.Odbc.OdbcCommand command = null;
-            System.Data.Odbc.OdbcConnection MyConnection = new System.Data.Odbc.OdbcConnection("DSN=HyperFileFruteria");
-            MyConnection.Open();
-            transaction = MyConnection.BeginTransaction();
             try
             {
-                String qry= "Update clientes set fotoLocal=@file where ClientesID = " + sClienteID;
+                System.IO.MemoryStream ms = new System.IO.MemoryStream(byteArrayIn, 0, byteArrayIn.Length);
+                ms.Write(byteArrayIn, 0, byteArrayIn.Length);
+                returnImage = System.Drawing.Image.FromStream(ms, true);//Exception occurs here
+            }
+            catch(Exception ex) {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "byteArraytoImage:/n" + ex.Message+ex.StackTrace);
+
+            }
+            return returnImage;
+        }
+        [WebMethod]
+        public Boolean guardarFotoCliente(byte[] f, String sClienteID) {
+
+            //no se utiliza
+            // revisar  marca  error  10/12/2020
+            System.Data.Odbc.OdbcTransaction transaction = null;
+            System.Data.Odbc.OdbcCommand command = null;
+            System.Data.Odbc.OdbcConnection MyConnection = null;
+            Boolean bRespuesta = false;
+           
+            try
+            {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "Imagen ClienteID:" + f.ToString());
+                System.Drawing.Image newImage = byteArrayToImage(f);
+                //   System.IO.MemoryStream ms = new System.IO.MemoryStream(f);
+                newImage.Save(@"C:\sXML\tesd.jpg");
+
+
+
+                MyConnection = new System.Data.Odbc.OdbcConnection("DSN=HyperFileFruteria");
+            MyConnection.Open();
+            transaction = MyConnection.BeginTransaction();
+           
+                String qry= "Update clientes set fotoLocal=? where ClientesID = " + sClienteID;
 
 
 
                 command = new System.Data.Odbc.OdbcCommand(qry, MyConnection);
-                command.Parameters.Add("@file", System.Data.DbType.Binary).Value = img;
+                System.Data.Odbc.OdbcParameter paramFileField = new System.Data.Odbc.OdbcParameter();
+
+                paramFileField.OdbcType = System.Data.Odbc.OdbcType.Image;
+
+                paramFileField.Value = newImage;
+
+                command.Parameters.Add(paramFileField);
 
 
               
@@ -1038,7 +1062,7 @@ namespace WS
             {
 
                 bRespuesta = false;
-                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "Imagen ClienteID:" + sClienteID + "/n" + ex.Message);
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "Imagen ClienteID:" + sClienteID + "/n" + ex.Message+ex.StackTrace);
 
                 transaction.Rollback();
             }
@@ -1367,7 +1391,7 @@ namespace WS
                     if (ds2.Tables[0].Rows.Count > 0) { 
                     System.Data.DataRow r = ds.Tables[0].NewRow();
 
-                    r["Tipo"] = ds2.Tables[0].Rows[0]["Nombre"].ToString();
+                    r["Tipo"] ="+"+ds2.Tables[0].Rows[0]["Nombre"].ToString();
                     r["Cantidad"] = ds2.Tables[0].Rows[0]["Sum_Cantidad"].ToString();
 
                     ds.Tables[0].Rows.Add(r);
