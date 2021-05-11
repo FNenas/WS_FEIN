@@ -2720,6 +2720,8 @@ AND	Salidas.SucursalesID =" +pSucursalesID;
             }
             return "";
         }
+
+
         [WebMethod(Description = "QRY_Salidas_X_ArticuloID_S_Fecha")]
         public String QRY_DetalleSalidas_Por_SalidasID(String pSucursalesID, string pSalidasID)
         {
@@ -2899,6 +2901,24 @@ Pedidos_Articulos.ArticulosID ,
 
             }
 
+            return "";
+        }
+
+        
+        [WebMethod(Description = "Consultar bajas de empleados")]
+        public String ConsultarBajas(String FechaInicio, String FechaFinal)
+        {
+            System.Xml.XmlElement xmlElement;
+            String sQry = @"SELECT * 
+                FROM Historial_Bajas 
+                WHERE Historial_Bajas.Fecha_Baja 
+                BETWEEN "+FechaInicio+@" AND "+FechaFinal;
+            System.Data.DataSet ds = qryToDataSet(sQry);
+            if (ds.Tables.Count > 0)
+            {
+                xmlElement = Serialize(ds.Tables[0]);
+                return xmlElement.OuterXml.ToString();
+            }
             return "";
         }
     }
