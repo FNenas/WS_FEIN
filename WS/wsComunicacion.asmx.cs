@@ -2710,7 +2710,15 @@ AND	Salidas.SucursalesID =" +pSucursalesID;
         [WebMethod(Description = "regresa el precio de articulo contemplando ofertas (Precio|Nivel)")]
         public String PrecioArticulo(String sArticuloID, String sSucursalesID)
         {
-            return "39.90|P";
+            System.Xml.XmlElement xmlElement;
+            String sQry = "select * from Articulos where Activo = 1";
+            System.Data.DataSet ds = qryToDataSet(sQry);
+            if (ds.Tables.Count > 0)
+            {
+                xmlElement = Serialize(ds.Tables[0]);
+                return xmlElement.OuterXml.ToString();
+            }
+            return "";
         }
         [WebMethod(Description = "QRY_Salidas_X_ArticuloID_S_Fecha")]
         public String QRY_DetalleSalidas_Por_SalidasID(String pSucursalesID, string pSalidasID)
