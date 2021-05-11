@@ -1729,7 +1729,8 @@ namespace WS
         [WebMethod(Description = "Guarda la posicion del dispositivo")]
         public Boolean HAddPosicion(String sEmpleadoID, String latr, String lon,String sAPP,String sIMEI,String sNota,String Fhora) {
 
-            // se tien que crear una tabla  para almacenara el registro
+            // se tien que crear una tabla  para k
+            //almacenara el registro
             //LogPosicionesGPS
             //LogPosicionesGPSID
             //EmpleadoID
