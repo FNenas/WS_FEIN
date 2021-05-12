@@ -2909,9 +2909,10 @@ Pedidos_Articulos.ArticulosID ,
         public String ConsultarBajas(String FechaInicio, String FechaFinal)
         {
             System.Xml.XmlElement xmlElement;
+            String sQry ="";
               try
             {
-            String sQry = @"SELECT * 
+             sQry = @"SELECT * 
                 FROM Historial_Bajas 
                 WHERE Historial_Bajas.Fecha_Baja 
                 BETWEEN "+FechaInicio+@" AND "+FechaFinal;
@@ -2924,7 +2925,7 @@ Pedidos_Articulos.ArticulosID ,
             }
              catch (Exception ex)
             {
-                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "ConsultarBajas:" + ex.Message + ex.StackTrace + "\n" + q);
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "ConsultarBajas:" + ex.Message + ex.StackTrace + "\n" + sQry);
 
             }
 
@@ -2936,9 +2937,10 @@ Pedidos_Articulos.ArticulosID ,
         public String ConsultarTotalBajas(String FechaInicio, String FechaFinal)
         {
             System.Xml.XmlElement xmlElement;
+            String sQry = "";
               try
             {
-            String sQry = @"Select count(*) As BajasPeriodo 
+             sQry = @"Select count(*) As BajasPeriodo 
                 FROM  Historial_Bajas where  HiSstorial_Bajas.Fecha_Baja 
                 BETWEEN "+FechaInicio+@" AND "+FechaFinal;
             System.Data.DataSet ds = qryToDataSet(sQry);
@@ -2951,7 +2953,7 @@ Pedidos_Articulos.ArticulosID ,
 
              catch (Exception ex)
             {
-                System.IO.FileS.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "Total bajas de empleados:" + ex.Message + ex.StackTrace + "\n" + q);
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "Total bajas de empleados:" + ex.Message + ex.StackTrace + "\n" + sQry);
 
             }
 
