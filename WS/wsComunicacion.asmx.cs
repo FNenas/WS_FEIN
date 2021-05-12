@@ -2915,7 +2915,7 @@ Pedidos_Articulos.ArticulosID ,
              sQry = @"SELECT * 
                 FROM Historial_Bajas 
                 WHERE Historial_Bajas.Fecha_Baja 
-                BETWEEN "+FechaInicio+@" AND "+FechaFinal;
+                BETWEEN '"+FechaInicio+@"' AND '"+FechaFinal+"'";
             System.Data.DataSet ds = qryToDataSet(sQry);
             if (ds.Tables.Count > 0)
             {
@@ -2942,7 +2942,7 @@ Pedidos_Articulos.ArticulosID ,
             {
              sQry = @"Select count(*) As BajasPeriodo 
                 FROM  Historial_Bajas where  HiSstorial_Bajas.Fecha_Baja 
-                BETWEEN "+FechaInicio+@" AND "+FechaFinal;
+                BETWEEN '"+FechaInicio+@"' AND '"+FechaFinal+"'";
             System.Data.DataSet ds = qryToDataSet(sQry);
             if (ds.Tables.Count > 0)
             {
