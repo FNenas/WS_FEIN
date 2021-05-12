@@ -2921,5 +2921,25 @@ Pedidos_Articulos.ArticulosID ,
             }
             return "";
         }
+
+        
+ [WebMethod(Description = "Total bajas de empleados")]
+        public String ConsultarTotalBajas(String FechaInicio, String FechaFinal)
+        {
+            System.Xml.XmlElement xmlElement;
+            String sQry = @"Select count(*) As BajasPeriodo 
+                FROM  Historial_Bajas where  HiSstorial_Bajas.Fecha_Baja 
+                BETWEEN "+FechaInicio+@" AND "+FechaFinal;
+            System.Data.DataSet ds = qryToDataSet(sQry);
+            if (ds.Tables.Count > 0)
+            {
+                xmlElement = Serialize(ds.Tables[0]);
+                return xmlElement.OuterXml.ToString();
+            }
+            return "";
+        }
+
+
+
     }
 }
