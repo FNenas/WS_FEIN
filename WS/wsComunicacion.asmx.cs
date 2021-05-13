@@ -2979,7 +2979,7 @@ Pedidos_Articulos.ArticulosID ,
 
              catch (Exception ex)
             {
-                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "Total bajas de empleados:" + ex.Message + ex.StackTrace + "\n" + sQry);
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "Obtener Plantilla:" + ex.Message + ex.StackTrace + "\n" + sQry);
 
             }
 
