@@ -2909,35 +2909,57 @@ Pedidos_Articulos.ArticulosID ,
         public String ConsultarBajas(String FechaInicio, String FechaFinal)
         {
             System.Xml.XmlElement xmlElement;
-            String sQry = @"SELECT * 
+            String sQry ="";
+              try
+            {
+             sQry = @"SELECT * 
                 FROM Historial_Bajas 
                 WHERE Historial_Bajas.Fecha_Baja 
-                BETWEEN "+FechaInicio+@" AND "+FechaFinal;
+                BETWEEN '"+FechaInicio+@"' AND '"+FechaFinal+"'";
             System.Data.DataSet ds = qryToDataSet(sQry);
             if (ds.Tables.Count > 0)
             {
                 xmlElement = Serialize(ds.Tables[0]);
                 return xmlElement.OuterXml.ToString();
             }
+            }
+             catch (Exception ex)
+            {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "ConsultarBajas:" + ex.Message + ex.StackTrace + "\n" + sQry);
+
+            }
+
             return "";
         }
 
-        
- [WebMethod(Description = "Total bajas de empleados")]
+
+        [WebMethod(Description = "Total bajas de empleados")]
         public String ConsultarTotalBajas(String FechaInicio, String FechaFinal)
         {
             System.Xml.XmlElement xmlElement;
-            String sQry = @"Select count(*) As BajasPeriodo 
-                FROM  Historial_Bajas where  HiSstorial_Bajas.Fecha_Baja 
-                BETWEEN "+FechaInicio+@" AND "+FechaFinal;
+            String sQry = "";
+              try
+            {
+             sQry = @"Select count(*) As BajasPeriodo 
+                FROM  Historial_Bajas where  Historial_Bajas.Fecha_Baja 
+                BETWEEN '"+FechaInicio+@"' AND '"+FechaFinal+"'";
             System.Data.DataSet ds = qryToDataSet(sQry);
             if (ds.Tables.Count > 0)
             {
                 xmlElement = Serialize(ds.Tables[0]);
                 return xmlElement.OuterXml.ToString();
             }
+        }
+
+             catch (Exception ex)
+            {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "Total bajas de empleados:" + ex.Message + ex.StackTrace + "\n" + sQry);
+
+            }
+
             return "";
         }
+        
 
         
     }
