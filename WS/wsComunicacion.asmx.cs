@@ -2959,7 +2959,32 @@ Pedidos_Articulos.ArticulosID ,
 
             return "";
         }
-        
+          [WebMethod(Description = "Total Plantilla")]
+        public String ObtenerTotalPlantilla()
+        {
+            System.Xml.XmlElement xmlElement;
+            String sQry = "";
+              try
+            {
+             sQry = @"SELECT sum(Puestos_Sucursales.CantidadEmpleados) AS Plantilla 
+             FROM Puestos_Sucursales WHERE Puestos_Sucursales.Activo = 1";
+               
+            System.Data.DataSet ds = qryToDataSet(sQry);
+            if (ds.Tables.Count > 0)
+            {
+                xmlElement = Serialize(ds.Tables[0]);
+                return xmlElement.OuterXml.ToString();
+            }
+        }
+
+             catch (Exception ex)
+            {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "Total bajas de empleados:" + ex.Message + ex.StackTrace + "\n" + sQry);
+
+            }
+
+            return "";
+        }
 
         
     }
