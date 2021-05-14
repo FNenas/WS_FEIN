@@ -1378,6 +1378,8 @@ namespace WS
                 System.Data.DataSet ds1 = qryToDataSet(q1);
                 System.Data.DataSet ds2 = qryToDataSet(q2);
 
+               
+
                 if (ds1.Tables.Count > 0)
                 {
                     if (ds.Tables[0].Rows.Count > 0)
