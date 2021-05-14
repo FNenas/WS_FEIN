@@ -2973,7 +2973,7 @@ JOIN Departamentos ON Empleados.DepartamentosID = Departamentos.DepartamentosID 
               try
             {
              sQry = @"SELECT sum(Puestos_Sucursales.CantidadEmpleados) AS Plantilla 
-             FROM Puestos_Sucursales WHERE Puestos_Sucursales.Activo = 1";
+             FROM Puestos_Sucursales WHERE Puestos_Sucursales.Activo = 1 AND Puestos_Sucursales.SucursalesID = "+pSucursalesID;
                
             System.Data.DataSet ds = qryToDataSet(sQry);
             if (ds.Tables.Count > 0)
