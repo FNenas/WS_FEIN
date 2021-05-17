@@ -2994,6 +2994,243 @@ JOIN Departamentos ON Empleados.DepartamentosID = Departamentos.DepartamentosID 
             return "";
         }
 
-        
+
+        [WebMethod(Description = "Devuelve el precio del codigo del articulo, Return vacio sino encuentro")]
+        public String PrecioVerificador(String pSucursalesID,String sCodigo)
+        {
+            System.Xml.XmlElement xmlElement;
+            String sQry = "";
+            String sArticulosID = "";
+            String sDescripcionArticulo = "";
+            String sPrecioCIVA = "";
+            String bPromocion = "";
+            String sPrecioRealCIVA = "";
+            try
+            {
+                //se busca el articulo por el codigo
+                sQry = @"SELECT 
+	Articulos.ArticulosID AS ArticulosID,	
+	Articulos.Nombre AS Nombre,	
+	Articulos.Codigo AS Codigo,	
+	Articulos.SeVende AS SeVende,	
+	Articulos.UsoInterno AS UsoInterno,	
+	Articulos.Activo AS Activo,	
+	Articulos.UnidadSalida AS UnidadSalida,	
+	Articulos.AplicaDescuento AS AplicaDescuento,	
+	Articulos.ImpuestosID AS ImpuestosID,	
+	Articulos.LineaID AS LineaID,	
+	Articulos.PermitirDecimales AS PermitirDecimales,	
+	Articulos.EmpaqueEntradaID AS EmpaqueEntradaID,	
+	Articulos.EmpaqueSalidaID AS EmpaqueSalidaID,	
+	Articulos.EmpaqueEntradaReciboID AS EmpaqueEntradaReciboID,	
+	Articulos.PrecioVariable AS PrecioVariable,	
+	Articulos.NoVendeNegativo AS NoVendeNegativo,	
+	Articulos.SeManufactura AS SeManufactura,	
+	Articulos.NoRestarExistencia AS NoRestarExistencia,	
+	Articulos.TiposIEPSID AS TiposIEPSID,	
+	Articulos.ValorIEPS AS ValorIEPS,	
+	Articulos.CantidadIEPS AS CantidadIEPS,	
+	Articulos.RespetaPrecioAunqueUtiliceBascula AS RespetaPrecioAunqueUtiliceBascula,	
+	Articulos.RotacionInventarioID AS RotacionInventarioID,	
+	Articulos.esServicio AS esServicio,	
+	Articulos.articuloID_Comision AS articuloID_Comision,	
+	Articulos.esComision AS esComision,	
+	Articulos.esDeposito AS esDeposito,	
+	Articulos.esRetiro AS esRetiro
+FROM 
+	Articulos
+WHERE 
+	Articulos.Codigo ="+sCodigo ;
+
+
+                System.Data.DataSet ds = qryToDataSet(sQry);
+                if (hayInfoDS(ds))
+                {
+                    // Se encontro
+                    sArticulosID = ds.Tables[0].Rows[0]["ArticulosID"].ToString();
+                    sDescripcionArticulo = ds.Tables[0].Rows[0]["Nombre"].ToString();
+
+
+                }
+                else {
+                    //se busca el articulo por el codigo de barras
+                    sQry = @"SELECT 
+	Articulos.ArticulosID AS ArticulosID,	
+	Articulos.Nombre AS Nombre,	
+	Articulos.Codigo AS Codigo,	
+	Articulos.SeVende AS SeVende,	
+	Articulos.UsoInterno AS UsoInterno,	
+	Articulos.Activo AS Activo,	
+	Articulos.UnidadSalida AS UnidadSalida,	
+	CodigosBarra_Articulos.CodigoBarra AS CodigoBarra,	
+	Articulos.AplicaDescuento AS AplicaDescuento,	
+	Articulos.ImpuestosID AS ImpuestosID,	
+	Articulos.LineaID AS LineaID,	
+	Articulos.PermitirDecimales AS PermitirDecimales,	
+	Articulos.EmpaqueEntradaID AS EmpaqueEntradaID,	
+	Articulos.EmpaqueSalidaID AS EmpaqueSalidaID,	
+	Articulos.EmpaqueEntradaReciboID AS EmpaqueEntradaReciboID,	
+	Articulos.PrecioVariable AS PrecioVariable,	
+	Articulos.NoVendeNegativo AS NoVendeNegativo,	
+	Articulos.SeManufactura AS SeManufactura,	
+	Articulos.NoRestarExistencia AS NoRestarExistencia,	
+	Articulos.TiposIEPSID AS TiposIEPSID,	
+	Articulos.ValorIEPS AS ValorIEPS,	
+	Articulos.CantidadIEPS AS CantidadIEPS,	
+	Articulos.RespetaPrecioAunqueUtiliceBascula AS RespetaPrecioAunqueUtiliceBascula,	
+	Articulos.RotacionInventarioID AS RotacionInventarioID,	
+	Articulos.esServicio AS esServicio,
+	Articulos.articuloID_Comision AS articuloID_Comision,
+	Articulos.esComision AS esComision,
+	Articulos.esRetiro AS esRetiro,
+	Articulos.esDeposito AS esDeposito
+FROM 
+	Articulos,	
+	CodigosBarra_Articulos
+WHERE 
+	Articulos.ArticulosID = CodigosBarra_Articulos.ArticulosID
+	AND
+	(
+		CodigosBarra_Articulos.CodigoBarra ="+sCodigo+")";
+                    ds = null;
+                    ds = qryToDataSet(sQry);
+
+                    
+
+                    if (hayInfoDS(ds))
+                    {
+                        
+                        // Se encontro
+                        sArticulosID = ds.Tables[0].Rows[0]["ArticulosID"].ToString();
+                        sDescripcionArticulo = ds.Tables[0].Rows[0]["Nombre"].ToString();
+
+
+                    }
+                    else {
+                        // regresa  vacio si no o encoentro
+                        return "";
+
+                    }
+
+
+                }
+
+                // continuar con el proceso
+                //se checa si hay alguna promocion activa para este articul
+                sQry = @"SELECT 
+	ArticulosPrecios.ArticulosPreciosID AS ArticulosPreciosID,	
+	ArticulosPrecios.Precio AS Precio,	
+	ArticulosPrecios.IVAPrecio AS IVAPrecio,	
+	ArticulosPrecios.PrecioCIVA AS PrecioCIVA,	
+	ArticulosPrecios.Costo AS Costo,	
+	ArticulosPrecios.CostoCIVA AS CostoCIVA,	
+	ArticulosPrecios.ArticulosID AS ArticulosID,	
+	ArticulosPrecios.EsPromocion AS EsPromocion,	
+	ArticulosPrecios.FechaInicio AS FechaInicio,	
+	ArticulosPrecios.FechaFinal AS FechaFinal,	
+	ArticulosPrecios.Nivel AS Nivel,	
+	ArticulosPrecios.LimiteDeUnidades AS LimiteDeUnidades
+FROM 
+	ArticulosPrecios
+WHERE 
+	ArticulosPrecios.ArticulosID = "+sArticulosID+@"
+	AND	ArticulosPrecios.SucursalesID ="+ pSucursalesID + @"
+	AND	ArticulosPrecios.EsPromocion = 0
+	AND	ArticulosPrecios.FechaInicio <= "+ DateTime.Now.ToString("yyyyMMdd") + @"
+	AND	ArticulosPrecios.FechaFinal >= "+DateTime.Now.ToString("yyyyMMdd")+@"
+	AND	ArticulosPrecios.Activo =0";
+                ds = null;
+                ds = qryToDataSet(sQry);
+                if (hayInfoDS(ds))
+                {
+                    // Se encontro
+                    sPrecioCIVA = ds.Tables[0].Rows[0]["PrecioCIVA"].ToString();
+                    bPromocion = "1";
+                    // trar precio real
+                    sQry = @" SELECT * FROM [ArticulosPrecios] WHERE (ArticulosID=" + sArticulosID + ") AND(SucursalesID=" + pSucursalesID + ") AND(Nivel='NV1')  ";
+                    ds = null;
+                    ds = qryToDataSet(sQry);
+                    if (hayInfoDS(ds))
+                    {
+                        //precio resl
+                        sPrecioRealCIVA = ds.Tables[0].Rows[0]["PrecioCIVA"].ToString();
+
+                    }
+
+                }
+                else {
+                    // se checa el precio para este articulo
+                    sQry = @"SELECT 
+	ArticulosPrecios.ArticulosPreciosID AS ArticulosPreciosID,	
+	ArticulosPrecios.Precio AS Precio,	
+	ArticulosPrecios.IVAPrecio AS IVAPrecio,	
+	ArticulosPrecios.PrecioCIVA AS PrecioCIVA,	
+	ArticulosPrecios.Costo AS Costo,	
+	ArticulosPrecios.CostoCIVA AS CostoCIVA,	
+	ArticulosPrecios.ArticulosID AS ArticulosID,	
+	ArticulosPrecios.EsPromocion AS EsPromocion,	
+	ArticulosPrecios.FechaInicio AS FechaInicio,	
+	ArticulosPrecios.FechaFinal AS FechaFinal,	
+	ArticulosPrecios.Nivel AS Nivel,	
+	ArticulosPrecios.LimiteDeUnidades AS LimiteDeUnidades
+FROM 
+	ArticulosPrecios
+WHERE 
+	ArticulosPrecios.ArticulosID = "+sArticulosID+@"
+	AND	ArticulosPrecios.SucursalesID = "+pSucursalesID+@"
+	AND	ArticulosPrecios.EsPromocion = 0
+		AND	ArticulosPrecios.Nivel ='NV1'";
+                    ds = null;
+                    ds = qryToDataSet(sQry);
+                    if (hayInfoDS(ds))
+                    {
+                        sPrecioCIVA = ds.Tables[0].Rows[0]["PrecioCIVA"].ToString();
+                        bPromocion = "0";
+                        sPrecioRealCIVA = ds.Tables[0].Rows[0]["PrecioCIVA"].ToString();
+
+                    }
+
+
+
+
+
+                }
+              
+                return sArticulosID+"|"+sDescripcionArticulo+"|"+sPrecioCIVA+"|"+bPromocion+"|"+sPrecioRealCIVA;
+            }
+
+
+          
+
+
+            catch (Exception ex)
+            {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "PrecioVerificador:" + ex.Message + ex.StackTrace + "\n" + sQry);
+                return "";
+            }
+
+            return "";
+        }
+
+        private Boolean hayInfoDS(System.Data.DataSet ds) {
+
+            try {
+                if (ds.Tables.Count > 0) {
+                    if (ds.Tables[0].Rows.Count > 0) {
+
+                        return true;
+                    }
+
+
+                }
+                return false;
+
+            } catch {
+
+                return false;
+            }
+
+        }
+
     }
 }
