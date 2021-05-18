@@ -3232,5 +3232,27 @@ WHERE
 
         }
 
+        [WebMethod(Description = "Regresa el nombre de las sucursales con su DireccionIP correspodiente")]
+        public string ObtenerSucursales()
+        {
+            String sQry = "select Nombre,DireccionIP from Sucursales where Activo = 1 and EsAlmacen = 0";
+            System.Data.DataSet ds;
+            System.Xml.XmlElement xmlElement;
+            try
+            {
+                ds = qryToDataSet(sQry);
+                if(ds.Tables.Count>0)
+                {
+                    xmlElement = Serialize(ds.Tables[0]);
+                    return xmlElement.OuterXml.ToString();
+                }
+                return "";
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "ObtenerSucursales:" + ex.Message + ex.StackTrace + "\n" + sQry);
+                return "Ocurrio un error inesperado";
+            }
+        }
     }
 }
