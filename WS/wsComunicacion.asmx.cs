@@ -2990,7 +2990,7 @@ JOIN Departamentos ON Empleados.DepartamentosID = Departamentos.DepartamentosID 
             return "";
         }
 
-<<<<<<< HEAD
+
 
         [WebMethod(Description = "Devuelve el precio del codigo del articulo, Return vacio sino encuentro")]
         public String PrecioVerificador(String pSucursalesID,String sCodigo)
@@ -3253,7 +3253,7 @@ WHERE
         }
 
 
-    [WebMethod(Description = "Plantilla por puestlogos")]
+    [WebMethod(Description = "Plantilla por puestos")]
         public String ObtenerPuestosPlantilla(String pSucursalesID)
         {
             System.Xml.XmlElement xmlElement;
