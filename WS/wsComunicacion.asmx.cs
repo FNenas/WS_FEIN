@@ -1457,7 +1457,7 @@ namespace WS
 
       
 
-            return "1.0.0.14" ;
+            return "1.0.0.16" ;
         }
         [WebMethod(Description = "Regresa un xml con los Estados")]
         public String Estados()
@@ -2906,16 +2906,21 @@ Pedidos_Articulos.ArticulosID ,
 
         
         [WebMethod(Description = "Consultar bajas de empleados")]
-        public String ConsultarBajas(String FechaInicio, String FechaFinal)
+        public String ConsultarBajas(String FechaInicio, String FechaFinal, String pSucursalesID)
         {
             System.Xml.XmlElement xmlElement;
             String sQry ="";
               try
             {
-             sQry = @"SELECT * 
-                FROM Historial_Bajas 
-                WHERE Historial_Bajas.Fecha_Baja 
-                BETWEEN '"+FechaInicio+@"' AND '"+FechaFinal+"'";
+             sQry = @"SELECT Empleados.PuestosID, Puestos.Nombre AS nombrePuesto, Empleados.DepartamentosID, Departamentos.Descripcion AS nombreDepartamento, Empleados.Activo,
+Empleados.Nombre, Empleados.ApellidoPaterno, Empleados.ApellidoMaterno, Empleados.sexo, Empleados.FechaIngreso, Empleados.FechaNacimiento, Empleados.EstadoCivil, Empleados.NivelEstudios,
+Historial_Bajas.Fecha_Baja, Historial_Bajas.Comentarios, Historial_Bajas.EmpleadosID,Historial_Bajas.MotivosDeBajaCatalogo 
+FROM Historial_Bajas JOIN Empleados on Empleados.EmpleadosID = Historial_Bajas.EmpleadosID 
+JOIN Puestos ON Empleados.PuestosID = Puestos.PuestosID 
+JOIN Departamentos ON Empleados.DepartamentosID = Departamentos.DepartamentosID WHERE Empleados.SucursalesID = "+pSucursalesID+@" AND 
+ Historial_Bajas.Fecha_Baja BETWEEN '"+FechaInicio+@"' AND '"+FechaFinal+"' ORDER BY Fecha_Baja";
+             
+            
             System.Data.DataSet ds = qryToDataSet(sQry);
             if (ds.Tables.Count > 0)
             {
@@ -2934,15 +2939,16 @@ Pedidos_Articulos.ArticulosID ,
 
 
         [WebMethod(Description = "Total bajas de empleados")]
-        public String ConsultarTotalBajas(String FechaInicio, String FechaFinal)
+        public String ConsultarTotalBajas(String FechaInicio, String FechaFinal, String pSucursalesID)
         {
             System.Xml.XmlElement xmlElement;
             String sQry = "";
               try
             {
-             sQry = @"Select count(*) As BajasPeriodo 
-                FROM  Historial_Bajas where  Historial_Bajas.Fecha_Baja 
-                BETWEEN '"+FechaInicio+@"' AND '"+FechaFinal+"'";
+             sQry = @"Select count(*) As BajasPeriodo
+                FROM  Historial_Bajas JOIN Empleados ON Empleados.EmpleadosID = Historial_Bajas.EmpleadosID where  Historial_Bajas.Fecha_Baja 
+                BETWEEN '"+FechaInicio+@"' AND '"+FechaFinal+"' AND Empleados.SucursalesID = "+pSucursalesID;
+             
             System.Data.DataSet ds = qryToDataSet(sQry);
             if (ds.Tables.Count > 0)
             {
@@ -2960,14 +2966,14 @@ Pedidos_Articulos.ArticulosID ,
             return "";
         }
           [WebMethod(Description = "Total Plantilla")]
-        public String ObtenerTotalPlantilla()
+        public String ObtenerTotalPlantilla(String pSucursalesID)
         {
             System.Xml.XmlElement xmlElement;
             String sQry = "";
               try
             {
              sQry = @"SELECT sum(Puestos_Sucursales.CantidadEmpleados) AS Plantilla 
-             FROM Puestos_Sucursales WHERE Puestos_Sucursales.Activo = 1";
+             FROM Puestos_Sucursales WHERE Puestos_Sucursales.Activo = 1 AND Puestos_Sucursales.SucursalesID = "+pSucursalesID;
                
             System.Data.DataSet ds = qryToDataSet(sQry);
             if (ds.Tables.Count > 0)
@@ -2979,13 +2985,39 @@ Pedidos_Articulos.ArticulosID ,
 
              catch (Exception ex)
             {
-                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "Total bajas de empleados:" + ex.Message + ex.StackTrace + "\n" + sQry);
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "Obtener Plantilla:" + ex.Message + ex.StackTrace + "\n" + sQry);
 
             }
 
             return "";
         }
 
+    [WebMethod(Description = "Plantilla por puestos")]
+        public String ObtenerPuestosPlantilla(String pSucursalesID)
+        {
+            System.Xml.XmlElement xmlElement;
+            String sQry = "";
+              try
+            {
+             sQry = @"SELECT Puestos_Sucursales.PuestosID, Puestos_Sucursales.CantidadEmpleados
+             FROM Puestos_Sucursales WHERE Puestos_Sucursales.Activo = 1 AND Puestos_Sucursales.SucursalesID = "+ pSucursalesID;
+                
+            System.Data.DataSet ds = qryToDataSet(sQry);
+            if (ds.Tables.Count > 0)
+            {
+                xmlElement = Serialize(ds.Tables[0]);
+                return xmlElement.OuterXml.ToString();
+            }
+        }
+
+             catch (Exception ex)
+            {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "Obtener Puesto Plantilla:" + ex.Message + ex.StackTrace + "\n" + sQry);
+
+            }
+
+            return "";
+        }
         
     }
 }
