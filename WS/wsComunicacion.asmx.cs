@@ -3253,8 +3253,7 @@ WHERE
         }
 
 
-<<<<<<< HEAD
-    [WebMethod(Description = "Plantilla por puestos")]
+    [WebMethod(Description = "Plantilla por puestlogos")]
         public String ObtenerPuestosPlantilla(String pSucursalesID)
         {
             System.Xml.XmlElement xmlElement;
@@ -3281,7 +3280,7 @@ WHERE
             return "";
         }
     
-=======
+
 //---------------------------------[    Enrique     ]------------------------------------
         [WebMethod(Description = "Regresa solicitudes de cancelacion")]
                 public string SolicitudCancelaciones(Boolean Activo, String FechaSolicitudIncio, String FechaSolicitudFinal, String SucursalID)
@@ -3330,6 +3329,6 @@ WHERE
                     }
                 }
 //----------------------------------------------------------------------------------    
->>>>>>> 0e7673e36fddb05bbe92fb5ddeb131f90211073d
+
     }
 }
