@@ -3235,7 +3235,7 @@ WHERE
         [WebMethod(Description = "Regresa el nombre de las sucursales con su DireccionIP correspodiente")]
         public string ObtenerSucursales()
         {
-            String sQry = "select Nombre,DireccionIP from Sucursales where Activo = 1 and EsAlmacen = 0";
+            String sQry = "select Nombre,DireccionIP,SucursalesID from Sucursales where Activo = 1 and EsAlmacen = 0";
             System.Data.DataSet ds;
             System.Xml.XmlElement xmlElement;
             try
