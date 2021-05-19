@@ -3036,7 +3036,7 @@ JOIN Departamentos ON Empleados.DepartamentosID = Departamentos.DepartamentosID 
 FROM 
 	Articulos
 WHERE 
-	Articulos.Codigo ="+sCodigo ;
+	Articulos.Codigo ="+"'"+sCodigo+"'" ;
 
 
                 System.Data.DataSet ds = qryToDataSet(sQry);
@@ -3087,7 +3087,7 @@ WHERE
 	Articulos.ArticulosID = CodigosBarra_Articulos.ArticulosID
 	AND
 	(
-		CodigosBarra_Articulos.CodigoBarra ="+sCodigo+")";
+		CodigosBarra_Articulos.CodigoBarra ="+"'"+sCodigo+"'"+")";
                     ds = null;
                     ds = qryToDataSet(sQry);
 
