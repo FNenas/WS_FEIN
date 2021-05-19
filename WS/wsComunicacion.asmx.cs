@@ -2994,6 +2994,7 @@ JOIN Departamentos ON Empleados.DepartamentosID = Departamentos.DepartamentosID 
             return "";
         }
 
+<<<<<<< HEAD
 
         [WebMethod(Description = "Devuelve el precio del codigo del articulo, Return vacio sino encuentro")]
         public String PrecioVerificador(String pSucursalesID,String sCodigo)
@@ -3254,5 +3255,34 @@ WHERE
                 return "Ocurrio un error inesperado";
             }
         }
+
+
+    [WebMethod(Description = "Plantilla por puestos")]
+        public String ObtenerPuestosPlantilla(String pSucursalesID)
+        {
+            System.Xml.XmlElement xmlElement;
+            String sQry = "";
+              try
+            {
+             sQry = @"SELECT Puestos_Sucursales.PuestosID, Puestos_Sucursales.CantidadEmpleados
+             FROM Puestos_Sucursales WHERE Puestos_Sucursales.Activo = 1 AND Puestos_Sucursales.SucursalesID = "+ pSucursalesID;
+                
+            System.Data.DataSet ds = qryToDataSet(sQry);
+            if (ds.Tables.Count > 0)
+            {
+                xmlElement = Serialize(ds.Tables[0]);
+                return xmlElement.OuterXml.ToString();
+            }
+        }
+
+             catch (Exception ex)
+            {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "Obtener Puesto Plantilla:" + ex.Message + ex.StackTrace + "\n" + sQry);
+
+            }
+
+            return "";
+        }
+    
     }
 }
