@@ -2990,7 +2990,7 @@ JOIN Departamentos ON Empleados.DepartamentosID = Departamentos.DepartamentosID 
             return "";
         }
 
-<<<<<<< HEAD
+
 
         [WebMethod(Description = "Devuelve el precio del codigo del articulo, Return vacio sino encuentro")]
         public String PrecioVerificador(String pSucursalesID,String sCodigo)
@@ -3253,7 +3253,7 @@ WHERE
         }
 
 
-<<<<<<< HEAD
+
     [WebMethod(Description = "Plantilla por puestos")]
         public String ObtenerPuestosPlantilla(String pSucursalesID)
         {
@@ -3281,7 +3281,7 @@ WHERE
             return "";
         }
     
-=======
+
 //---------------------------------[    Enrique     ]------------------------------------
         [WebMethod(Description = "Regresa solicitudes de cancelacion")]
                 public string SolicitudCancelaciones(Boolean Activo, String FechaSolicitudIncio, String FechaSolicitudFinal, String SucursalID)
@@ -3329,7 +3329,6 @@ WHERE
                         return "Ocurrio un error inesperado";
                     }
                 }
-//----------------------------------------------------------------------------------    
->>>>>>> 0e7673e36fddb05bbe92fb5ddeb131f90211073d
+
     }
 }
