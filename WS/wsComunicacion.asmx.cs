@@ -2793,7 +2793,7 @@ ORDER BY
         [WebMethod(Description = "Obtene los articulos de los pedidos enviados IN")]
         public String obtenerHistorialEntradasPedidosDetalle( String pInPedidosID)
         {
-
+            
             try
             {
                 String q = @"SELECT 
