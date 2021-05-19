@@ -2682,11 +2682,7 @@ AND	Salidas.SucursalesID =" +pSucursalesID;
 
   q+=" ) ORDER BY  FechaSalida ASC";
 
-          
-
-
-
-
+        
                 System.Data.DataSet ds = qryToDataSet(q);
 
 
@@ -2797,7 +2793,7 @@ ORDER BY
         [WebMethod(Description = "Obtene los articulos de los pedidos enviados IN")]
         public String obtenerHistorialEntradasPedidosDetalle( String pInPedidosID)
         {
-
+            
             try
             {
                 String q = @"SELECT 
@@ -3257,6 +3253,7 @@ WHERE
         }
 
 
+<<<<<<< HEAD
     [WebMethod(Description = "Plantilla por puestos")]
         public String ObtenerPuestosPlantilla(String pSucursalesID)
         {
@@ -3284,5 +3281,55 @@ WHERE
             return "";
         }
     
+=======
+//---------------------------------[    Enrique     ]------------------------------------
+        [WebMethod(Description = "Regresa solicitudes de cancelacion")]
+                public string SolicitudCancelaciones(Boolean Activo, String FechaSolicitudIncio, String FechaSolicitudFinal, String SucursalID)
+                {
+                    String sQry = @"
+                SELECT 
+                AutorizacionMovimientos.AutorizacionMovimientosID AS AutorizacionMovimientosID,	
+                AutorizacionMovimientos.SucursalesID AS SucursalesID,	
+                AutorizacionMovimientos.TiposMovimientosID AS TiposMovimientosID,	
+                AutorizacionMovimientos.EmpleadoSolicitoID AS EmpleadoSolicitoID,	
+                AutorizacionMovimientos.Justificacion AS Justificacion,	
+                AutorizacionMovimientos.FechaHoraSolicitud AS FechaHoraSolicitud,	
+                AutorizacionMovimientos.EsAprobado AS EsAprobado,	
+                AutorizacionMovimientos.EsDenegado AS EsDenegado,	
+                AutorizacionMovimientos.EmpleadoAutorizoID AS EmpleadoAutorizoID,	
+                AutorizacionMovimientos.ComentariosAutorizacion AS ComentariosAutorizacion,	
+                AutorizacionMovimientos.FechaHoraAutorizacion AS FechaHoraAutorizacion,	
+                AutorizacionMovimientos.Activo AS Activo,	
+                AutorizacionMovimientos.FolioMovimientoID AS FolioMovimientoID,	
+                AutorizacionMovimientos.Procesado AS Procesado,	
+                AutorizacionMovimientos.ProcesadoSolicitante AS ProcesadoSolicitante,	
+                AutorizacionMovimientos.FechaProcesadoSolicitante AS FechaProcesadoSolicitante
+                FROM 
+                AutorizacionMovimientos
+                WHERE 
+                AutorizacionMovimientos.Procesado = "+Activo+@"
+                AND	AutorizacionMovimientos.FechaHoraSolicitud BETWEEN '"+FechaSolicitudIncio+"' AND '"+FechaSolicitudFinal+@"'
+                AND	AutorizacionMovimientos.SucursalesID = '"+SucursalID+"' ";
+                  
+                    System.Data.DataSet ds;
+                    System.Xml.XmlElement xmlElement;
+                    try
+                    {
+                        ds = qryToDataSet(sQry);
+                        if(ds.Tables.Count>0)
+                        {
+                            xmlElement = Serialize(ds.Tables[0]);
+                            return xmlElement.OuterXml.ToString();
+                        }
+                        return "";
+                    }
+                    catch (Exception ex)
+                    {
+                        System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "Regresa solicitudes de cancelacion:" + ex.Message + ex.StackTrace + "\n" + sQry);
+                        return "Ocurrio un error inesperado";
+                    }
+                }
+//----------------------------------------------------------------------------------    
+>>>>>>> 0e7673e36fddb05bbe92fb5ddeb131f90211073d
     }
 }
