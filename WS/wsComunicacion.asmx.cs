@@ -3254,7 +3254,7 @@ WHERE
 
 //---------------------------------[    Enrique     ]------------------------------------
         [WebMethod(Description = "Regresa solicitudes de cancelacion")]
-                public string SolicitudCancelaciones(Boolean Activo, String FechaSolicitudIncio, String FechaSolicitudFinal, Int SucursalID)
+                public string SolicitudCancelaciones(Boolean Activo, String FechaSolicitudIncio, String FechaSolicitudFinal, String SucursalID)
                 {
                     String sQry = @"
                 SELECT 
