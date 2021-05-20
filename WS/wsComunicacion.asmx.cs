@@ -3254,7 +3254,7 @@ WHERE
 
 //---------------------------------[    Enrique     ]------------------------------------
         [WebMethod(Description = "Regresa solicitudes de cancelacion")]
-                public string SolicitudCancelaciones(Boolean Activo, String FechaSolicitudIncio, String FechaSolicitudFinal, String SucursalID)
+                public string SolicitudCancelaciones(String Activo, String FechaSolicitudIncio, String FechaSolicitudFinal, String SucursalID)
                 {
                     String sQry = @"
                 SELECT 
@@ -3279,7 +3279,7 @@ WHERE
                 WHERE 
                 AutorizacionMovimientos.Procesado = "+Activo+@"
                 AND	AutorizacionMovimientos.FechaHoraSolicitud BETWEEN '"+FechaSolicitudIncio+"' AND '"+FechaSolicitudFinal+@"'
-                AND	AutorizacionMovimientos.SucursalesID = '"+SucursalID+"' ";
+                AND	AutorizacionMovimientos.SucursalesID = "+SucursalID+" ";
                   
                     System.Data.DataSet ds;
                     System.Xml.XmlElement xmlElement;
