@@ -3241,7 +3241,7 @@ WHERE
                 if(ds.Tables.Count>0)
                 {
                     xmlElement = Serialize(ds.Tables[0]);
-                    return xmlElement.OuterXml.ToString();
+                    return xmlElement;
                 }
                 return "";
             }
