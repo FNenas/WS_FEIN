@@ -3337,7 +3337,7 @@ WHERE
             try
             {
                 ds= qryToDataSet(sQry);
-                if(ds.Tables.count>0)
+                if(ds.Tables.Count>0)
                 {
                     xmlElement=Serialize(ds.Tables[0]);
                     return xmlElement.OuterXml.ToString();
@@ -3360,7 +3360,7 @@ WHERE
             try
             {
                 ds= qryToDataSet(sQry);
-                if(ds.Tables.count>0)
+                if(ds.Tables.Count>0)
                 {
                     xmlElement=Serialize(ds.Tables[0]);
                     return xmlElement.OuterXml.ToString();
