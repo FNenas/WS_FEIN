@@ -3328,6 +3328,51 @@ WHERE
                         return "Ocurrio un error inesperado";
                     }
                 }
+        [WebMethod(Description = "Regresa el Id de las subcategorias asi como su nombre")]
+        public string ObtenerSubCategorias()
+        {
+            String sQry = "select AppSubCategoriasID,Descripcion from AppSubCategorias";
+            System.Data.DataSet ds;
+            System.Xml.XmlElement xmlElement;
+            try
+            {
+                ds= qryToDataSet(sQry);
+                if(ds.Tables.count>0)
+                {
+                    xmlElement=Serialize(ds.Tables[0]);
+                    return xmlElement.OuterXml.ToString();
+                }
+                return "";
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "ObtenerSubCategorias:" + ex.Message + ex.StackTrace + "\n" + sQry);
+                return "Ocurrio un error inesperado";
+            }
+            
+        }
+        [WebMethod(Description = "Regresa Nombre y codigo de los articulos pertenecientes a esa categoria")]
+        public string ObtenerArticulosDeSubcategoria(string SubcategoriaID)
+        {
+            String sQry = "select Codigo,Nombre from Articulos where AppSubCategoriasID = "+SubcategoriaID;
+            System.Data.DataSet ds;
+            System.Xml.XmlElement xmlElement;
+            try
+            {
+                ds= qryToDataSet(sQry);
+                if(ds.Tables.count>0)
+                {
+                    xmlElement=Serialize(ds.Tables[0]);
+                    return xmlElement.OuterXml.ToString();
+                }
+                return "";
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "ObtenerArticulosDeSubcategoria:" + ex.Message + ex.StackTrace + "\n" + sQry);
+                return "Ocurrio un error inesperado";
+            }
+        }
 //----------------------------------------------------------------------------------    
 
     }
