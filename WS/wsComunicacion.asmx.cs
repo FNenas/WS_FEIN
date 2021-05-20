@@ -3132,10 +3132,10 @@ FROM
 WHERE 
 	ArticulosPrecios.ArticulosID = "+sArticulosID+@"
 	AND	ArticulosPrecios.SucursalesID ="+ pSucursalesID + @"
-	AND	ArticulosPrecios.EsPromocion = 0
+	AND	ArticulosPrecios.EsPromocion = 1
 	AND	ArticulosPrecios.FechaInicio <= '"+ DateTime.Now.ToString("yyyyMMdd") + @"'
 	AND	ArticulosPrecios.FechaFinal >= '"+DateTime.Now.ToString("yyyyMMdd")+@"'
-	AND	ArticulosPrecios.Activo =0";
+	AND	ArticulosPrecios.Activo =1";
                 ds = null;
                 ds = qryToDataSet(sQry);
                 if (hayInfoDS(ds))
