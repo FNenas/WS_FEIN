@@ -2991,6 +2991,7 @@ JOIN Departamentos ON Empleados.DepartamentosID = Departamentos.DepartamentosID 
         }
 
 
+
         [WebMethod(Description = "Devuelve el precio del codigo del articulo, Return vacio sino encuentro")]
         public String PrecioVerificador(String pSucursalesID,String sCodigo)
         {
@@ -3131,10 +3132,10 @@ FROM
 WHERE 
 	ArticulosPrecios.ArticulosID = "+sArticulosID+@"
 	AND	ArticulosPrecios.SucursalesID ="+ pSucursalesID + @"
-	AND	ArticulosPrecios.EsPromocion = 0
-	AND	ArticulosPrecios.FechaInicio <= "+ DateTime.Now.ToString("yyyyMMdd") + @"
-	AND	ArticulosPrecios.FechaFinal >= "+DateTime.Now.ToString("yyyyMMdd")+@"
-	AND	ArticulosPrecios.Activo =0";
+	AND	ArticulosPrecios.EsPromocion = 1
+	AND	ArticulosPrecios.FechaInicio <= '"+ DateTime.Now.ToString("yyyyMMdd") + @"'
+	AND	ArticulosPrecios.FechaFinal >= '"+DateTime.Now.ToString("yyyyMMdd")+@"'
+	AND	ArticulosPrecios.Activo =1";
                 ds = null;
                 ds = qryToDataSet(sQry);
                 if (hayInfoDS(ds))
@@ -3252,6 +3253,34 @@ WHERE
         }
 
 
+    [WebMethod(Description = "Plantilla por puestos")]
+        public String ObtenerPuestosPlantilla(String pSucursalesID)
+        {
+            System.Xml.XmlElement xmlElement;
+            String sQry = "";
+              try
+            {
+             sQry = @"SELECT Puestos_Sucursales.PuestosID, Puestos_Sucursales.CantidadEmpleados
+             FROM Puestos_Sucursales WHERE Puestos_Sucursales.Activo = 1 AND Puestos_Sucursales.SucursalesID = "+ pSucursalesID;
+                
+            System.Data.DataSet ds = qryToDataSet(sQry);
+            if (ds.Tables.Count > 0)
+            {
+                xmlElement = Serialize(ds.Tables[0]);
+                return xmlElement.OuterXml.ToString();
+            }
+        }
+
+             catch (Exception ex)
+            {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "Obtener Puesto Plantilla:" + ex.Message + ex.StackTrace + "\n" + sQry);
+
+            }
+
+            return "";
+        }
+    
+
 //---------------------------------[    Enrique     ]------------------------------------
         [WebMethod(Description = "Regresa solicitudes de cancelacion")]
                 public string SolicitudCancelaciones(String Activo, String FechaSolicitudIncio, String FechaSolicitudFinal, String SucursalID)
@@ -3299,6 +3328,52 @@ WHERE
                         return "Ocurrio un error inesperado";
                     }
                 }
+        [WebMethod(Description = "Regresa el Id de las subcategorias asi como su nombre")]
+        public string ObtenerSubCategorias()
+        {
+            String sQry = "select AppSubCategoriasID,Descripcion from AppSubCategorias";
+            System.Data.DataSet ds;
+            System.Xml.XmlElement xmlElement;
+            try
+            {
+                ds= qryToDataSet(sQry);
+                if(ds.Tables.Count>0)
+                {
+                    xmlElement=Serialize(ds.Tables[0]);
+                    return xmlElement.OuterXml.ToString();
+                }
+                return "";
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "ObtenerSubCategorias:" + ex.Message + ex.StackTrace + "\n" + sQry);
+                return "Ocurrio un error inesperado";
+            }
+            
+        }
+        [WebMethod(Description = "Regresa Nombre y codigo de los articulos pertenecientes a esa categoria")]
+        public string ObtenerArticulosDeSubcategoria(string SubcategoriaID)
+        {
+            String sQry = "select Codigo,Nombre from Articulos where AppSubCategoriasID = "+SubcategoriaID;
+            System.Data.DataSet ds;
+            System.Xml.XmlElement xmlElement;
+            try
+            {
+                ds= qryToDataSet(sQry);
+                if(ds.Tables.Count>0)
+                {
+                    xmlElement=Serialize(ds.Tables[0]);
+                    return xmlElement.OuterXml.ToString();
+                }
+                return "";
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "ObtenerArticulosDeSubcategoria:" + ex.Message + ex.StackTrace + "\n" + sQry);
+                return "Ocurrio un error inesperado";
+            }
+        }
 //----------------------------------------------------------------------------------    
+
     }
 }
