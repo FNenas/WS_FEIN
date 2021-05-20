@@ -3133,8 +3133,8 @@ WHERE
 	ArticulosPrecios.ArticulosID = "+sArticulosID+@"
 	AND	ArticulosPrecios.SucursalesID ="+ pSucursalesID + @"
 	AND	ArticulosPrecios.EsPromocion = 0
-	AND	ArticulosPrecios.FechaInicio <= "+ DateTime.Now.ToString("yyyyMMdd") + @"
-	AND	ArticulosPrecios.FechaFinal >= "+DateTime.Now.ToString("yyyyMMdd")+@"
+	AND	ArticulosPrecios.FechaInicio <= '"+ DateTime.Now.ToString("yyyyMMdd") + @"'
+	AND	ArticulosPrecios.FechaFinal >= '"+DateTime.Now.ToString("yyyyMMdd")+@"'
 	AND	ArticulosPrecios.Activo =0";
                 ds = null;
                 ds = qryToDataSet(sQry);
