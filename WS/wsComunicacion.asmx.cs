@@ -3286,23 +3286,7 @@ WHERE
                 public string SolicitudCancelaciones(String Activo, String FechaSolicitudIncio, String FechaSolicitudFinal, String SucursalID)
                 {
                     String sQry = @"
-                SELECT 
-                AutorizacionMovimientos.AutorizacionMovimientosID AS AutorizacionMovimientosID,	
-                AutorizacionMovimientos.SucursalesID AS SucursalesID,	
-                AutorizacionMovimientos.TiposMovimientosID AS TiposMovimientosID,	
-                AutorizacionMovimientos.EmpleadoSolicitoID AS EmpleadoSolicitoID,	
-                AutorizacionMovimientos.Justificacion AS Justificacion,	
-                AutorizacionMovimientos.FechaHoraSolicitud AS FechaHoraSolicitud,	
-                AutorizacionMovimientos.EsAprobado AS EsAprobado,	
-                AutorizacionMovimientos.EsDenegado AS EsDenegado,	
-                AutorizacionMovimientos.EmpleadoAutorizoID AS EmpleadoAutorizoID,	
-                AutorizacionMovimientos.ComentariosAutorizacion AS ComentariosAutorizacion,	
-                AutorizacionMovimientos.FechaHoraAutorizacion AS FechaHoraAutorizacion,	
-                AutorizacionMovimientos.Activo AS Activo,	
-                AutorizacionMovimientos.FolioMovimientoID AS FolioMovimientoID,	
-                AutorizacionMovimientos.Procesado AS Procesado,	
-                AutorizacionMovimientos.ProcesadoSolicitante AS ProcesadoSolicitante,	
-                AutorizacionMovimientos.FechaProcesadoSolicitante AS FechaProcesadoSolicitante
+                SELECT *
                 FROM 
                 AutorizacionMovimientos
                 WHERE 
