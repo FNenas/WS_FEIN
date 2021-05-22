@@ -3308,7 +3308,7 @@ WHERE
                 WHERE 
                 AutorizacionMovimientos.Procesado = "+Activo+@"
                 AND	AutorizacionMovimientos.FechaHoraSolicitud BETWEEN '"+FechaSolicitudIncio+"' AND '"+FechaSolicitudFinal+@"'
-                AND	AutorizacionMovimientos.SucursalesID = "+SucursalID+" ";
+                AND	AutorizacionMovimientos.SucursalesID = "+SucursalID;
                   
                     System.Data.DataSet ds;
                     System.Xml.XmlElement xmlElement;
@@ -3328,6 +3328,9 @@ WHERE
                         return "Ocurrio un error inesperado";
                     }
                 }
+       //----------------------------------------------------------------------------------    
+       
+       
         [WebMethod(Description = "Regresa el Id de las subcategorias asi como su nombre")]
         public string ObtenerSubCategorias()
         {
@@ -3394,7 +3397,7 @@ WHERE
                 return "Ocurrio un error inesperado";
             }
         }
-//----------------------------------------------------------------------------------    
+
 
     }
 }
