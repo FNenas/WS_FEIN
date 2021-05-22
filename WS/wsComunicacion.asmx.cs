@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Services;
-
 namespace WS
 {
     /// <summary>
@@ -3382,7 +3381,7 @@ WHERE
             try
             {
                 ds=qryToDataSet(sQry);
-                if(ds.Tables>0)
+                if(ds.Tables.Count>0)
                 {
                     Imagen=ds.Tables[0];
                     return Imagen;
