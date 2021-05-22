@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Services;
+using System.Drawing;
 namespace WS
 {
     /// <summary>
@@ -3386,14 +3387,21 @@ WHERE
                 ds=qryToDataSet(sQry);
                 if(ds.Tables.Count>0)
                 {
-                    Imagen=ds.Tables[0];
+                    //Imagen=ds.Tables[0];
+                    Imagen=null;
+                    return Imagen;
+                }
+                else
+                {
+                    Imagen=null;
                     return Imagen;
                 }
             }
             catch (Exception ex)
             {
                 System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "ImagenProducto:" + ex.Message + ex.StackTrace + "\n" + sQry);
-                return "Ocurrio un error inesperado";
+                Imagen=null;
+                return Imagen;
             }
         }
 
