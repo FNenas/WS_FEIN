@@ -3373,6 +3373,27 @@ WHERE
                 return "Ocurrio un error inesperado";
             }
         }
+
+        [WebMethod(Description = "Regresa la imagen del producto seleccionado")]
+        public Image ImagenProducto(string IdArticulo){
+            String sQry = "select Imagen from ArticulosImagenes where ArticulosID = "+IdArticulo+" and AppMiniatura = 0 ";
+            System.Data.DataSet ds;
+            Image Imagen;
+            try
+            {
+                ds=qryToDataSet(sQry);
+                if(ds.Tables>0)
+                {
+                    Imagen=ds.Tables[0];
+                    return Imagen;
+                }
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "ImagenProducto:" + ex.Message + ex.StackTrace + "\n" + sQry);
+                return "Ocurrio un error inesperado";
+            }
+        }
 //----------------------------------------------------------------------------------    
 
     }
