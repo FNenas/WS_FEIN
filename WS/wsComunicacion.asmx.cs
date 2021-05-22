@@ -1459,7 +1459,7 @@ namespace WS
 
       
 
-            return "1.0.0.16" ;
+            return "1.0.0.17" ;
         }
         [WebMethod(Description = "Regresa un xml con los Estados")]
         public String Estados()
@@ -3340,7 +3340,7 @@ WHERE
                 if(ds.Tables.Count>0)
                 {
                     xmlElement=Serialize(ds.Tables[0]);
-                    return xmlElement;
+                    return xmlElement.OuterXml.ToString();
                 }
                 return "";
             }
@@ -3363,7 +3363,7 @@ WHERE
                 if(ds.Tables.Count>0)
                 {
                     xmlElement=Serialize(ds.Tables[0]);
-                    return xmlElement;
+                    return xmlElement.OuterXml.ToString();
                 }
                 return "";
             }
