@@ -3357,7 +3357,7 @@ WHERE
         [WebMethod(Description = "Regresa Nombre y codigo de los articulos pertenecientes a esa categoria")]
         public string ObtenerArticulosDeSubcategoria(string SubcategoriaID)
         {
-            String sQry = "select Codigo,Nombre from Articulos where AppSubCategoriasID = "+SubcategoriaID;
+            String sQry = "select Codigo,Nombre from Articulos where AppSubCategoriasID = "+SubcategoriaID+" order by Nombre asc";
             System.Data.DataSet ds;
             System.Xml.XmlElement xmlElement;
             try
