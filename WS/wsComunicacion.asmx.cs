@@ -3002,6 +3002,7 @@ JOIN Departamentos ON Empleados.DepartamentosID = Departamentos.DepartamentosID 
             String sPrecioCIVA = "";
             String bPromocion = "";
             String sPrecioRealCIVA = "";
+            String sPermitirDecimales="";
             try
             {
                 //se busca el articulo por el codigo
@@ -3046,7 +3047,7 @@ WHERE
                     // Se encontro
                     sArticulosID = ds.Tables[0].Rows[0]["ArticulosID"].ToString();
                     sDescripcionArticulo = ds.Tables[0].Rows[0]["Nombre"].ToString();
-
+                    sPermitirDecimales = ds.Tables[0].Rows[0]["PermitirDecimales"].ToString();
 
                 }
                 else {
@@ -3100,6 +3101,7 @@ WHERE
                         // Se encontro
                         sArticulosID = ds.Tables[0].Rows[0]["ArticulosID"].ToString();
                         sDescripcionArticulo = ds.Tables[0].Rows[0]["Nombre"].ToString();
+                        sPermitirDecimales = ds.Tables[0].Rows[0]["PermitirDecimales"].ToString();
 
 
                     }
@@ -3193,7 +3195,7 @@ WHERE
 
                 }
               
-                return sArticulosID+"|"+sDescripcionArticulo+"|"+sPrecioCIVA+"|"+bPromocion+"|"+sPrecioRealCIVA;
+                return sArticulosID+"|"+sDescripcionArticulo+"|"+sPrecioCIVA+"|"+bPromocion+"|"+sPrecioRealCIVA+"|"+sPermitirDecimales;
             }
 
 
