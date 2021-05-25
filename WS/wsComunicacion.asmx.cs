@@ -3320,7 +3320,6 @@ WHERE
             [WebMethod(Description = "Modifica la tabla AutorizacionMovientos")]
                     public string Autorizacion_Desicion(String MovimientoID, String Desicion, String JustificacionDesicion, String FechaAutorizacion, String IDEmpleadoAutorizo)
                     {
-                       
                        //Construimos el qry 
                         try{
                         String sQry =@"UPDATE AutorizacionMovimientos
@@ -3337,18 +3336,12 @@ WHERE
                               sQry+=" WHERE FolioMovimientoID="+MovimientoID;
                 
                          //ejecutamos el qry
-                        qryInsertUpdate(sQry);
-
-                        //si se realizo correctamente 
-                        ID = "Funciono: "+sQry;
-                        
+                        qryInsertUpdate(sQry);           
                          }
                         catch (Exception ex){
                             System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", ex.Message);
-                            //Regreso -1 porque dio error
-                            ID = "No Funciono: "+sQry;
                         }
-                        return ID;
+                        return sQry;
                     }
 
        //----------------------------------------------------------------------------------    
