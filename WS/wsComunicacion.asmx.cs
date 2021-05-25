@@ -3320,9 +3320,11 @@ WHERE
             [WebMethod(Description = "Modifica la tabla AutorizacionMovientos")]
                     public string Autorizacion_Desicion(String MovimientoID, String Desicion, String JustificacionDesicion, String FechaAutorizacion, String IDEmpleadoAutorizo)
                     {
+            String sQry = "";
                        //Construimos el qry 
-                        try{
-                        String sQry =@"UPDATE AutorizacionMovimientos
+                        try
+            {
+                       sQry =@"UPDATE AutorizacionMovimientos
                         SET ComentariosAutorizacion='"+JustificacionDesicion+"', FechaHoraAutorizacion='"+FechaAutorizacion+"', EmpleadoAutorizoID='"+IDEmpleadoAutorizo+"', Procesado=1";
                         
                         //Marcamos la casilla de EsAprobado
