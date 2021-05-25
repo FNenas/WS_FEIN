@@ -3304,7 +3304,7 @@ WHERE
                             xmlElement = Serialize(ds.Tables[0]);
                             return xmlElement.OuterXml.ToString();
                         }
-                        return "";
+                        return "No ingreso en el if ";
                     }
                     catch (Exception ex)
                     {
@@ -3312,6 +3312,41 @@ WHERE
                         return "Ocurrio un error inesperado";
                     }
                 }
+
+
+
+            [WebMethod(Description = "Modifica la tabla AutorizacionMovientos")]
+                    public int Autorizacion_Desicion(String MovimientoID, String Desicion, String JustificacionDesicion, String FechaAutorizacion, String IDEmpleadoAutorizo)
+                    {
+    
+                       //Construimos el qry 
+                        try{
+                        String sQry =@"update AutorizacionMovimientos
+                        SET ComentariosAutorizacion='"+JustificacionDesicion+"', FechaHoraAutorizacion='"+FechaAutorizacion+"', EmpleadoAutorizoID='"+IDEmpleadoAutorizo+"'";
+                        
+                        //Marcamos la casilla de EsAprobado
+                        if(Desicion="1"){
+                            sQry+=", EsAprovado='1'";
+                        }else{
+                        //Marcamos la casilla de EsRechazado
+                            sQry+=", EsDenegado='1'";
+                        }
+                        //Instruccion final del qry
+                              sQry+=" Where FolioMovimientoID='"+MovimientoID+"'";
+                       
+                        //regreso 1 porque si se realizo correctamente 
+                        ID = 1;
+                        }
+
+                        catch (Exception ex){
+                            System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", ex.Message);
+                            //Regreso -1 porque dio error
+                            ID = -1;
+                        }
+
+                        return ID;
+                    }
+
        //----------------------------------------------------------------------------------    
        
        
