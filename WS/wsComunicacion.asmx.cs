@@ -3323,19 +3323,19 @@ WHERE
                         int ID;
                        //Construimos el qry 
                         try{
-                        String sQry =@"update AutorizacionMovimientos
-                        SET ComentariosAutorizacion='"+JustificacionDesicion+"', FechaHoraAutorizacion='"+FechaAutorizacion+"', EmpleadoAutorizoID='"+IDEmpleadoAutorizo+"'";
+                        String sQry =@"UPDATE AutorizacionMovimientos
+                        SET ComentariosAutorizacion= '"+JustificacionDesicion+"', FechaHoraAutorizacion='"+FechaAutorizacion+"', EmpleadoAutorizoID='"+IDEmpleadoAutorizo+"', Procesado=1";
                         
                         //Marcamos la casilla de EsAprobado
                         if(Desicion=="1"){
-                            sQry+=", EsAprovado='1'";
+                            sQry+=", EsAprobado='1'";
                         }else{
                         //Marcamos la casilla de EsRechazado
                             sQry+=", EsDenegado='1'";
                         }
                         //Instruccion final del qry
                               sQry+=" Where FolioMovimientoID='"+MovimientoID+"'";
-                       
+                
                         //regreso 1 porque si se realizo correctamente 
                         ID = 1;
                         }
