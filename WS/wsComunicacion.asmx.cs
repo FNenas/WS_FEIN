@@ -3320,14 +3320,14 @@ WHERE
             [WebMethod(Description = "Modifica la tabla AutorizacionMovientos")]
                     public int Autorizacion_Desicion(String MovimientoID, String Desicion, String JustificacionDesicion, String FechaAutorizacion, String IDEmpleadoAutorizo)
                     {
-    
+                        int ID;
                        //Construimos el qry 
                         try{
                         String sQry =@"update AutorizacionMovimientos
                         SET ComentariosAutorizacion='"+JustificacionDesicion+"', FechaHoraAutorizacion='"+FechaAutorizacion+"', EmpleadoAutorizoID='"+IDEmpleadoAutorizo+"'";
                         
                         //Marcamos la casilla de EsAprobado
-                        if(Desicion="1"){
+                        if(Desicion=="1"){
                             sQry+=", EsAprovado='1'";
                         }else{
                         //Marcamos la casilla de EsRechazado
