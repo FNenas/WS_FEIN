@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Services;
-
+using System.Drawing;
 namespace WS
 {
     /// <summary>
@@ -3002,6 +3002,7 @@ JOIN Departamentos ON Empleados.DepartamentosID = Departamentos.DepartamentosID 
             String sPrecioCIVA = "";
             String bPromocion = "";
             String sPrecioRealCIVA = "";
+            String sPermitirDecimales="";
             try
             {
                 //se busca el articulo por el codigo
@@ -3046,7 +3047,7 @@ WHERE
                     // Se encontro
                     sArticulosID = ds.Tables[0].Rows[0]["ArticulosID"].ToString();
                     sDescripcionArticulo = ds.Tables[0].Rows[0]["Nombre"].ToString();
-
+                    sPermitirDecimales = ds.Tables[0].Rows[0]["PermitirDecimales"].ToString();
 
                 }
                 else {
@@ -3100,6 +3101,7 @@ WHERE
                         // Se encontro
                         sArticulosID = ds.Tables[0].Rows[0]["ArticulosID"].ToString();
                         sDescripcionArticulo = ds.Tables[0].Rows[0]["Nombre"].ToString();
+                        sPermitirDecimales = ds.Tables[0].Rows[0]["PermitirDecimales"].ToString();
 
 
                     }
@@ -3193,7 +3195,7 @@ WHERE
 
                 }
               
-                return sArticulosID+"|"+sDescripcionArticulo+"|"+sPrecioCIVA+"|"+bPromocion+"|"+sPrecioRealCIVA;
+                return sArticulosID+"|"+sDescripcionArticulo+"|"+sPrecioCIVA+"|"+bPromocion+"|"+sPrecioRealCIVA+"|"+sPermitirDecimales;
             }
 
 
@@ -3376,7 +3378,7 @@ WHERE
         [WebMethod(Description = "Regresa Nombre y codigo de los articulos pertenecientes a esa categoria")]
         public string ObtenerArticulosDeSubcategoria(string SubcategoriaID)
         {
-            String sQry = "select Codigo,Nombre from Articulos where AppSubCategoriasID = "+SubcategoriaID;
+            String sQry = "select ArticulosID,Codigo,Nombre from Articulos where AppSubCategoriasID = "+SubcategoriaID+" order by Nombre asc";
             System.Data.DataSet ds;
             System.Xml.XmlElement xmlElement;
             try
@@ -3392,27 +3394,6 @@ WHERE
             catch (Exception ex)
             {
                 System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "ObtenerArticulosDeSubcategoria:" + ex.Message + ex.StackTrace + "\n" + sQry);
-                return "Ocurrio un error inesperado";
-            }
-        }
-
-        [WebMethod(Description = "Regresa la imagen del producto seleccionado")]
-        public Image ImagenProducto(string IdArticulo){
-            String sQry = "select Imagen from ArticulosImagenes where ArticulosID = "+IdArticulo+" and AppMiniatura = 0 ";
-            System.Data.DataSet ds;
-            Image Imagen;
-            try
-            {
-                ds=qryToDataSet(sQry);
-                if(ds.Tables>0)
-                {
-                    Imagen=ds.Tables[0];
-                    return Imagen;
-                }
-            }
-            catch (Exception ex)
-            {
-                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "ImagenProducto:" + ex.Message + ex.StackTrace + "\n" + sQry);
                 return "Ocurrio un error inesperado";
             }
         }
