@@ -3348,7 +3348,7 @@ WHERE
 
 
 
-                    [WebMethod(Description = "Regresa historial de sincronizaciones sistema de emergencia")]
+                [WebMethod(Description = "Regresa historial de sincronizaciones sistema de emergencia")]
                 public string SistemaEmergenciaHistorial(String FechaSolicitudIncio, String FechaSolicitudFinal, String SucursalID)
                 {
                     String sQry = @"
@@ -3356,7 +3356,7 @@ WHERE
                 FROM 
                 LogTiposMovimientosDesHora
                 WHERE 
-                AND	LogTiposMovimientosDesHora.FechaHoraCreacion BETWEEN '"+FechaSolicitudIncio+"' AND '"+FechaSolicitudFinal+@"'
+                LogTiposMovimientosDesHora.FechaHoraCreacion BETWEEN '"+FechaSolicitudIncio+"' AND '"+FechaSolicitudFinal+@"'
                 AND	LogTiposMovimientosDesHora.SucursalesID = "+SucursalID;
                   
                     System.Data.DataSet ds;
