@@ -3346,6 +3346,37 @@ WHERE
                         return sQry;
                     }
 
+
+
+                    [WebMethod(Description = "Regresa historial de sincronizaciones sistema de emergencia")]
+                public string SistemaEmergenciaHistorial(String FechaSolicitudIncio, String FechaSolicitudFinal, String SucursalID)
+                {
+                    String sQry = @"
+                SELECT *
+                FROM 
+                LogTiposMovimientosDesHora
+                WHERE 
+                AND	LogTiposMovimientosDesHora.FechaHoraCreacion BETWEEN '"+FechaSolicitudIncio+"' AND '"+FechaSolicitudFinal+@"'
+                AND	LogTiposMovimientosDesHora.SucursalesID = "+SucursalID;
+                  
+                    System.Data.DataSet ds;
+                    System.Xml.XmlElement xmlElement;
+                    try
+                    {
+                        ds = qryToDataSet(sQry);
+                        if(ds.Tables.Count>0)
+                        {
+                            xmlElement = Serialize(ds.Tables[0]);
+                            return xmlElement.OuterXml.ToString();
+                        }
+                        return "No ingreso en el if ";
+                    }
+                    catch (Exception ex)
+                    {
+                        System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "Sistema emergencia historial:" + ex.Message + ex.StackTrace + "\n" + sQry);
+                        return "Ocurrio un error inesperado";
+                    }
+                }
        //----------------------------------------------------------------------------------    
        
        
