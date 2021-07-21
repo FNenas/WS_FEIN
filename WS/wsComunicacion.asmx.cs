@@ -1459,7 +1459,7 @@ namespace WS
 
       
 
-            return "1.0.0.17" ;
+            return "1.0.0.18" ;
         }
         [WebMethod(Description = "Regresa un xml con los Estados")]
         public String Estados()
