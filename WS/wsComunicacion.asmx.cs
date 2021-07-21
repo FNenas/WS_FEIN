@@ -2131,7 +2131,7 @@ AND	Entradas.FechaEntrada BETWEEN '"+sFini+@"' AND '"+sFFin+@"' ";
                     
                 }
               
-                if (sTipoMovimientoID.Length > 1)
+                if (sRecepcionLocal.Length > 1)
                 {
 
                     q += "  AND Entradas.RecepcionLocal = " + sRecepcionLocal;
