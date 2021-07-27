@@ -3426,6 +3426,102 @@ WHERE
             }
         }
 
+        [WebMethod(Description = "Regresa solicitudes de cancelacion")]
+        public string consultaArticulosNoContabilizados(String ParamFechaInicial, String ParamFechaFinal, String Param_ID_Sucursal, String Param_Articulo_Estatus,String Param_Linea_Producto,String Param_Tipo_De_Ciclico)
+        {
+            String sQry = @"SELECT Articulos.Codigo,Articulos.Nombre,Articulos.ArticulosID,ArticulosExistencias.Existencia,'19990101' as Fecha FROM Articulos,ArticulosExistencias
+  WHERE 
+  Articulos.ArticulosID=ArticulosExistencias.ArticulosID
+  AND ArticulosExistencias.SucursalesID="+Param_ID_Sucursal+@"
+  AND Articulos.Activo=" + Param_Articulo_Estatus + @"
+  AND Articulos.SeVende=1 ";
+
+            if (Param_Linea_Producto.Length > 0) {
+
+                sQry += " AND Articulos.LineaID=" + Param_Linea_Producto;
+            }
+
+            sQry +=  @" AND Articulos.ArticulosID NOT IN (
+
+ SELECT DISTINCT(ConteosArticulos. ArticulosID) AS ArticulosID
+ FROM Conteos,ConteosArticulos
+ WHERE
+ Conteos.ConteosID=ConteosArticulos.ConteosID
+ AND Conteos.Fecha BETWEEN '" + ParamFechaInicial + @"' AND '" + ParamFechaFinal + @"'
+ AND Conteos.SucursalesID=" + Param_ID_Sucursal + @"
+ AND Conteos.EsBorrador=" + Param_Tipo_De_Ciclico + @"
+)
+ ORDER BY 
+ Nombre ASC";
+
+
+
+            System.Data.DataSet ds;
+            System.Data.DataSet dsAux;
+            System.Xml.XmlElement xmlElement;
+            try
+            {
+                ds = qryToDataSet(sQry);
+
+                String sArticulosID = "";
+
+                foreach (System.Data.DataRow nRow in ds.Tables[0].Rows) {
+
+                    if (nRow["ArticulosID"].ToString().Length > 1){
+
+                        sArticulosID += nRow["ArticulosID"].ToString() + ",";
+                    }
+
+
+                }
+
+                sArticulosID += "99";
+
+
+                sQry = @"SELECT DISTINCT (ConteosArticulos.ArticulosID), MAX(Conteos.Fecha) AS UltimaFecha
+   FROM
+  Conteos, ConteosArticulos
+  WHERE
+  Conteos.ConteosID = ConteosArticulos.ConteosID
+   AND Conteos.SucursalesID ="+Param_ID_Sucursal+ @"
+                AND ConteosArticulos.ArticulosID IN ("+ sArticulosID + @" )
+                GROUP BY ConteosArticulos.ArticulosID";
+
+
+                dsAux = qryToDataSet(sQry);
+                System.Data.DataRow[] result=null;
+
+                foreach (System.Data.DataRow nRow in dsAux.Tables[0].Rows)
+                {
+
+                        result = ds.Tables[0].Select("ArticulosID =" + nRow["ArticulosID"].ToString());
+                    if (result.Length > 0)
+                    {
+                        int SelectedIndex = ds.Tables[0].Rows.IndexOf(result[0]);
+
+                        if (SelectedIndex > -1) {
+                            ds.Tables[0].Rows[SelectedIndex]["Fecha"] = nRow["UltimaFecha"];
+                        }
+
+                    }
+
+                }
+
+
+
+                    if (ds.Tables.Count > 0)
+                {
+                    xmlElement = Serialize(ds.Tables[0]);
+                    return xmlElement.OuterXml.ToString();
+                }
+                return "No ingreso en el if ";
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "consultaArticulosNoContabilizados:" + ex.Message + ex.StackTrace + "\n" + sQry);
+                return "Ocurrio un error inesperado";
+            }
+        }
 
     }
 }
