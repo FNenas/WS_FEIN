@@ -3377,6 +3377,28 @@ WHERE
                         return "Ocurrio un error inesperado";
                     }
                 }
+
+                    [WebMethod(Description = "Agrega justificacion a los registros que se quedan en el limbo")]
+                    public string Historial_Cancelacion_Justificacion_Limbo(String MovimientoID, String JustificacionDelLimbo)
+                    {
+                        String sQry = "";
+                       //Construimos el qry 
+                        try
+             {
+                       sQry =@"UPDATE AutorizacionMovimientos
+                        SET ComentariosAutorizacion='"+JustificacionDelLimbo+"', Justificacion_No_Cancelada=1";
+                    
+                        //Instruccion final del qry
+                              sQry+=" WHERE FolioMovimientoID="+MovimientoID;
+                
+                         //ejecutamos el qry
+                        qryInsertUpdate(sQry);           
+                         }
+                        catch (Exception ex){
+                            System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", ex.Message);
+                        }
+                        return sQry;
+                    }
        //----------------------------------------------------------------------------------    
        
        
@@ -3426,7 +3448,7 @@ WHERE
             }
         }
 
-        [WebMethod(Description = "Regresa solicitudes de cancelacion")]
+        [WebMethod(Description = "Regresa los articulos que no se han contabilizado")]
         public string consultaArticulosNoContabilizados(String ParamFechaInicial, String ParamFechaFinal, String Param_ID_Sucursal, String Param_Articulo_Estatus,String Param_Linea_Producto,String Param_Tipo_De_Ciclico)
         {
             String sQry = @"SELECT Articulos.Codigo,Articulos.Nombre,Articulos.ArticulosID,ArticulosExistencias.Existencia,'19990101' as Fecha FROM Articulos,ArticulosExistencias
