@@ -3283,7 +3283,7 @@ WHERE
         }
     
 
-//---------------------------------[    Enrique     ]------------------------------------
+//---------------------------------[    Solicitudes de Cancelacion   ]------------------------------------
         [WebMethod(Description = "Regresa solicitudes de cancelacion")]
                 public string SolicitudCancelaciones(String Activo, String FechaSolicitudIncio, String FechaSolicitudFinal, String SucursalID)
                 {
@@ -3544,6 +3544,89 @@ WHERE
                 return "Ocurrio un error inesperado";
             }
         }
+
+        //-----------------------[Solicitudes Merma]----------------------------
+        [WebMethod(Description = "Regresa solicitudes de aprobacion Mermas")]
+                public string SolicitudCancelacionesMermas(String Activo, String FechaSolicitudIncio, String FechaSolicitudFinal, String SucursalID)
+                {
+                    String sQry = @"
+                SELECT *
+                FROM 
+                AutorizacionMovimientosMermas
+                WHERE 
+                AutorizacionMovimientosMermas.Procesado = "+Activo+@"
+                AND	AutorizacionMovimientosMermas.FechaHoraSolicitud BETWEEN '"+FechaSolicitudIncio+"' AND '"+FechaSolicitudFinal+@"'
+                AND	AutorizacionMovimientosMermas.SucursaID = "+SucursalID;
+                  
+                    System.Data.DataSet ds;
+                    System.Xml.XmlElement xmlElement;
+                    try
+                    {
+                        ds = qryToDataSet(sQry);
+                        if(ds.Tables.Count>0)
+                        {
+                            xmlElement = Serialize(ds.Tables[0]);
+                            return xmlElement.OuterXml.ToString();
+                        }
+                        return "Nada para regresar";
+                    }
+                    catch (Exception ex)
+                    {
+                        System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "Regresa solicitudes de cancelacion:" + ex.Message + ex.StackTrace + "\n" + sQry);
+                        return "Ocurrio un error inesperado";
+                    }
+
+                    [WebMethod(Description = "Modifica la tabla AutorizacionMovientosMermas")]
+                        public string Autorizacion_Direccion_Mermas(String MovimientoID, String Desicion, String JustificacionDesicion, String FechaAutorizacion, String IDEmpleadoAutorizo)
+                        {
+                        String sQry = "";
+                        //Construimos el qry 
+                         try{
+                            sQry =@"UPDATE AutorizacionMovimientosMermas
+                                 SET ComentariosAutorizacion='"+JustificacionDesicion+"', FechaHoraAutorizacion='"+FechaAutorizacion+"', EmpleadoAutorizoID='"+IDEmpleadoAutorizo+"', ProcesadoDireccion=1";
+                                            
+                                //Marcamos la casilla de EsAprobado
+                                if(Desicion=="1"){
+                                 sQry+=", EsAprobado=1";
+                                }else{
+                                 //Marcamos la casilla de EsRechazado
+                                sQry+=", EsDenegado=1";
+                                }
+                                //Instruccion final del qry
+                                sQry+=" WHERE AutorizacionMovimientosMermasID="+MovimientoID;
+                                //ejecutamos el qry
+                                qryInsertUpdate(sQry);           
+                                }
+                                catch (Exception ex){
+                                    System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", ex.Message);
+                                }
+                                    return sQry;
+                                }
+
+                }
+
+
+        [WebMethod(Description = "Agrega justificacion a los registros que se quedan en el limbo en mermas")]
+                    public string Justificacion_Limbo_Mermas(String MovimientoID, String JustificacionDelLimbo)
+                    {
+                        String sQry = "";
+                       //Construimos el qry 
+                        try
+                        {
+                       sQry =@"UPDATE AutorizacionMovimientosMermas
+                        SET ComentariosAutorizacion='"+JustificacionDelLimbo+"', EsSolicitudNoInteractuada=1";
+                    
+                        //Instruccion final del qry
+                              sQry+=" WHERE AutorizacionMovimientosMermasID="+MovimientoID;
+                
+                         //ejecutamos el qry
+                        qryInsertUpdate(sQry);           
+                         }
+                        catch (Exception ex){
+                            System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", ex.Message);
+                        }
+                        return sQry;
+                    }
 
     }
 }
