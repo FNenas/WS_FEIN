@@ -3575,8 +3575,8 @@ WHERE
                         System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "Regresa solicitudes de cancelacion:" + ex.Message + ex.StackTrace + "\n" + sQry);
                         return "Ocurrio un error inesperado";
                     }
-
-                    [WebMethod(Description = "Modifica la tabla AutorizacionMovientosMermas")]
+        }
+        [WebMethod(Description = "Modifica la tabla AutorizacionMovientosMermas")]
                         public string Autorizacion_Direccion_Mermas(String MovimientoID, String Desicion, String JustificacionDesicion, String FechaAutorizacion, String IDEmpleadoAutorizo)
                         {
                         String sQry = "";
@@ -3603,7 +3603,7 @@ WHERE
                                     return sQry;
                                 }
 
-                }
+            //    }
 
 
         [WebMethod(Description = "Agrega justificacion a los registros que se quedan en el limbo en mermas")]
