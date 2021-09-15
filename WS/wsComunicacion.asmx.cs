@@ -472,7 +472,7 @@ namespace WS
             {
 
 
-                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err","ExistenciaLocal:"+ ex.Message+ex.StackTrace);
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "ExistenciaLocal:" + ex.Message + ex.StackTrace);
                 existencia = 0;
             }
             finally
@@ -522,7 +522,7 @@ namespace WS
             {
 
 
-                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "qryToDataSet:"+ ex.Message+"\n"+ex.StackTrace);
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "qryToDataSet:" + ex.Message + "\n" + ex.StackTrace);
                 ds = null;
             }
             finally
@@ -568,7 +568,7 @@ namespace WS
             {
                 transaction.Rollback();
 
-                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "qryInsertUpdate:"+ ex.Message+ex.StackTrace);
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "qryInsertUpdate:" + ex.Message + ex.StackTrace);
 
             }
             finally
@@ -700,18 +700,18 @@ namespace WS
         {
             //sucursal id 
             String query = "";
-          
-                query = "SELECT ArticulosPrecioMayoreo.*,PorcentajeMayoreo.Valor as ValorPorcentaje,Articulos.Nombre,Articulos.Codigo,Lineas.NombreLinea as LineaNombre,Lineas.LineasID as LineasID,ArticulosExistencias.Existencia from ArticulosPrecioMayoreo,PorcentajeMayoreo,Articulos,lineas,ArticulosExistencias " +
-     " where " +
 
-     " Articulos.ArticulosID=ArticulosPrecioMayoreo.ArticulosID and Articulos.LineaID=Lineas.LineasID AND " +
-        "  Articulos.ArticulosID=ArticulosExistencias.ArticulosID  " +
-       " and ArticulosPrecioMayoreo.PorcentajeMayoreoID = PorcentajeMayoreo.PorcentajeMayoreoID " +
-       " and ArticulosExistencias.SucursalesID =" + sSucursalesID +
-     " and ArticulosPrecioMayoreo.Activo = 1  and PorcentajeMayoreo.Activo=1 and ArticulosPrecioMayoreo.PorcentajeMayoreoID ="+PorcentarID;
+            query = "SELECT ArticulosPrecioMayoreo.*,PorcentajeMayoreo.Valor as ValorPorcentaje,Articulos.Nombre,Articulos.Codigo,Lineas.NombreLinea as LineaNombre,Lineas.LineasID as LineasID,ArticulosExistencias.Existencia from ArticulosPrecioMayoreo,PorcentajeMayoreo,Articulos,lineas,ArticulosExistencias " +
+ " where " +
 
-        
-        
+ " Articulos.ArticulosID=ArticulosPrecioMayoreo.ArticulosID and Articulos.LineaID=Lineas.LineasID AND " +
+    "  Articulos.ArticulosID=ArticulosExistencias.ArticulosID  " +
+   " and ArticulosPrecioMayoreo.PorcentajeMayoreoID = PorcentajeMayoreo.PorcentajeMayoreoID " +
+   " and ArticulosExistencias.SucursalesID =" + sSucursalesID +
+ " and ArticulosPrecioMayoreo.Activo = 1  and PorcentajeMayoreo.Activo=1 and ArticulosPrecioMayoreo.PorcentajeMayoreoID =" + PorcentarID;
+
+
+
 
 
 
@@ -744,7 +744,7 @@ namespace WS
             String query = "SELECT * FROM [Clientes] WHERE (Activo='1') and esMayoreoAprobado=1 and esMayoreo=1 ";
 
 
-            
+
 
             System.Data.DataSet ds = qryToDataSet(query);
 
@@ -771,12 +771,12 @@ namespace WS
             return xmlElement.OuterXml.ToString();
         }
         [WebMethod(Description = "Regresa un xml del cliente enviado")]
-        public String obtenerPedidos(String sClientesID,String sMes)
+        public String obtenerPedidos(String sClientesID, String sMes)
         {
 
             //    String sResultado = "";
 
-            String query = "SELECT *,(SELECT count (PreVenta_Mayoreo_Detalle.ArticulosID) AS No from PreVenta_Mayoreo_Detalle where PreVenta_Mayoreo_Detalle.PreVenta_MayoreoID=PreVenta_Mayoreo.PreVenta_MayoreoID) as NoProductos FROM [PreVenta_Mayoreo] WHERE (Activo='1') and ClientesID=" + sClientesID + " and FechaHora BETWEEN '"+sMes+"01000001' and '"+sMes+"31235959' order by FechaHora";
+            String query = "SELECT *,(SELECT count (PreVenta_Mayoreo_Detalle.ArticulosID) AS No from PreVenta_Mayoreo_Detalle where PreVenta_Mayoreo_Detalle.PreVenta_MayoreoID=PreVenta_Mayoreo.PreVenta_MayoreoID) as NoProductos FROM [PreVenta_Mayoreo] WHERE (Activo='1') and ClientesID=" + sClientesID + " and FechaHora BETWEEN '" + sMes + "01000001' and '" + sMes + "31235959' order by FechaHora";
 
 
 
@@ -811,14 +811,14 @@ namespace WS
         }
 
         [WebMethod(Description = "registra pedido FECHAHORA|CLIENTEID|PORCENTAJEMAYOREID|NOMBRECLIENTE|SUBTOTAL|IVA|IMPORTE|EMPLEADOID|NOTAS|FECHAENTREGA|Facturacion|TipoCambio|importedlls")]
-        public int HaddPedido(String sPedido,String sDetalle)
+        public int HaddPedido(String sPedido, String sDetalle)
         {
             Boolean bBandera = false;
             String[] arr;
             int ID = -1;
             try
             {
-               
+
                 arr = sPedido.Split('|');
 
 
@@ -840,12 +840,12 @@ namespace WS
                 }
 
 
-             
+
                 //detectar ele de parametros
 
 
 
-       
+
 
                 bBandera = qryInsertUpdate(qry);
 
@@ -864,14 +864,14 @@ namespace WS
 
 
 
-               
+
             }
             catch (Exception ex)
             {
 
 
                 System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", ex.Message);
-              
+
                 ID = -1;
             }
 
@@ -879,16 +879,16 @@ namespace WS
 
         }
 
-        [WebMethod(Description = "registra detalle pedido  // ArticulosID|Cantidad|IVA|Importe|PrecioUCIVA_Cliente|PrecioUSIVA_Cliente|CostoCIVA|CostoSIVA|PrecioCIVA|PrecioSIVA|Notas"  +" @ seperaer un detale de otro")]
-       
-        public String HaddPedidoDetalle(String sPedidoDetalle,String PreVenta_MayoreoID)
+        [WebMethod(Description = "registra detalle pedido  // ArticulosID|Cantidad|IVA|Importe|PrecioUCIVA_Cliente|PrecioUSIVA_Cliente|CostoCIVA|CostoSIVA|PrecioCIVA|PrecioSIVA|Notas" + " @ seperaer un detale de otro")]
+
+        public String HaddPedidoDetalle(String sPedidoDetalle, String PreVenta_MayoreoID)
         {
-         //   Boolean bBandera = false;
-          
+            //   Boolean bBandera = false;
+
             String[] arrDetalle;
 
-         String   sRespuesta = "";
-            String qry="";
+            String sRespuesta = "";
+            String qry = "";
 
             String preciosIVa_Original = "0";
             String precioCIVA_Original = "0";
@@ -900,7 +900,7 @@ namespace WS
                 arrDetalle = sPedidoDetalle.Split('@');
 
 
-                foreach (String s in arrDetalle){
+                foreach (String s in arrDetalle) {
                     if (s.Length > 3)
                     {
 
@@ -951,10 +951,10 @@ namespace WS
 
                         //  0           1    2   3       4    5                       6                7          8         9         10
                         qry = "Insert into PreVenta_Mayoreo_Detalle (ArticulosID,Cantidad,IVA,Importe,PrecioUCIVA_CLiente,PrecioUSIVA_Cliente,CostoCIVA,CostoSIVA,PrecioCIVA,PrecioSIVA,PreVenta_MayoreoID,Notas) " +
-                                                           " Values (" + arr[0] + "," + arr[1] + "," + arr[2] + "," + arr[3] + "," + precioCIVA + "," + precioSiVA + "," + arr[6] + "," + arr[7] + "," + precioCIVA_Original + "," + preciosIVa_Original + "," + PreVenta_MayoreoID + ",'"+arr[10]+"')";
+                                                           " Values (" + arr[0] + "," + arr[1] + "," + arr[2] + "," + arr[3] + "," + precioCIVA + "," + precioSiVA + "," + arr[6] + "," + arr[7] + "," + precioCIVA_Original + "," + preciosIVa_Original + "," + PreVenta_MayoreoID + ",'" + arr[10] + "')";
 
                         // Buscar el ultimo id Agregado
-                     //  System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + "_HADDDETALLE_.err", qry);
+                        //  System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + "_HADDDETALLE_.err", qry);
 
                         sRespuesta += qryInsertUpdate(qry);
 
@@ -970,9 +970,9 @@ namespace WS
             {
 
 
-                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "PreVenta_MayoreoID:"+ PreVenta_MayoreoID +"/n" +ex.Message);
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "PreVenta_MayoreoID:" + PreVenta_MayoreoID + "/n" + ex.Message);
 
-             
+
             }
 
             return sRespuesta;
@@ -996,9 +996,9 @@ namespace WS
 
             return xmlElement.OuterXml.ToString();
         }
-        public System.Drawing. Image byteArrayToImage(byte[] byteArrayIn)
+        public System.Drawing.Image byteArrayToImage(byte[] byteArrayIn)
         {
-            System.Drawing.Image returnImage=null;
+            System.Drawing.Image returnImage = null;
 
 
             try
@@ -1007,8 +1007,8 @@ namespace WS
                 ms.Write(byteArrayIn, 0, byteArrayIn.Length);
                 returnImage = System.Drawing.Image.FromStream(ms, true);//Exception occurs here
             }
-            catch(Exception ex) {
-                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "byteArraytoImage:/n" + ex.Message+ex.StackTrace);
+            catch (Exception ex) {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "byteArraytoImage:/n" + ex.Message + ex.StackTrace);
 
             }
             return returnImage;
@@ -1022,7 +1022,7 @@ namespace WS
             System.Data.Odbc.OdbcCommand command = null;
             System.Data.Odbc.OdbcConnection MyConnection = null;
             Boolean bRespuesta = false;
-           
+
             try
             {
                 System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "Imagen ClienteID:" + f.ToString());
@@ -1033,10 +1033,10 @@ namespace WS
 
 
                 MyConnection = new System.Data.Odbc.OdbcConnection("DSN=HyperFileFruteria");
-            MyConnection.Open();
-            transaction = MyConnection.BeginTransaction();
-           
-                String qry= "Update clientes set fotoLocal=? where ClientesID = " + sClienteID;
+                MyConnection.Open();
+                transaction = MyConnection.BeginTransaction();
+
+                String qry = "Update clientes set fotoLocal=? where ClientesID = " + sClienteID;
 
 
 
@@ -1050,19 +1050,19 @@ namespace WS
                 command.Parameters.Add(paramFileField);
 
 
-              
+
 
                 command.Transaction = transaction;
                 command.ExecuteNonQuery();
                 transaction.Commit();
                 bRespuesta = true;
 
-                }
+            }
             catch (Exception ex)
             {
 
                 bRespuesta = false;
-                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "Imagen ClienteID:" + sClienteID + "/n" + ex.Message+ex.StackTrace);
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "Imagen ClienteID:" + sClienteID + "/n" + ex.Message + ex.StackTrace);
 
                 transaction.Rollback();
             }
@@ -1070,7 +1070,7 @@ namespace WS
 
                 MyConnection.Close();
             }
-          //  bRespuesta = qryInsertUpdate("Update clientes set fotoLocal="+img+" where ClientesID="+sClienteID);
+            //  bRespuesta = qryInsertUpdate("Update clientes set fotoLocal="+img+" where ClientesID="+sClienteID);
 
 
 
@@ -1083,7 +1083,7 @@ namespace WS
 
         public Boolean PdfPedido(String PreVenta_MayoreoID)
         {
-         
+
             try
             {
 
@@ -1099,44 +1099,44 @@ namespace WS
                 // byte[]
                 Stimulsoft.Report.StiReport reporte = new Stimulsoft.Report.StiReport();
                 reporte.Load("C:/sXML/Pedido.mrt");
-                       String q = "SELECT PreVenta_Mayoreo.*,PreVenta_Mayoreo_Detalle.ArticulosID,Articulos.Nombre as NombreArticulo, Articulos.Codigo,PreVenta_Mayoreo_Detalle.PrecioUCIVA_Cliente as PrecioCIVA,PreVenta_Mayoreo_Detalle.Cantidad,PreVenta_Mayoreo_Detalle.Importe,PreVenta_Mayoreo_Detalle.Notas " +
-           ",Clientes.RFC,Clientes.Direccion,Clientes.CorreoElectronico,Clientes.CorreoAlterno,(SELECT Empleados.NombreCompleto from Empleados where Empleados.EmpleadosID=PreVenta_Mayoreo.EmpleadosID) as Vendedor,(SELECT Empleados.NombreCompleto from Empleados where Empleados.EmpleadosID=PreVenta_Mayoreo.EmpleadoID_Autorizo) as Autorizo  from PreVenta_Mayoreo_Detalle, Articulos, PreVenta_Mayoreo,Clientes " +
-           " where PreVenta_Mayoreo_Detalle.ArticulosID = Articulos.ArticulosID " +
-           " and PreVenta_Mayoreo_Detalle.PreVenta_MayoreoID = PreVenta_Mayoreo.PreVenta_MayoreoID " +
-           " and PreVenta_Mayoreo.ClientesID =Clientes.ClientesID " +
-           " and PreVenta_Mayoreo_Detalle.PreVenta_MayoreoID =" + PreVenta_MayoreoID +
-           " order by PreVenta_Mayoreo.FechaHora Desc";
-                   System.Data.DataSet ds = qryToDataSet(q);
+                String q = "SELECT PreVenta_Mayoreo.*,PreVenta_Mayoreo_Detalle.ArticulosID,Articulos.Nombre as NombreArticulo, Articulos.Codigo,PreVenta_Mayoreo_Detalle.PrecioUCIVA_Cliente as PrecioCIVA,PreVenta_Mayoreo_Detalle.Cantidad,PreVenta_Mayoreo_Detalle.Importe,PreVenta_Mayoreo_Detalle.Notas " +
+    ",Clientes.RFC,Clientes.Direccion,Clientes.CorreoElectronico,Clientes.CorreoAlterno,(SELECT Empleados.NombreCompleto from Empleados where Empleados.EmpleadosID=PreVenta_Mayoreo.EmpleadosID) as Vendedor,(SELECT Empleados.NombreCompleto from Empleados where Empleados.EmpleadosID=PreVenta_Mayoreo.EmpleadoID_Autorizo) as Autorizo  from PreVenta_Mayoreo_Detalle, Articulos, PreVenta_Mayoreo,Clientes " +
+    " where PreVenta_Mayoreo_Detalle.ArticulosID = Articulos.ArticulosID " +
+    " and PreVenta_Mayoreo_Detalle.PreVenta_MayoreoID = PreVenta_Mayoreo.PreVenta_MayoreoID " +
+    " and PreVenta_Mayoreo.ClientesID =Clientes.ClientesID " +
+    " and PreVenta_Mayoreo_Detalle.PreVenta_MayoreoID =" + PreVenta_MayoreoID +
+    " order by PreVenta_Mayoreo.FechaHora Desc";
+                System.Data.DataSet ds = qryToDataSet(q);
                 ds.DataSetName = "MayoreoDetalle";
-                ds.Tables[0].TableName= "MayoreoDetalle";
+                ds.Tables[0].TableName = "MayoreoDetalle";
 
                 ds.WriteXml(nombre + ".xml");
 
 
-                reporte.RegData("MayoreoDetalle", "MayoreoDetalle",ds);
-              //  reporte.Dictionary.Synchronize();
-              
+                reporte.RegData("MayoreoDetalle", "MayoreoDetalle", ds);
+                //  reporte.Dictionary.Synchronize();
+
 
                 reporte["id"] = PreVenta_MayoreoID;
-               
+
 
 
                 reporte.Compile();
-                
+
                 reporte.Render();
 
-                reporte.ExportDocument(Stimulsoft.Report.StiExportFormat.Pdf, nombre+".pdf");
+                reporte.ExportDocument(Stimulsoft.Report.StiExportFormat.Pdf, nombre + ".pdf");
 
-              
-              return true;
+
+                return true;
 
 
             }
             catch (Exception ex)
             {
 
-              
-                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "PdfPedido:"+ ex.Message+ "\n"+ex.StackTrace);
+
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "PdfPedido:" + ex.Message + "\n" + ex.StackTrace);
 
             }
 
@@ -1148,9 +1148,9 @@ namespace WS
             try
             {
 
-                byte[] bytes = System.IO.File.ReadAllBytes(@"C:\sXML\PED_"+ NoPedido+".pdf");
-            return Convert.ToBase64String(bytes);
-        }
+                byte[] bytes = System.IO.File.ReadAllBytes(@"C:\sXML\PED_" + NoPedido + ".pdf");
+                return Convert.ToBase64String(bytes);
+            }
             catch (Exception ex)
             {
 
@@ -1160,9 +1160,9 @@ namespace WS
 
             }
             return "";
-}
+        }
         [WebMethod(Description = "EnviarPor corroe pdf")]
-        public Boolean EnviarPedidoPDF(String NoPedido,String sDestino)
+        public Boolean EnviarPedidoPDF(String NoPedido, String sDestino)
         {
 
             String correode = "info@fruteriasnenas.com";
@@ -1172,10 +1172,10 @@ namespace WS
             // is still in the sandbox, this address must be verified.
             String TO = sDestino;
 
-          
+
             // The subject line of the email
             String SUBJECT =
-                "Envio de Preventa :"+NoPedido;
+                "Envio de Preventa :" + NoPedido;
 
             // The body of the email
             String BODY =
@@ -1183,31 +1183,31 @@ namespace WS
                 "<p>Se Anexa su comprobante de Preventa.</p>";
 
             // Create and build a new MailMessage object
-            System.Net.Mail. MailMessage message = new System.Net.Mail. MailMessage();
+            System.Net.Mail.MailMessage message = new System.Net.Mail.MailMessage();
             message.IsBodyHtml = true;
-            message.From = new System.Net.Mail. MailAddress(correode, "Fruteria Nenas");
-            message.To.Add(new System.Net.Mail. MailAddress(TO));
+            message.From = new System.Net.Mail.MailAddress(correode, "Fruteria Nenas");
+            message.To.Add(new System.Net.Mail.MailAddress(TO));
             message.Subject = SUBJECT;
             message.Attachments.Add(new System.Net.Mail.Attachment(@"C:\sXML\PED_" + NoPedido + ".pdf"));
             message.Body = BODY;
             // Comment or delete the next line if you are not using a configuration set
-           // message.Headers.Add("X-SES-CONFIGURATION-SET", CONFIGSET);
+            // message.Headers.Add("X-SES-CONFIGURATION-SET", CONFIGSET);
 
             using (System.Net.Mail.SmtpClient smtp = new System.Net.Mail.SmtpClient())
             {
-                try { 
-                smtp.Host = "smtp.ipage.com";
-                smtp.Port = 587;
-                smtp.EnableSsl = false;
-                System.Net.NetworkCredential NetworkCred = new System.Net.NetworkCredential();
-                NetworkCred.UserName =correode;
-                NetworkCred.Password = clavecorreo;
-                smtp.UseDefaultCredentials = true;
-                smtp.Credentials = NetworkCred;
-                smtp.Send(message);
+                try {
+                    smtp.Host = "smtp.ipage.com";
+                    smtp.Port = 587;
+                    smtp.EnableSsl = false;
+                    System.Net.NetworkCredential NetworkCred = new System.Net.NetworkCredential();
+                    NetworkCred.UserName = correode;
+                    NetworkCred.Password = clavecorreo;
+                    smtp.UseDefaultCredentials = true;
+                    smtp.Credentials = NetworkCred;
+                    smtp.Send(message);
 
 
-                return true;
+                    return true;
 
 
                 }
@@ -1223,11 +1223,11 @@ namespace WS
         [WebMethod(Description = "validacion de Usuario mobile, regresa el id y empleado")]
         public String validarLoguin(String sUsuario, String sPassword) {
 
-            try { 
-            String q = "SELECT Usuarios.UsuariosID,Empleados.EmpleadosID , Empleados.Codigo, Empleados.NombreCompleto from Empleados,Usuarios where Empleados.EmpleadosID=Usuarios.EmpleadosID and Usuarios.ConreasenaAPP='"+sPassword+"' and Usuarios.Nombre='"+sUsuario+"' and Usuarios.Activo=1 and empleados.Baja_temporal=0 and Empleados.Activo=1 ";
+            try {
+                String q = "SELECT Usuarios.UsuariosID,Empleados.EmpleadosID , Empleados.Codigo, Empleados.NombreCompleto from Empleados,Usuarios where Empleados.EmpleadosID=Usuarios.EmpleadosID and Usuarios.ConreasenaAPP='" + sPassword + "' and Usuarios.Nombre='" + sUsuario + "' and Usuarios.Activo=1 and empleados.Baja_temporal=0 and Empleados.Activo=1 ";
 
 
-            System.Data.DataSet ds = qryToDataSet(q);
+                System.Data.DataSet ds = qryToDataSet(q);
 
 
                 if (ds.Tables.Count > 0) {
@@ -1239,25 +1239,25 @@ namespace WS
 
                 }
 
-                    }
-                catch (Exception ex)
-                {
-                    System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "validarLoguin:"+ ex.Message+ex.StackTrace);
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "validarLoguin:" + ex.Message + ex.StackTrace);
 
-                }
+            }
 
             return "";
         }
         [WebMethod(Description = "Actualiar contraseña")]
-        public Boolean actualiarPassword(String nUsuarioID,String sNewPassword)
+        public Boolean actualiarPassword(String nUsuarioID, String sNewPassword)
         {
 
             try
             {
-                String q = "Update Usuarios set Usuarios.ConreasenaAPP='"+sNewPassword+"' Usuarios.UsuariosID=" + nUsuarioID+ "  ";
+                String q = "Update Usuarios set Usuarios.ConreasenaAPP='" + sNewPassword + "' Usuarios.UsuariosID=" + nUsuarioID + "  ";
 
                 return qryInsertUpdate(q);
-              
+
 
             }
             catch (Exception ex)
@@ -1293,7 +1293,7 @@ namespace WS
             }
             catch (Exception ex)
             {
-                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "obtenerExistenciaMayoreo:"+ ex.Message+ex.StackTrace);
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "obtenerExistenciaMayoreo:" + ex.Message + ex.StackTrace);
 
             }
 
@@ -1305,7 +1305,7 @@ namespace WS
 
             try
             {
-                String q = "SELECT * from pedidos where pedidosID="+sPedidoID;
+                String q = "SELECT * from pedidos where pedidosID=" + sPedidoID;
 
 
                 System.Data.DataSet ds = qryToDataSet(q);
@@ -1324,7 +1324,7 @@ namespace WS
             }
             catch (Exception ex)
             {
-                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "obtenerPedidoAlmacen:"+ ex.Message+ex.StackTrace);
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "obtenerPedidoAlmacen:" + ex.Message + ex.StackTrace);
 
             }
 
@@ -1356,7 +1356,7 @@ namespace WS
             }
             catch (Exception ex)
             {
-                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "obtenerDetallePedidoAlmacen:"+ ex.Message+ex.StackTrace);
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "obtenerDetallePedidoAlmacen:" + ex.Message + ex.StackTrace);
 
             }
 
@@ -1364,12 +1364,12 @@ namespace WS
         }
 
         [WebMethod(Description = "Regresa un xml la informacion de NOpedidos")]
-        public String obtenerInfoEstatisticas(String sEmpleadoID,String sMes)
+        public String obtenerInfoEstatisticas(String sEmpleadoID, String sMes)
         {
 
             try
             {
-                String q = "SELECT 'NoPreventas' as Tipo,count(EmpleadosID) as Cantidad from PreVenta_Mayoreo where EmpleadosID=" + sEmpleadoID+ " and Activo=1 and  FechaHora BETWEEN '" + sMes + "01000001' and '" + sMes + "31235959'";
+                String q = "SELECT 'NoPreventas' as Tipo,count(EmpleadosID) as Cantidad from PreVenta_Mayoreo where EmpleadosID=" + sEmpleadoID + " and Activo=1 and  FechaHora BETWEEN '" + sMes + "01000001' and '" + sMes + "31235959'";
                 String q1 = "select 'NoArticulos' as Tipo,count( NoArticulos) as Cantidad from (SELECT PreVenta_Mayoreo_Detalle.ArticulosID as NoArticulos from PreVenta_Mayoreo_Detalle,PreVenta_Mayoreo where PreVenta_Mayoreo_Detalle.PreVenta_MayoreoID=PreVenta_Mayoreo.PreVenta_MayoreoID and EmpleadosID=" + sEmpleadoID + " and Activo=1 and  FechaHora BETWEEN '" + sMes + "01000001' and '" + sMes + "31235959' GROUP by PreVenta_Mayoreo_Detalle.ArticulosID)";
                 String q2 = "SELECT PreVenta_Mayoreo_Detalle.ArticulosID, sum(PreVenta_Mayoreo_Detalle.Cantidad) as Sum_Cantidad,Articulos.Codigo,Articulos.Nombre from PreVenta_Mayoreo_Detalle,PreVenta_Mayoreo,Articulos where PreVenta_Mayoreo_Detalle.ArticulosID=Articulos.ArticulosID and PreVenta_Mayoreo_Detalle.PreVenta_MayoreoID=PreVenta_Mayoreo.PreVenta_MayoreoID and EmpleadosID=" + sEmpleadoID + " and PreVenta_Mayoreo.Activo=1 and  PreVenta_Mayoreo.FechaHora BETWEEN '" + sMes + "01000001' and '" + sMes + "31235959' GROUP by PreVenta_Mayoreo_Detalle.ArticulosID,Articulos.Codigo,Articulos.Nombre order by Sum_Cantidad Desc  limit 1";
 
@@ -1378,7 +1378,7 @@ namespace WS
                 System.Data.DataSet ds1 = qryToDataSet(q1);
                 System.Data.DataSet ds2 = qryToDataSet(q2);
 
-               
+
 
                 if (ds1.Tables.Count > 0)
                 {
@@ -1390,14 +1390,14 @@ namespace WS
 
                 if (ds2.Tables.Count > 0)
                 {
-                    if (ds2.Tables[0].Rows.Count > 0) { 
-                    System.Data.DataRow r = ds.Tables[0].NewRow();
+                    if (ds2.Tables[0].Rows.Count > 0) {
+                        System.Data.DataRow r = ds.Tables[0].NewRow();
 
-                    r["Tipo"] ="+"+ds2.Tables[0].Rows[0]["Nombre"].ToString();
-                    r["Cantidad"] = ds2.Tables[0].Rows[0]["Sum_Cantidad"].ToString();
+                        r["Tipo"] = "+" + ds2.Tables[0].Rows[0]["Nombre"].ToString();
+                        r["Cantidad"] = ds2.Tables[0].Rows[0]["Sum_Cantidad"].ToString();
 
-                    ds.Tables[0].Rows.Add(r);
-                }
+                        ds.Tables[0].Rows.Add(r);
+                    }
                 }
 
 
@@ -1415,7 +1415,7 @@ namespace WS
             }
             catch (Exception ex)
             {
-                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "obtenerInfoEstatisticas:"+ ex.Message+ex.StackTrace);
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "obtenerInfoEstatisticas:" + ex.Message + ex.StackTrace);
 
             }
 
@@ -1423,12 +1423,12 @@ namespace WS
         }
         //
         [WebMethod(Description = "Regresa el valor del tipo de cambio actual Compras")]
-        public String obtenerTCCompras(String sSucursalID )
+        public String obtenerTCCompras(String sSucursalID)
         {
 
             try
             {
-                String q = "SELECT TCVenta from DatosSucursal where SucursalesID="+ sSucursalID;
+                String q = "SELECT TCVenta from DatosSucursal where SucursalesID=" + sSucursalID;
 
 
                 System.Data.DataSet ds = qryToDataSet(q);
@@ -1457,9 +1457,9 @@ namespace WS
         public String versionAppMYR()
         {
 
-      
 
-            return "1.0.0.18" ;
+
+            return "1.0.0.18";
         }
         [WebMethod(Description = "Regresa un xml con los Estados")]
         public String Estados()
@@ -1532,7 +1532,7 @@ namespace WS
 
             try
             {
-                String q = "SELECT Codigo from Clientes where RFC='"+sRFC+"'";
+                String q = "SELECT Codigo from Clientes where RFC='" + sRFC + "'";
 
 
                 System.Data.DataSet ds = qryToDataSet(q);
@@ -1541,7 +1541,7 @@ namespace WS
                 if (ds.Tables.Count > 0)
                 {
 
-                    
+
 
                     sCodigo = ds.Tables[0].Rows[0]["Codigo"].ToString();
 
@@ -1553,7 +1553,7 @@ namespace WS
 
             {
                 sCodigo = "";
-               System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "RFCExiste:" + ex.Message + ex.StackTrace);
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "RFCExiste:" + ex.Message + ex.StackTrace);
 
             }
 
@@ -1615,7 +1615,7 @@ namespace WS
                 //NoTelefono
                 qry += ",'" + arr[14] + "'";
                 //SucursalesID
-                qry +=",24";
+                qry += ",24";
                 //Activo
                 qry += ",1";
                 //Facturacion
@@ -1659,16 +1659,16 @@ namespace WS
                 //EsMayoreo
                 qry += ",1";
 
-                
 
-                qry +=","+siguienteFolio("Clientes") ;
-                qry += ",'"+ arr[24] + "'";
+
+                qry += "," + siguienteFolio("Clientes");
+                qry += ",'" + arr[24] + "'";
                 qry += ",'" + arr[25] + "'";
 
 
                 qry += ")";
 
-               // System.IO.File.WriteAllText(@"C:\sXML\QRY_" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", qry);
+                // System.IO.File.WriteAllText(@"C:\sXML\QRY_" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", qry);
 
                 bBandera = qryInsertUpdate(qry);
 
@@ -1676,7 +1676,7 @@ namespace WS
             catch (Exception ex)
             {
                 bBandera = false;
-  System.IO.File.WriteAllText(@"C:\sXML\Registro Cliente_" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", ex.Message);            
+                System.IO.File.WriteAllText(@"C:\sXML\Registro Cliente_" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", ex.Message);
             }
 
             if (bBandera) {
@@ -1686,13 +1686,13 @@ namespace WS
             }
 
 
-           
+
 
         }
 
         private int siguienteFolio(String sArchivo) {
 
-            String q = "SELECT * from ConsecutivoFolio where Archivo='"+sArchivo+"'";
+            String q = "SELECT * from ConsecutivoFolio where Archivo='" + sArchivo + "'";
             int nConsecutivo = 1;
             int id = 0;
             System.Data.DataSet ds = qryToDataSet(q);
@@ -1700,18 +1700,18 @@ namespace WS
 
             if (ds.Tables.Count > 0)
             {
-                id= int.Parse(ds.Tables[0].Rows[0]["ConsecutivoFolioID"].ToString());
+                id = int.Parse(ds.Tables[0].Rows[0]["ConsecutivoFolioID"].ToString());
                 nConsecutivo = int.Parse(ds.Tables[0].Rows[0]["Consecutivo"].ToString());
                 nConsecutivo += 1;
 
                 q = "Update ConsecutivoFolio set Consecutivo=" + nConsecutivo + " where ConsecutivoFolioID=" + id;
                 //Actualizar
-            Boolean    bBandera = qryInsertUpdate(q);
+                Boolean bBandera = qryInsertUpdate(q);
 
                 nConsecutivo = nConsecutivo * 1000;
                 //id de la sucurdal
                 nConsecutivo += 24;
-                   
+
 
                 if (bBandera)
                 {
@@ -1729,7 +1729,7 @@ namespace WS
         }
 
         [WebMethod(Description = "Guarda la posicion del dispositivo")]
-        public Boolean HAddPosicion(String sEmpleadoID, String latr, String lon,String sAPP,String sIMEI,String sNota,String Fhora) {
+        public Boolean HAddPosicion(String sEmpleadoID, String latr, String lon, String sAPP, String sIMEI, String sNota, String Fhora) {
 
             // se tien que crear una tabla  para k
             //almacenara el registro
@@ -1740,17 +1740,17 @@ namespace WS
             //Logitud
             //Dispositivo
             //Notas
-            Boolean bBandera=false;
-            String q = "Insert Into LogGPS (APP,FechaHora,Latitud,Longitud,IMEI,EmpleadosID,Notas) values ("+
-                "'"+sAPP+"',"+
-                  "'" + Fhora + "',"+
-                  "'" + latr + "',"+
+            Boolean bBandera = false;
+            String q = "Insert Into LogGPS (APP,FechaHora,Latitud,Longitud,IMEI,EmpleadosID,Notas) values (" +
+                "'" + sAPP + "'," +
+                  "'" + Fhora + "'," +
+                  "'" + latr + "'," +
                    "'" + lon + "'," +
                     "'" + sIMEI + "'," +
-                     "" + sEmpleadoID+ "," +
+                     "" + sEmpleadoID + "," +
                       "'" + sNota + "'"
                 + ")";
-         //   System.IO.File.WriteAllText(@"C:\sXML\HAddPosicion_" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", q);
+            //   System.IO.File.WriteAllText(@"C:\sXML\HAddPosicion_" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", q);
 
 
             try
@@ -1761,8 +1761,8 @@ namespace WS
 
 
             }
-            catch(Exception ex) { 
-                System.IO.File.WriteAllText(@"C:\sXML\HAddPosicion_" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", ex.Message+"\n"+ex.StackTrace);
+            catch (Exception ex) {
+                System.IO.File.WriteAllText(@"C:\sXML\HAddPosicion_" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", ex.Message + "\n" + ex.StackTrace);
             }
 
 
@@ -1772,7 +1772,7 @@ namespace WS
         [WebMethod(Description = "Obtener porcentajes por cliente por lineas")]
         public String EnlistarMayoreoClientePorcentaje()
         {
-           
+
 
             try
             {
@@ -1796,7 +1796,7 @@ namespace WS
             catch (Exception ex)
 
             {
-              
+
                 System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "EnListarMayoreoClientePorcentaje:" + ex.Message + ex.StackTrace);
 
             }
@@ -1805,12 +1805,12 @@ namespace WS
         }
 
         [WebMethod(Description = "Regresa un xml la informacion de Tabla")]
-        public String obtenerInfoReplicarcion(String sTabla,String sID)
+        public String obtenerInfoReplicarcion(String sTabla, String sID)
         {
 
             try
             {
-                String q = "SELECT * from "+sTabla+" where "+sTabla+"ID in (" + sID+")";
+                String q = "SELECT * from " + sTabla + " where " + sTabla + "ID in (" + sID + ")";
 
 
                 System.Data.DataSet ds = qryToDataSet(q);
@@ -1836,17 +1836,17 @@ namespace WS
             return "";
         }
         [WebMethod(Description = "Actualizar articulos app nenas separado por |")]
-        public Boolean articulosActivosAPP(String sArticulosID,String sSucursalesID)
+        public Boolean articulosActivosAPP(String sArticulosID, String sSucursalesID)
         {
 
-          
+
             Boolean bBandera = false;
             String q = "Delete from AppArticulosDisponibilidad ";
             String[] arr;
             arr = sArticulosID.Split('|');
             //Eliminar registro de la sucursal
 
-            
+
 
 
 
@@ -1965,7 +1965,7 @@ namespace WS
 
 
                 }
-    }
+            }
             catch (Exception ex)
             {
                 System.IO.File.WriteAllText(@"C:\sXML\articulosActivosAPP_" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", ex.Message + "\n" + ex.StackTrace);
@@ -1976,7 +1976,7 @@ namespace WS
 
         }
         [WebMethod(Description = "Regresa un xml la informacion de Tabla")]
-        public String obtenerHistorialEntradasPedidos(String SucursalesID,String sFini,String sFFin,String sArticuloID)
+        public String obtenerHistorialEntradasPedidos(String SucursalesID, String sFini, String sFFin, String sArticuloID)
         {
 
             try
@@ -2008,10 +2008,10 @@ WHERE
 	AND		Pedidos.Estatus_PedidosID = Estatus_Pedidos.Estatus_PedidosID
 	AND
 	(
-		Pedidos.SucursalesID = "+ SucursalesID + @"
+		Pedidos.SucursalesID = " + SucursalesID + @"
 		AND Pedidos.Estatus_PedidosID = 3 
-        AND Pedidos.FechaRecibido BETWEEN '"+sFini+@"'
-         AND '"+sFFin+@"'
+        AND Pedidos.FechaRecibido BETWEEN '" + sFini + @"'
+         AND '" + sFFin + @"'
 
 	";
 
@@ -2020,8 +2020,8 @@ WHERE
 
                     q += @"  and Pedidos.PedidosID in (SELECT Pedidos.PedidosID from pedidos,Pedidos_Articulos 
                     where Pedidos.PedidosID = Pedidos_Articulos.PedidosID
-                    and Pedidos.FechaRecibido BETWEEN '"+sFini+@"'  and '"+sFFin+@"'
-                    and Pedidos.Estatus_PedidosID = 3 and Pedidos.SucursalesID = "+SucursalesID+@" and Pedidos_Articulos.ArticulosID = "+ sArticuloID+")";
+                    and Pedidos.FechaRecibido BETWEEN '" + sFini + @"'  and '" + sFFin + @"'
+                    and Pedidos.Estatus_PedidosID = 3 and Pedidos.SucursalesID = " + SucursalesID + @" and Pedidos_Articulos.ArticulosID = " + sArticuloID + ")";
 
 
                 }
@@ -2054,7 +2054,7 @@ WHERE
             return "";
         }
         [WebMethod(Description = "Regresa un xml la informacion de Tabla")]
-        public String obtenerHistorialEntradas(String SucursalesID, String sFini, String sFFin, String sArticuloID,String sTipoMovimientoID,String sRecepcionLocal,String sDolares,String sEstatus,String sFamiliasID,String sLineasID,String sFolioMov,String sEntradasID,String sReferencia,String sProveedorID,String sOrigenID,String sTieneBonificado)
+        public String obtenerHistorialEntradas(String SucursalesID, String sFini, String sFFin, String sArticuloID, String sTipoMovimientoID, String sRecepcionLocal, String sDolares, String sEstatus, String sFamiliasID, String sLineasID, String sFolioMov, String sEntradasID, String sReferencia, String sProveedorID, String sOrigenID, String sTieneBonificado)
         {
             String q = "";
             try
@@ -2119,18 +2119,18 @@ ON Entradas.Estatus_MovimientosID = Estatus_Movimientos.Estatus_MovimientosID
 ON Destinos.DestinosID = Entradas.OrigenID
 WHERE 
 (
-	Entradas.SucursalesID ="+ SucursalesID + @"
+	Entradas.SucursalesID =" + SucursalesID + @"
 
-AND	Entradas.FechaEntrada BETWEEN '"+sFini+@"' AND '"+sFFin+@"' ";
+AND	Entradas.FechaEntrada BETWEEN '" + sFini + @"' AND '" + sFFin + @"' ";
 
 
                 if (sTipoMovimientoID.Length > 1)
                 {
 
-                    q += "  AND	Entradas.TiposMovimientosID ="+sTipoMovimientoID;
-                    
+                    q += "  AND	Entradas.TiposMovimientosID =" + sTipoMovimientoID;
+
                 }
-              
+
                 if (sRecepcionLocal.Length > 1)
                 {
 
@@ -2143,13 +2143,13 @@ AND	Entradas.FechaEntrada BETWEEN '"+sFini+@"' AND '"+sFFin+@"' ";
                     q += " AND Entradas.Dolares = " + sDolares;
 
                 }
-            
+
                 if (sEstatus.Length > 1)
-            {
+                {
 
-                q += " AND	Entradas.Estatus_MovimientosID  = " + sEstatus;
+                    q += " AND	Entradas.Estatus_MovimientosID  = " + sEstatus;
 
-            }
+                }
                 if (sFamiliasID.Length > 1)
                 {
 
@@ -2177,7 +2177,7 @@ AND	Entradas.FechaEntrada BETWEEN '"+sFini+@"' AND '"+sFFin+@"' ";
                 if (sReferencia.Length > 1)
                 {
 
-                    q += " AND	Entradas.Referencia  = '" + sReferencia+@"'";
+                    q += " AND	Entradas.Referencia  = '" + sReferencia + @"'";
 
                 }
                 if (sProveedorID.Length > 1)
@@ -2209,7 +2209,7 @@ AND	Entradas.FechaEntrada BETWEEN '"+sFini+@"' AND '"+sFFin+@"' ";
 
                 q += " )  ORDER BY EntradasID ASC ";
 
-             
+
 
 
                 System.Data.DataSet ds = qryToDataSet(q);
@@ -2228,14 +2228,14 @@ AND	Entradas.FechaEntrada BETWEEN '"+sFini+@"' AND '"+sFFin+@"' ";
             }
             catch (Exception ex)
             {
-                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "obtenerHistorialEntradasPedidos:" + ex.Message + ex.StackTrace+"\n"+q);
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "obtenerHistorialEntradasPedidos:" + ex.Message + ex.StackTrace + "\n" + q);
 
             }
 
             return "";
         }
         [WebMethod(Description = "Regresa un xml la informacion de Tabla")]
-        public String obtenerArticulosEntradas( String sEntradasID)
+        public String obtenerArticulosEntradas(String sEntradasID)
         {
             String q = "";
             try
@@ -2264,10 +2264,10 @@ WHERE
 	Articulos.ArticulosID = EntradasArticulos.ArticulosID
 	AND
 	(
-		EntradasArticulos.EntradasID ="+sEntradasID+")";
+		EntradasArticulos.EntradasID =" + sEntradasID + ")";
 
 
-              
+
 
                 System.Data.DataSet ds = qryToDataSet(q);
 
@@ -2321,7 +2321,7 @@ WHERE
 	Articulos.ArticulosID = EntradasArticulos.ArticulosID
 	AND
 	(
-		EntradasArticulos.EntradasID = "+sPedidosID+")";
+		EntradasArticulos.EntradasID = " + sPedidosID + ")";
 
 
 
@@ -2377,7 +2377,7 @@ WHERE
 	AND
 	(
 		Ventas.Cancelada = 0
-		AND	Ventas.FechaVenta ='" + sFecha+@"'
+		AND	Ventas.FechaVenta ='" + sFecha + @"'
 		AND	LENGTH(Ventas.IPInventarioAfecto )  > 0
 	)";
 
@@ -2407,7 +2407,7 @@ WHERE
             return "";
         }
         [WebMethod(Description = "Artualiza ventas de Mayoreo transferencias salida")]
-        public Boolean UpdateVentasMRY( String sFecha)
+        public Boolean UpdateVentasMRY(String sFecha)
         {
 
             Boolean bBandera = false;
@@ -2417,7 +2417,7 @@ SET
 	IPInventarioAfecto =''
 WHERE 
 	Ventas.IPInventarioAfecto ='192.168.10.253'
-	 AND Ventas.FechaVenta="+sFecha;
+	 AND Ventas.FechaVenta=" + sFecha;
             //   System.IO.File.WriteAllText(@"C:\sXML\HAddPosicion_" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", q);
 
 
@@ -2442,20 +2442,20 @@ WHERE
         public Boolean EnviarArchivoOfertas(byte[] f, string fileName)
         {
 
-          //  el argumento de la matriz de bytes contiene el contenido del archivo
+            //  el argumento de la matriz de bytes contiene el contenido del archivo
             // el argumento de cadena contiene el nombre y la extensión
             // del archivo pasado en la matriz de bytes 
             try
             {
 
-              if(  System.IO.Directory.Exists("C:/sXML/importacion /")==false){
+                if (System.IO.Directory.Exists("C:/sXML/importacion /") == false) {
                     System.IO.Directory.CreateDirectory("C:/sXML/importacion/");
 
                 }
 
                 // instance a memory stream and pass the  
                 // byte array to its constructor  
-             System.IO.MemoryStream ms = new System.IO.MemoryStream(f);
+                System.IO.MemoryStream ms = new System.IO.MemoryStream(f);
                 // instance a filestream pointing to the  
                 // storage folder, use the original file name  
                 // to name the resulting file  
@@ -2481,7 +2481,7 @@ WHERE
 
         }
         [WebMethod(Description = " qry de Historial")]
-        public String Qry_INV_PedidosHistoriales(string pSucursalesID,string pFechaRInicio,string pFechaRFinal, string pFechaSInicio, string pFechaSFinal, string pSucursalAlmacenID,string pEstatus_PedidosID)
+        public String Qry_INV_PedidosHistoriales(string pSucursalesID, string pFechaRInicio, string pFechaRFinal, string pFechaSInicio, string pFechaSFinal, string pSucursalAlmacenID, string pEstatus_PedidosID)
         {
             String q = "";
             try
@@ -2515,18 +2515,18 @@ WHERE
 	(
 			Pedidos.FechaSurtido BETWEEN '" + pFechaSInicio + @"' AND '" + pFechaSFinal + @"' ";
 
-                if (pFechaRInicio.Length>0 && pFechaRFinal.Length>0) {
-                
-                    q += " AND Pedidos.FechaRecibido BETWEEN '" + pFechaRInicio + "' AND '" + pFechaRFinal+"' ";
+                if (pFechaRInicio.Length > 0 && pFechaRFinal.Length > 0) {
+
+                    q += " AND Pedidos.FechaRecibido BETWEEN '" + pFechaRInicio + "' AND '" + pFechaRFinal + "' ";
                 }
 
 
-                if (pSucursalesID.Length>0) {
+                if (pSucursalesID.Length > 0) {
 
                     q += " AND Pedidos.SucursalesID = " + pSucursalesID;
                 }
 
-	           if (pSucursalAlmacenID.Length > 0) {
+                if (pSucursalAlmacenID.Length > 0) {
 
 
                     q += " AND Pedidos.SucursalAlmacenID = " + pSucursalAlmacenID;
@@ -2534,15 +2534,15 @@ WHERE
 
                 if (pEstatus_PedidosID.Length > 0)
                 {
-                    q += "  AND Pedidos.Estatus_PedidosID IN (" + pEstatus_PedidosID+") ";
+                    q += "  AND Pedidos.Estatus_PedidosID IN (" + pEstatus_PedidosID + ") ";
                 }
 
-               
 
 
-            q+=  " )";
 
-           //    System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "Qry" + q);
+                q += " )";
+
+                //    System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "Qry" + q);
 
 
                 System.Data.DataSet ds = qryToDataSet(q);
@@ -2570,7 +2570,7 @@ WHERE
 
         // 
         [WebMethod(Description = "QRY_Salidas_X_ArticuloID_S_Fecha")]
-        public String QRY_Salidas_X_ArticuloID_S_Fecha(string pArticulosID,string pFechaInicial,string pFechaFInal,string pDestinosID,string pTipoMovimientoID,string pSalidasID,string pSucursalesID,string pfolioMovimiento,string pEstatusMovimientoID,string pFamiliasID,string pLineasID,string pProveedoresID,string pPendienteAplicarNC)
+        public String QRY_Salidas_X_ArticuloID_S_Fecha(string pArticulosID, string pFechaInicial, string pFechaFInal, string pDestinosID, string pTipoMovimientoID, string pSalidasID, string pSucursalesID, string pfolioMovimiento, string pEstatusMovimientoID, string pFamiliasID, string pLineasID, string pProveedoresID, string pPendienteAplicarNC)
         {
             String q = "";
             try
@@ -2630,59 +2630,59 @@ FROM
 	ON Estatus_Movimientos.Estatus_MovimientosID = Salidas.Estatus_MovimientosID
 WHERE 
 	(
-	Salidas.FechaSalida BETWEEN '"+pFechaInicial+@"' AND '"+pFechaFInal+@"'
-AND	Salidas.SucursalesID =" +pSucursalesID;
+	Salidas.FechaSalida BETWEEN '" + pFechaInicial + @"' AND '" + pFechaFInal + @"'
+AND	Salidas.SucursalesID =" + pSucursalesID;
 
 
                 if (pArticulosID.Length > 0) {
-                    q += " AND	SalidasArticulos.ArticulosID =  "+pArticulosID;
+                    q += " AND	SalidasArticulos.ArticulosID =  " + pArticulosID;
                 }
 
-                if (pDestinosID.Length>0) {
+                if (pDestinosID.Length > 0) {
 
-                    q+= " AND	Salidas.DestinosID ="+ pDestinosID;
+                    q += " AND	Salidas.DestinosID =" + pDestinosID;
                 }
 
 
-                if (pTipoMovimientoID.Length>0) {
+                if (pTipoMovimientoID.Length > 0) {
 
-                    q+= " AND	Salidas.TiposMovimientosID ="+pTipoMovimientoID;
+                    q += " AND	Salidas.TiposMovimientosID =" + pTipoMovimientoID;
                 }
 
-                if (pSalidasID.Length>0) {
+                if (pSalidasID.Length > 0) {
 
-                    q += "AND	Salidas.SalidasID ="+ pSalidasID;
+                    q += "AND	Salidas.SalidasID =" + pSalidasID;
                 }
-                if (pfolioMovimiento.Length>0) {
+                if (pfolioMovimiento.Length > 0) {
 
-                    q+= "AND	Salidas.FolioMovimiento ="+pfolioMovimiento;
+                    q += "AND	Salidas.FolioMovimiento =" + pfolioMovimiento;
                 }
 
-                if (pEstatusMovimientoID.Length>0) {
+                if (pEstatusMovimientoID.Length > 0) {
 
-                    q+= " AND	Salidas.Estatus_MovimientosID ="+pEstatusMovimientoID;
+                    q += " AND	Salidas.Estatus_MovimientosID =" + pEstatusMovimientoID;
                 }
-                if (pFamiliasID.Length>0) {
+                if (pFamiliasID.Length > 0) {
                     q += " AND	Articulos.FamiliasID = " + pFamiliasID;
                 }
 
-                if (pLineasID.Length>0) {
+                if (pLineasID.Length > 0) {
 
-                    q+= " AND	Articulos.LineaID ="+pLineasID;
+                    q += " AND	Articulos.LineaID =" + pLineasID;
                 }
-                if (pProveedoresID.Length>0) {
-                    q+= "	AND	Salidas.ProveedoresID = "+pProveedoresID;
+                if (pProveedoresID.Length > 0) {
+                    q += "	AND	Salidas.ProveedoresID = " + pProveedoresID;
                 }
 
-                if (pPendienteAplicarNC.Length>0) {
+                if (pPendienteAplicarNC.Length > 0) {
 
-                    q+= " AND	Salidas.PendienteAplicarNC ="+pPendienteAplicarNC;
+                    q += " AND	Salidas.PendienteAplicarNC =" + pPendienteAplicarNC;
                 }
-	
 
-  q+=" ) ORDER BY  FechaSalida ASC";
 
-        
+                q += " ) ORDER BY  FechaSalida ASC";
+
+
                 System.Data.DataSet ds = qryToDataSet(q);
 
 
@@ -2699,7 +2699,7 @@ AND	Salidas.SucursalesID =" +pSucursalesID;
             }
             catch (Exception ex)
             {
-                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "QRY_Salidas_X_ArticuloID_S_Fecha:" + ex.Message + ex.StackTrace+ex.InnerException + "\n" + q);
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "QRY_Salidas_X_ArticuloID_S_Fecha:" + ex.Message + ex.StackTrace + ex.InnerException + "\n" + q);
 
             }
 
@@ -2745,8 +2745,8 @@ WHERE
 	AND		Salidas.SalidasID = SalidasArticulos.SalidasID
 	and
 	(
-			Salidas.SucursalesID ="+pSucursalesID+@"
-		AND	SalidasArticulos.SalidasID IN ("+pSalidasID+@")
+			Salidas.SucursalesID =" + pSucursalesID + @"
+		AND	SalidasArticulos.SalidasID IN (" + pSalidasID + @")
 		
 	)
 GROUP BY 
@@ -2763,7 +2763,7 @@ ORDER BY
 	Nombre ASC";
 
 
-               
+
 
 
 
@@ -2791,9 +2791,9 @@ ORDER BY
             return "";
         }
         [WebMethod(Description = "Obtene los articulos de los pedidos enviados IN")]
-        public String obtenerHistorialEntradasPedidosDetalle( String pInPedidosID)
+        public String obtenerHistorialEntradasPedidosDetalle(String pInPedidosID)
         {
-            
+
             try
             {
                 String q = @"SELECT 
@@ -2814,7 +2814,7 @@ WHERE
 	(
 	
 		 Pedidos.Estatus_PedidosID = 3 
-        AND Pedidos.PedidosID in (" + pInPedidosID+ @")
+        AND Pedidos.PedidosID in (" + pInPedidosID + @")
 ) GROUP by 
 Pedidos_Articulos.ArticulosID ,
      Articulos.Codigo,
@@ -2902,31 +2902,31 @@ Pedidos_Articulos.ArticulosID ,
             return "";
         }
 
-        
+
         [WebMethod(Description = "Consultar bajas de empleados")]
         public String ConsultarBajas(String FechaInicio, String FechaFinal, String pSucursalesID)
         {
             System.Xml.XmlElement xmlElement;
-            String sQry ="";
-              try
+            String sQry = "";
+            try
             {
-             sQry = @"SELECT Empleados.PuestosID, Puestos.Nombre AS nombrePuesto, Empleados.DepartamentosID, Departamentos.Descripcion AS nombreDepartamento, Empleados.Activo,
+                sQry = @"SELECT Empleados.PuestosID, Puestos.Nombre AS nombrePuesto, Empleados.DepartamentosID, Departamentos.Descripcion AS nombreDepartamento, Empleados.Activo,
 Empleados.Nombre, Empleados.ApellidoPaterno, Empleados.ApellidoMaterno, Empleados.sexo, Empleados.FechaIngreso, Empleados.FechaNacimiento, Empleados.EstadoCivil, Empleados.NivelEstudios,
 Historial_Bajas.Fecha_Baja, Historial_Bajas.Comentarios, Historial_Bajas.EmpleadosID,Historial_Bajas.MotivosDeBajaCatalogo 
 FROM Historial_Bajas JOIN Empleados on Empleados.EmpleadosID = Historial_Bajas.EmpleadosID 
 JOIN Puestos ON Empleados.PuestosID = Puestos.PuestosID 
-JOIN Departamentos ON Empleados.DepartamentosID = Departamentos.DepartamentosID WHERE Empleados.SucursalesID = "+pSucursalesID+@" AND 
- Historial_Bajas.Fecha_Baja BETWEEN '"+FechaInicio+@"' AND '"+FechaFinal+"' ORDER BY Fecha_Baja";
-             
-            
-            System.Data.DataSet ds = qryToDataSet(sQry);
-            if (ds.Tables.Count > 0)
-            {
-                xmlElement = Serialize(ds.Tables[0]);
-                return xmlElement.OuterXml.ToString();
+JOIN Departamentos ON Empleados.DepartamentosID = Departamentos.DepartamentosID WHERE Empleados.SucursalesID = " + pSucursalesID + @" AND 
+ Historial_Bajas.Fecha_Baja BETWEEN '" + FechaInicio + @"' AND '" + FechaFinal + "' ORDER BY Fecha_Baja";
+
+
+                System.Data.DataSet ds = qryToDataSet(sQry);
+                if (ds.Tables.Count > 0)
+                {
+                    xmlElement = Serialize(ds.Tables[0]);
+                    return xmlElement.OuterXml.ToString();
+                }
             }
-            }
-             catch (Exception ex)
+            catch (Exception ex)
             {
                 System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "ConsultarBajas:" + ex.Message + ex.StackTrace + "\n" + sQry);
 
@@ -2941,21 +2941,21 @@ JOIN Departamentos ON Empleados.DepartamentosID = Departamentos.DepartamentosID 
         {
             System.Xml.XmlElement xmlElement;
             String sQry = "";
-              try
+            try
             {
-             sQry = @"Select count(*) As BajasPeriodo
+                sQry = @"Select count(*) As BajasPeriodo
                 FROM  Historial_Bajas JOIN Empleados ON Empleados.EmpleadosID = Historial_Bajas.EmpleadosID where  Historial_Bajas.Fecha_Baja 
-                BETWEEN '"+FechaInicio+@"' AND '"+FechaFinal+"' AND Empleados.SucursalesID = "+pSucursalesID;
-             
-            System.Data.DataSet ds = qryToDataSet(sQry);
-            if (ds.Tables.Count > 0)
-            {
-                xmlElement = Serialize(ds.Tables[0]);
-                return xmlElement.OuterXml.ToString();
-            }
-        }
+                BETWEEN '" + FechaInicio + @"' AND '" + FechaFinal + "' AND Empleados.SucursalesID = " + pSucursalesID;
 
-             catch (Exception ex)
+                System.Data.DataSet ds = qryToDataSet(sQry);
+                if (ds.Tables.Count > 0)
+                {
+                    xmlElement = Serialize(ds.Tables[0]);
+                    return xmlElement.OuterXml.ToString();
+                }
+            }
+
+            catch (Exception ex)
             {
                 System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "Total bajas de empleados:" + ex.Message + ex.StackTrace + "\n" + sQry);
 
@@ -2963,25 +2963,25 @@ JOIN Departamentos ON Empleados.DepartamentosID = Departamentos.DepartamentosID 
 
             return "";
         }
-          [WebMethod(Description = "Total Plantilla")]
+        [WebMethod(Description = "Total Plantilla")]
         public String ObtenerTotalPlantilla(String pSucursalesID)
         {
             System.Xml.XmlElement xmlElement;
             String sQry = "";
-              try
+            try
             {
-             sQry = @"SELECT sum(Puestos_Sucursales.CantidadEmpleados) AS Plantilla 
-             FROM Puestos_Sucursales WHERE Puestos_Sucursales.Activo = 1 AND Puestos_Sucursales.SucursalesID = "+pSucursalesID;
-               
-            System.Data.DataSet ds = qryToDataSet(sQry);
-            if (ds.Tables.Count > 0)
-            {
-                xmlElement = Serialize(ds.Tables[0]);
-                return xmlElement.OuterXml.ToString();
-            }
-        }
+                sQry = @"SELECT sum(Puestos_Sucursales.CantidadEmpleados) AS Plantilla 
+             FROM Puestos_Sucursales WHERE Puestos_Sucursales.Activo = 1 AND Puestos_Sucursales.SucursalesID = " + pSucursalesID;
 
-             catch (Exception ex)
+                System.Data.DataSet ds = qryToDataSet(sQry);
+                if (ds.Tables.Count > 0)
+                {
+                    xmlElement = Serialize(ds.Tables[0]);
+                    return xmlElement.OuterXml.ToString();
+                }
+            }
+
+            catch (Exception ex)
             {
                 System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "Obtener Plantilla:" + ex.Message + ex.StackTrace + "\n" + sQry);
 
@@ -2993,7 +2993,7 @@ JOIN Departamentos ON Empleados.DepartamentosID = Departamentos.DepartamentosID 
 
 
         [WebMethod(Description = "Devuelve el precio del codigo del articulo, Return vacio sino encuentro")]
-        public String PrecioVerificador(String pSucursalesID,String sCodigo)
+        public String PrecioVerificador(String pSucursalesID, String sCodigo)
         {
             System.Xml.XmlElement xmlElement;
             String sQry = "";
@@ -3002,7 +3002,7 @@ JOIN Departamentos ON Empleados.DepartamentosID = Departamentos.DepartamentosID 
             String sPrecioCIVA = "";
             String bPromocion = "";
             String sPrecioRealCIVA = "";
-            String sPermitirDecimales="";
+            String sPermitirDecimales = "";
             try
             {
                 //se busca el articulo por el codigo
@@ -3038,7 +3038,7 @@ JOIN Departamentos ON Empleados.DepartamentosID = Departamentos.DepartamentosID 
 FROM 
 	Articulos
 WHERE 
-	Articulos.Codigo ="+"'"+sCodigo+"'" ;
+	Articulos.Codigo =" + "'" + sCodigo + "'";
 
 
                 System.Data.DataSet ds = qryToDataSet(sQry);
@@ -3089,15 +3089,15 @@ WHERE
 	Articulos.ArticulosID = CodigosBarra_Articulos.ArticulosID
 	AND
 	(
-		CodigosBarra_Articulos.CodigoBarra ="+"'"+sCodigo+"'"+")";
+		CodigosBarra_Articulos.CodigoBarra =" + "'" + sCodigo + "'" + ")";
                     ds = null;
                     ds = qryToDataSet(sQry);
 
-                    
+
 
                     if (hayInfoDS(ds))
                     {
-                        
+
                         // Se encontro
                         sArticulosID = ds.Tables[0].Rows[0]["ArticulosID"].ToString();
                         sDescripcionArticulo = ds.Tables[0].Rows[0]["Nombre"].ToString();
@@ -3132,11 +3132,11 @@ WHERE
 FROM 
 	ArticulosPrecios
 WHERE 
-	ArticulosPrecios.ArticulosID = "+sArticulosID+@"
-	AND	ArticulosPrecios.SucursalesID ="+ pSucursalesID + @"
+	ArticulosPrecios.ArticulosID = " + sArticulosID + @"
+	AND	ArticulosPrecios.SucursalesID =" + pSucursalesID + @"
 	AND	ArticulosPrecios.EsPromocion = 1
-	AND	ArticulosPrecios.FechaInicio <= '"+ DateTime.Now.ToString("yyyyMMdd") + @"'
-	AND	ArticulosPrecios.FechaFinal >= '"+DateTime.Now.ToString("yyyyMMdd")+@"'
+	AND	ArticulosPrecios.FechaInicio <= '" + DateTime.Now.ToString("yyyyMMdd") + @"'
+	AND	ArticulosPrecios.FechaFinal >= '" + DateTime.Now.ToString("yyyyMMdd") + @"'
 	AND	ArticulosPrecios.Activo =1";
                 ds = null;
                 ds = qryToDataSet(sQry);
@@ -3175,8 +3175,8 @@ WHERE
 FROM 
 	ArticulosPrecios
 WHERE 
-	ArticulosPrecios.ArticulosID = "+sArticulosID+@"
-	AND	ArticulosPrecios.SucursalesID = "+pSucursalesID+@"
+	ArticulosPrecios.ArticulosID = " + sArticulosID + @"
+	AND	ArticulosPrecios.SucursalesID = " + pSucursalesID + @"
 	AND	ArticulosPrecios.EsPromocion = 0
 		AND	ArticulosPrecios.Nivel ='NV1'";
                     ds = null;
@@ -3194,12 +3194,12 @@ WHERE
 
 
                 }
-              
-                return sArticulosID+"|"+sDescripcionArticulo+"|"+sPrecioCIVA+"|"+bPromocion+"|"+sPrecioRealCIVA+"|"+sPermitirDecimales;
+
+                return sArticulosID + "|" + sDescripcionArticulo + "|" + sPrecioCIVA + "|" + bPromocion + "|" + sPrecioRealCIVA + "|" + sPermitirDecimales;
             }
 
 
-          
+
 
 
             catch (Exception ex)
@@ -3240,7 +3240,7 @@ WHERE
             try
             {
                 ds = qryToDataSet(sQry);
-                if(ds.Tables.Count>0)
+                if (ds.Tables.Count > 0)
                 {
                     xmlElement = Serialize(ds.Tables[0]);
                     return xmlElement.OuterXml.ToString();
@@ -3255,25 +3255,25 @@ WHERE
         }
 
 
-    [WebMethod(Description = "Plantilla por puestos")]
+        [WebMethod(Description = "Plantilla por puestos")]
         public String ObtenerPuestosPlantilla(String pSucursalesID)
         {
             System.Xml.XmlElement xmlElement;
             String sQry = "";
-              try
+            try
             {
-             sQry = @"SELECT Puestos_Sucursales.PuestosID, Puestos_Sucursales.CantidadEmpleados
-             FROM Puestos_Sucursales WHERE Puestos_Sucursales.Activo = 1 AND Puestos_Sucursales.SucursalesID = "+ pSucursalesID;
-                
-            System.Data.DataSet ds = qryToDataSet(sQry);
-            if (ds.Tables.Count > 0)
-            {
-                xmlElement = Serialize(ds.Tables[0]);
-                return xmlElement.OuterXml.ToString();
-            }
-        }
+                sQry = @"SELECT Puestos_Sucursales.PuestosID, Puestos_Sucursales.CantidadEmpleados
+             FROM Puestos_Sucursales WHERE Puestos_Sucursales.Activo = 1 AND Puestos_Sucursales.SucursalesID = " + pSucursalesID;
 
-             catch (Exception ex)
+                System.Data.DataSet ds = qryToDataSet(sQry);
+                if (ds.Tables.Count > 0)
+                {
+                    xmlElement = Serialize(ds.Tables[0]);
+                    return xmlElement.OuterXml.ToString();
+                }
+            }
+
+            catch (Exception ex)
             {
                 System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "Obtener Puesto Plantilla:" + ex.Message + ex.StackTrace + "\n" + sQry);
 
@@ -3281,127 +3281,127 @@ WHERE
 
             return "";
         }
-    
 
-//---------------------------------[    Solicitudes de Cancelacion   ]------------------------------------
+
+        //---------------------------------[    Solicitudes de Cancelacion   ]------------------------------------
         [WebMethod(Description = "Regresa solicitudes de cancelacion")]
-                public string SolicitudCancelaciones(String Activo, String FechaSolicitudIncio, String FechaSolicitudFinal, String SucursalID)
-                {
-                    String sQry = @"
+        public string SolicitudCancelaciones(String Activo, String FechaSolicitudIncio, String FechaSolicitudFinal, String SucursalID)
+        {
+            String sQry = @"
                 SELECT *
                 FROM 
                 AutorizacionMovimientos
                 WHERE 
-                AutorizacionMovimientos.Procesado = "+Activo+@"
-                AND	AutorizacionMovimientos.FechaHoraSolicitud BETWEEN '"+FechaSolicitudIncio+"' AND '"+FechaSolicitudFinal+@"'
-                AND	AutorizacionMovimientos.SucursalesID = "+SucursalID;
-                  
-                    System.Data.DataSet ds;
-                    System.Xml.XmlElement xmlElement;
-                    try
-                    {
-                        ds = qryToDataSet(sQry);
-                        if(ds.Tables.Count>0)
-                        {
-                            xmlElement = Serialize(ds.Tables[0]);
-                            return xmlElement.OuterXml.ToString();
-                        }
-                        return "No ingreso en el if ";
-                    }
-                    catch (Exception ex)
-                    {
-                        System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "Regresa solicitudes de cancelacion:" + ex.Message + ex.StackTrace + "\n" + sQry);
-                        return "Ocurrio un error inesperado";
-                    }
-                }
+                AutorizacionMovimientos.Procesado = " + Activo + @"
+                AND	AutorizacionMovimientos.FechaHoraSolicitud BETWEEN '" + FechaSolicitudIncio + "' AND '" + FechaSolicitudFinal + @"'
+                AND	AutorizacionMovimientos.SucursalesID = " + SucursalID;
 
-
-
-            [WebMethod(Description = "Modifica la tabla AutorizacionMovientos")]
-                    public string Autorizacion_Desicion(String MovimientoID, String Desicion, String JustificacionDesicion, String FechaAutorizacion, String IDEmpleadoAutorizo)
-                    {
-            String sQry = "";
-                       //Construimos el qry 
-                        try
+            System.Data.DataSet ds;
+            System.Xml.XmlElement xmlElement;
+            try
             {
-                       sQry =@"UPDATE AutorizacionMovimientos
-                        SET ComentariosAutorizacion='"+JustificacionDesicion+"', FechaHoraAutorizacion='"+FechaAutorizacion+"', EmpleadoAutorizoID='"+IDEmpleadoAutorizo+"', Procesado=1";
-                        
-                        //Marcamos la casilla de EsAprobado
-                        if(Desicion=="1"){
-                            sQry+=", EsAprobado=1";
-                        }else{
-                        //Marcamos la casilla de EsRechazado
-                            sQry+=", EsDenegado=1";
-                        }
-                        //Instruccion final del qry
-                              sQry+=" WHERE FolioMovimientoID="+MovimientoID;
-                
-                         //ejecutamos el qry
-                        qryInsertUpdate(sQry);           
-                         }
-                        catch (Exception ex){
-                            System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", ex.Message);
-                        }
-                        return sQry;
-                    }
-
-
-
-                [WebMethod(Description = "Regresa historial de sincronizaciones sistema de emergencia")]
-                public string SistemaEmergenciaHistorial(String FechaSolicitudIncio, String FechaSolicitudFinal, String SucursalID)
+                ds = qryToDataSet(sQry);
+                if (ds.Tables.Count > 0)
                 {
-                    String sQry = @"
+                    xmlElement = Serialize(ds.Tables[0]);
+                    return xmlElement.OuterXml.ToString();
+                }
+                return "No ingreso en el if ";
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "Regresa solicitudes de cancelacion:" + ex.Message + ex.StackTrace + "\n" + sQry);
+                return "Ocurrio un error inesperado";
+            }
+        }
+
+
+
+        [WebMethod(Description = "Modifica la tabla AutorizacionMovientos")]
+        public string Autorizacion_Desicion(String MovimientoID, String Desicion, String JustificacionDesicion, String FechaAutorizacion, String IDEmpleadoAutorizo)
+        {
+            String sQry = "";
+            //Construimos el qry 
+            try
+            {
+                sQry = @"UPDATE AutorizacionMovimientos
+                        SET ComentariosAutorizacion='" + JustificacionDesicion + "', FechaHoraAutorizacion='" + FechaAutorizacion + "', EmpleadoAutorizoID='" + IDEmpleadoAutorizo + "', Procesado=1";
+
+                //Marcamos la casilla de EsAprobado
+                if (Desicion == "1") {
+                    sQry += ", EsAprobado=1";
+                } else {
+                    //Marcamos la casilla de EsRechazado
+                    sQry += ", EsDenegado=1";
+                }
+                //Instruccion final del qry
+                sQry += " WHERE FolioMovimientoID=" + MovimientoID;
+
+                //ejecutamos el qry
+                qryInsertUpdate(sQry);
+            }
+            catch (Exception ex) {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", ex.Message);
+            }
+            return sQry;
+        }
+
+
+
+        [WebMethod(Description = "Regresa historial de sincronizaciones sistema de emergencia")]
+        public string SistemaEmergenciaHistorial(String FechaSolicitudIncio, String FechaSolicitudFinal, String SucursalID)
+        {
+            String sQry = @"
                 SELECT *
                 FROM 
                 LogTiposMovimientosDesHora
                 WHERE 
-                LogTiposMovimientosDesHora.FechaHoraCreacion BETWEEN '"+FechaSolicitudIncio+"' AND '"+FechaSolicitudFinal+@"'
-                AND	LogTiposMovimientosDesHora.SucursalesID = "+SucursalID;
-                  
-                    System.Data.DataSet ds;
-                    System.Xml.XmlElement xmlElement;
-                    try
-                    {
-                        ds = qryToDataSet(sQry);
-                        if(ds.Tables.Count>0)
-                        {
-                            xmlElement = Serialize(ds.Tables[0]);
-                            return xmlElement.OuterXml.ToString();
-                        }
-                        return "No ingreso en el if ";
-                    }
-                    catch (Exception ex)
-                    {
-                        System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "Sistema emergencia historial:" + ex.Message + ex.StackTrace + "\n" + sQry);
-                        return "Ocurrio un error inesperado";
-                    }
-                }
+                LogTiposMovimientosDesHora.FechaHoraCreacion BETWEEN '" + FechaSolicitudIncio + "' AND '" + FechaSolicitudFinal + @"'
+                AND	LogTiposMovimientosDesHora.SucursalesID = " + SucursalID;
 
-                    [WebMethod(Description = "Agrega justificacion a los registros que se quedan en el limbo")]
-                    public string Historial_Cancelacion_Justificacion_Limbo(String MovimientoID, String JustificacionDelLimbo)
-                    {
-                        String sQry = "";
-                       //Construimos el qry 
-                        try
-             {
-                       sQry =@"UPDATE AutorizacionMovimientos
-                        SET ComentariosAutorizacion='"+JustificacionDelLimbo+"', Justificacion_No_Cancelada=1";
-                    
-                        //Instruccion final del qry
-                              sQry+=" WHERE FolioMovimientoID="+MovimientoID;
-                
-                         //ejecutamos el qry
-                        qryInsertUpdate(sQry);           
-                         }
-                        catch (Exception ex){
-                            System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", ex.Message);
-                        }
-                        return sQry;
-                    }
-       //----------------------------------------------------------------------------------    
-       
-       
+            System.Data.DataSet ds;
+            System.Xml.XmlElement xmlElement;
+            try
+            {
+                ds = qryToDataSet(sQry);
+                if (ds.Tables.Count > 0)
+                {
+                    xmlElement = Serialize(ds.Tables[0]);
+                    return xmlElement.OuterXml.ToString();
+                }
+                return "No ingreso en el if ";
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "Sistema emergencia historial:" + ex.Message + ex.StackTrace + "\n" + sQry);
+                return "Ocurrio un error inesperado";
+            }
+        }
+
+        [WebMethod(Description = "Agrega justificacion a los registros que se quedan en el limbo")]
+        public string Historial_Cancelacion_Justificacion_Limbo(String MovimientoID, String JustificacionDelLimbo)
+        {
+            String sQry = "";
+            //Construimos el qry 
+            try
+            {
+                sQry = @"UPDATE AutorizacionMovimientos
+                        SET ComentariosAutorizacion='" + JustificacionDelLimbo + "', Justificacion_No_Cancelada=1";
+
+                //Instruccion final del qry
+                sQry += " WHERE FolioMovimientoID=" + MovimientoID;
+
+                //ejecutamos el qry
+                qryInsertUpdate(sQry);
+            }
+            catch (Exception ex) {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", ex.Message);
+            }
+            return sQry;
+        }
+        //----------------------------------------------------------------------------------    
+
+
         [WebMethod(Description = "Regresa el Id de las subcategorias asi como su nombre")]
         public string ObtenerSubCategorias()
         {
@@ -3410,10 +3410,10 @@ WHERE
             System.Xml.XmlElement xmlElement;
             try
             {
-                ds= qryToDataSet(sQry);
-                if(ds.Tables.Count>0)
+                ds = qryToDataSet(sQry);
+                if (ds.Tables.Count > 0)
                 {
-                    xmlElement=Serialize(ds.Tables[0]);
+                    xmlElement = Serialize(ds.Tables[0]);
                     return xmlElement.OuterXml.ToString();
                 }
                 return "";
@@ -3423,20 +3423,20 @@ WHERE
                 System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "ObtenerSubCategorias:" + ex.Message + ex.StackTrace + "\n" + sQry);
                 return "Ocurrio un error inesperado";
             }
-            
+
         }
         [WebMethod(Description = "Regresa Nombre y codigo de los articulos pertenecientes a esa categoria")]
         public string ObtenerArticulosDeSubcategoria(string SubcategoriaID)
         {
-            String sQry = "select ArticulosID,Codigo,Nombre from Articulos where AppSubCategoriasID = "+SubcategoriaID+" order by Nombre asc";
+            String sQry = "select ArticulosID,Codigo,Nombre from Articulos where AppSubCategoriasID = " + SubcategoriaID + " order by Nombre asc";
             System.Data.DataSet ds;
             System.Xml.XmlElement xmlElement;
             try
             {
-                ds= qryToDataSet(sQry);
-                if(ds.Tables.Count>0)
+                ds = qryToDataSet(sQry);
+                if (ds.Tables.Count > 0)
                 {
-                    xmlElement=Serialize(ds.Tables[0]);
+                    xmlElement = Serialize(ds.Tables[0]);
                     return xmlElement.OuterXml.ToString();
                 }
                 return "";
@@ -3449,12 +3449,12 @@ WHERE
         }
 
         [WebMethod(Description = "Regresa los articulos que no se han contabilizado")]
-        public string consultaArticulosNoContabilizados(String ParamFechaInicial, String ParamFechaFinal, String Param_ID_Sucursal, String Param_Articulo_Estatus,String Param_Linea_Producto,String Param_Tipo_De_Ciclico)
+        public string consultaArticulosNoContabilizados(String ParamFechaInicial, String ParamFechaFinal, String Param_ID_Sucursal, String Param_Articulo_Estatus, String Param_Linea_Producto, String Param_Tipo_De_Ciclico)
         {
             String sQry = @"SELECT Articulos.Codigo,Articulos.Nombre,Articulos.ArticulosID,ArticulosExistencias.Existencia,'19990101' as Fecha FROM Articulos,ArticulosExistencias
   WHERE 
   Articulos.ArticulosID=ArticulosExistencias.ArticulosID
-  AND ArticulosExistencias.SucursalesID="+Param_ID_Sucursal+@"
+  AND ArticulosExistencias.SucursalesID=" + Param_ID_Sucursal + @"
   AND Articulos.Activo=" + Param_Articulo_Estatus + @"
   AND Articulos.SeVende=1 ";
 
@@ -3463,7 +3463,7 @@ WHERE
                 sQry += " AND Articulos.LineaID=" + Param_Linea_Producto;
             }
 
-            sQry +=  @" AND Articulos.ArticulosID NOT IN (
+            sQry += @" AND Articulos.ArticulosID NOT IN (
 
  SELECT DISTINCT(ConteosArticulos. ArticulosID) AS ArticulosID
  FROM Conteos,ConteosArticulos
@@ -3489,7 +3489,7 @@ WHERE
 
                 foreach (System.Data.DataRow nRow in ds.Tables[0].Rows) {
 
-                    if (nRow["ArticulosID"].ToString().Length > 1){
+                    if (nRow["ArticulosID"].ToString().Length > 1) {
 
                         sArticulosID += nRow["ArticulosID"].ToString() + ",";
                     }
@@ -3505,18 +3505,18 @@ WHERE
   Conteos, ConteosArticulos
   WHERE
   Conteos.ConteosID = ConteosArticulos.ConteosID
-   AND Conteos.SucursalesID ="+Param_ID_Sucursal+ @"
-                AND ConteosArticulos.ArticulosID IN ("+ sArticulosID + @" )
+   AND Conteos.SucursalesID =" + Param_ID_Sucursal + @"
+                AND ConteosArticulos.ArticulosID IN (" + sArticulosID + @" )
                 GROUP BY ConteosArticulos.ArticulosID";
 
 
                 dsAux = qryToDataSet(sQry);
-                System.Data.DataRow[] result=null;
+                System.Data.DataRow[] result = null;
 
                 foreach (System.Data.DataRow nRow in dsAux.Tables[0].Rows)
                 {
 
-                        result = ds.Tables[0].Select("ArticulosID =" + nRow["ArticulosID"].ToString());
+                    result = ds.Tables[0].Select("ArticulosID =" + nRow["ArticulosID"].ToString());
                     if (result.Length > 0)
                     {
                         int SelectedIndex = ds.Tables[0].Rows.IndexOf(result[0]);
@@ -3531,7 +3531,7 @@ WHERE
 
 
 
-                    if (ds.Tables.Count > 0)
+                if (ds.Tables.Count > 0)
                 {
                     xmlElement = Serialize(ds.Tables[0]);
                     return xmlElement.OuterXml.ToString();
@@ -3545,88 +3545,94 @@ WHERE
             }
         }
 
-        //-----------------------[Solicitudes Merma]----------------------------
+        //-----------------------[Solicitudes Mermas]----------------------------
         [WebMethod(Description = "Regresa solicitudes de aprobacion Mermas")]
-                public string SolicitudCancelacionesMermas(String Activo, String FechaSolicitudIncio, String FechaSolicitudFinal, String SucursalID)
-                {
-                    String sQry = @"
+        public string SolicitudAprobacionMermas(String Activo, String FechaSolicitudIncio, String FechaSolicitudFinal, String SucursalID, String LineaID)
+        {
+            String sQry = @"
                 SELECT *
                 FROM 
                 AutorizacionMovimientosMermas
                 WHERE 
-                AutorizacionMovimientosMermas.Procesado = "+Activo+@"
-                AND	AutorizacionMovimientosMermas.FechaHoraSolicitud BETWEEN '"+FechaSolicitudIncio+"' AND '"+FechaSolicitudFinal+@"'
-                AND	AutorizacionMovimientosMermas.SucursaID = "+SucursalID;
-                  
-                    System.Data.DataSet ds;
-                    System.Xml.XmlElement xmlElement;
-                    try
-                    {
-                        ds = qryToDataSet(sQry);
-                        if(ds.Tables.Count>0)
-                        {
-                            xmlElement = Serialize(ds.Tables[0]);
-                            return xmlElement.OuterXml.ToString();
-                        }
-                        return "Nada para regresar";
-                    }
-                    catch (Exception ex)
-                    {
-                        System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "Regresa solicitudes de cancelacion:" + ex.Message + ex.StackTrace + "\n" + sQry);
-                        return "Ocurrio un error inesperado";
-                    }
+                AutorizacionMovimientosMermas.ProcesadoDireccion = " + Activo + @"
+                and AutorizacionMovimientosMermas.LineaID = " + LineaID + @"
+                AND	AutorizacionMovimientosMermas.FechaHoraSolicitud BETWEEN '" + FechaSolicitudIncio + "' AND '" + FechaSolicitudFinal + @"'
+                AND	AutorizacionMovimientosMermas.SucursaID = " + SucursalID;
 
-                    [WebMethod(Description = "Modifica la tabla AutorizacionMovientosMermas")]
-                        public string Autorizacion_Direccion_Mermas(String MovimientoID, String Desicion, String JustificacionDesicion, String FechaAutorizacion, String IDEmpleadoAutorizo)
-                        {
-                        String sQry = "";
-                        //Construimos el qry 
-                         try{
-                            sQry =@"UPDATE AutorizacionMovimientosMermas
-                                 SET ComentariosAutorizacion='"+JustificacionDesicion+"', FechaHoraAutorizacion='"+FechaAutorizacion+"', EmpleadoAutorizoID='"+IDEmpleadoAutorizo+"', ProcesadoDireccion=1";
-                                            
-                                //Marcamos la casilla de EsAprobado
-                                if(Desicion=="1"){
-                                 sQry+=", EsAprobado=1";
-                                }else{
-                                 //Marcamos la casilla de EsRechazado
-                                sQry+=", EsDenegado=1";
-                                }
-                                //Instruccion final del qry
-                                sQry+=" WHERE AutorizacionMovimientosMermasID="+MovimientoID;
-                                //ejecutamos el qry
-                                qryInsertUpdate(sQry);           
-                                }
-                                catch (Exception ex){
-                                    System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", ex.Message);
-                                }
-                                    return sQry;
-                                }
-
+            System.Data.DataSet ds;
+            System.Xml.XmlElement xmlElement;
+            try
+            {
+                ds = qryToDataSet(sQry);
+                if (ds.Tables.Count > 0)
+                {
+                    xmlElement = Serialize(ds.Tables[0]);
+                    return xmlElement.OuterXml.ToString();
                 }
+                return "Nada para regresar";
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "Regresa solicitudes de cancelacion:" + ex.Message + ex.StackTrace + "\n" + sQry);
+                return "Ocurrio un error inesperado";
+            }
+        }
+
+        [WebMethod(Description = "Modifica la tabla AutorizacionMovientosMermas")]
+        public string Autorizacion_Direccion_Mermas(String MovimientoID, String Desicion, String JustificacionDesicion, String FechaAutorizacion, String IDEmpleadoAutorizo)
+        {
+            String sQry = "";
+            //Construimos el qry 
+            try {
+                sQry = @"UPDATE AutorizacionMovimientosMermas
+                                 SET ComentariosAutorizacion='" + JustificacionDesicion + "', FechaHoraAutorizacion='" + FechaAutorizacion + "', EmpleadoAutorizoID='" + IDEmpleadoAutorizo + "', ProcesadoDireccion=1";
+
+                //Marcamos la casilla de EsAprobado
+                if (Desicion == "1") {
+                    sQry += ", EsAprobado=1";
+                } else {
+                    //Marcamos la casilla de EsRechazado
+                    sQry += ", EsDenegado=1";
+                }
+                //Instruccion final del qry
+                sQry += " WHERE AutorizacionMovimientosMermasID=" + MovimientoID;
+                //ejecutamos el qry
+                qryInsertUpdate(sQry);
+            }
+            catch (Exception ex) {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", ex.Message);
+            }
+            return sQry;
+        }
 
 
         [WebMethod(Description = "Agrega justificacion a los registros que se quedan en el limbo en mermas")]
-                    public string Justificacion_Limbo_Mermas(String MovimientoID, String JustificacionDelLimbo)
-                    {
-                        String sQry = "";
-                       //Construimos el qry 
-                        try
-                        {
-                       sQry =@"UPDATE AutorizacionMovimientosMermas
-                        SET ComentariosAutorizacion='"+JustificacionDelLimbo+"', EsSolicitudNoInteractuada=1";
-                    
-                        //Instruccion final del qry
-                              sQry+=" WHERE AutorizacionMovimientosMermasID="+MovimientoID;
-                
-                         //ejecutamos el qry
-                        qryInsertUpdate(sQry);           
-                         }
-                        catch (Exception ex){
-                            System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", ex.Message);
-                        }
-                        return sQry;
-                    }
+        public string Justificacion_Limbo_Mermas(String MovimientoID, String JustificacionDelLimbo)
+        {
+            String sQry = "";
+            //Construimos el qry 
+            try
+            {
+                sQry = @"UPDATE AutorizacionMovimientosMermas
+                        SET ComentariosAutorizacion='" + JustificacionDelLimbo + "', EsSolicitudNoInteractuada=1";
+
+                //Instruccion final del qry
+                sQry += " WHERE AutorizacionMovimientosMermasID=" + MovimientoID;
+
+                //ejecutamos el qry
+                qryInsertUpdate(sQry);
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", ex.Message);
+            }
+            return sQry;
+        }
+
+
+
+
 
     }
+                
 }
