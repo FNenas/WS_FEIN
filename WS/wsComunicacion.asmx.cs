@@ -1458,8 +1458,12 @@ namespace WS
         {
 
 
+<<<<<<< HEAD
 
             return "1.0.0.18";
+=======
+            return "1.0.0.20" ;
+>>>>>>> b3e42436f4abda7681b36a274a91d6979db87f69
         }
         [WebMethod(Description = "Regresa un xml con los Estados")]
         public String Estados()
@@ -3536,7 +3540,7 @@ WHERE
                     xmlElement = Serialize(ds.Tables[0]);
                     return xmlElement.OuterXml.ToString();
                 }
-                return "No ingreso en el if ";
+                return "No ingreso en el if. ";
             }
             catch (Exception ex)
             {
@@ -3554,56 +3558,57 @@ WHERE
                 FROM 
                 AutorizacionMovimientosMermas
                 WHERE 
-                AutorizacionMovimientosMermas.ProcesadoDireccion = " + Activo + @"
-                and AutorizacionMovimientosMermas.LineaID = " + LineaID + @"
-                AND	AutorizacionMovimientosMermas.FechaHoraSolicitud BETWEEN '" + FechaSolicitudIncio + "' AND '" + FechaSolicitudFinal + @"'
-                AND	AutorizacionMovimientosMermas.SucursaID = " + SucursalID;
-
-            System.Data.DataSet ds;
-            System.Xml.XmlElement xmlElement;
-            try
-            {
-                ds = qryToDataSet(sQry);
-                if (ds.Tables.Count > 0)
-                {
-                    xmlElement = Serialize(ds.Tables[0]);
-                    return xmlElement.OuterXml.ToString();
-                }
-                return "Nada para regresar";
-            }
-            catch (Exception ex)
-            {
-                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "Regresa solicitudes de cancelacion:" + ex.Message + ex.StackTrace + "\n" + sQry);
-                return "Ocurrio un error inesperado";
-            }
+                AutorizacionMovimientosMermas.ProcesadoDireccion = "+Activo+@"
+                AND AutorizacionMovimientosMermas.LineaID = "+LineaID+@"
+                AND	AutorizacionMovimientosMermas.FechaHoraSolicitud BETWEEN '"+FechaSolicitudIncio+"' AND '"+FechaSolicitudFinal+@"'
+                AND	AutorizacionMovimientosMermas.SucursaID = "+SucursalID;
+                  
+                    System.Data.DataSet ds;
+                    System.Xml.XmlElement xmlElement;
+                    try
+                    {
+                        ds = qryToDataSet(sQry);
+                        if(ds.Tables.Count>0)
+                        {
+                            xmlElement = Serialize(ds.Tables[0]);
+                            return xmlElement.OuterXml.ToString();
+                        }
+                        return "Nada para regresar";
+                    }
+                    catch (Exception ex)
+                    {
+                        System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "Regresa solicitudes de cancelacion:" + ex.Message + ex.StackTrace + "\n" + sQry);
+                        return "Ocurrio un error inesperado";
+                    }
         }
-
         [WebMethod(Description = "Modifica la tabla AutorizacionMovientosMermas")]
-        public string Autorizacion_Direccion_Mermas(String MovimientoID, String Desicion, String JustificacionDesicion, String FechaAutorizacion, String IDEmpleadoAutorizo)
-        {
-            String sQry = "";
-            //Construimos el qry 
-            try {
-                sQry = @"UPDATE AutorizacionMovimientosMermas
-                                 SET ComentariosAutorizacion='" + JustificacionDesicion + "', FechaHoraAutorizacion='" + FechaAutorizacion + "', EmpleadoAutorizoID='" + IDEmpleadoAutorizo + "', ProcesadoDireccion=1";
+                        public string Autorizacion_Direccion_Mermas(String MovimientoID, String Desicion, String JustificacionDesicion, String FechaAutorizacion, String IDEmpleadoAutorizo)
+                        {
+                        String sQry = "";
+                        //Construimos el qry 
+                         try{
+                            sQry =@"UPDATE AutorizacionMovimientosMermas
+                                 SET ComentariosAutorizacion='"+JustificacionDesicion+"', FechaHoraAutorizacion='"+FechaAutorizacion+"', EmpleadoAutorizoID='"+IDEmpleadoAutorizo+"', ProcesadoDireccion=1";
+                                            
+                                //Marcamos la casilla de EsAprobado
+                                if(Desicion=="1"){
+                                 sQry+=", EsAprobado=1";
+                                }else{
+                                 //Marcamos la casilla de EsRechazado
+                                sQry+=", EsDenegado=1";
+                                }
+                                //Instruccion final del qry
+                                sQry+=" WHERE AutorizacionMovimientosMermasID="+MovimientoID;
+                                //ejecutamos el qry
+                                qryInsertUpdate(sQry);           
+                                }
+                                catch (Exception ex){
+                                    System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", ex.Message);
+                                }
+                                    return sQry;
+                                }
 
-                //Marcamos la casilla de EsAprobado
-                if (Desicion == "1") {
-                    sQry += ", EsAprobado=1";
-                } else {
-                    //Marcamos la casilla de EsRechazado
-                    sQry += ", EsDenegado=1";
-                }
-                //Instruccion final del qry
-                sQry += " WHERE AutorizacionMovimientosMermasID=" + MovimientoID;
-                //ejecutamos el qry
-                qryInsertUpdate(sQry);
-            }
-            catch (Exception ex) {
-                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", ex.Message);
-            }
-            return sQry;
-        }
+            //    }
 
 
         [WebMethod(Description = "Agrega justificacion a los registros que se quedan en el limbo en mermas")]
