@@ -3558,9 +3558,13 @@ WHERE
                 FROM 
                 AutorizacionMovimientosMermas
                 WHERE 
-                AutorizacionMovimientosMermas.ProcesadoDireccion = "+Activo+@"
-                AND AutorizacionMovimientosMermas.LineaID = "+LineaID+@"
-                AND	AutorizacionMovimientosMermas.FechaHoraSolicitud BETWEEN '"+FechaSolicitudIncio+"' AND '"+FechaSolicitudFinal+@"'
+                AutorizacionMovimientosMermas.ProcesadoDireccion = "+Activo;
+                
+                if (LineaID!="-1"){
+                     sQry+="AND AutorizacionMovimientosMermas.LineaID = "+LineaID;
+                }
+                
+                sQry+="AND	AutorizacionMovimientosMermas.FechaHoraSolicitud BETWEEN '"+FechaSolicitudIncio+"' AND '"+FechaSolicitudFinal+@"'
                 AND	AutorizacionMovimientosMermas.SucursaID = "+SucursalID;
                   
                     System.Data.DataSet ds;
