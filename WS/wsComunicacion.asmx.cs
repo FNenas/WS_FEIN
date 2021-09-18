@@ -1458,12 +1458,11 @@ namespace WS
         {
 
 
-<<<<<<< HEAD
 
-            return "1.0.0.18";
-=======
+
+
             return "1.0.0.20" ;
->>>>>>> b3e42436f4abda7681b36a274a91d6979db87f69
+
         }
         [WebMethod(Description = "Regresa un xml con los Estados")]
         public String Estados()
