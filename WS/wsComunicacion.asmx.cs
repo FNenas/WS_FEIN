@@ -3431,11 +3431,7 @@ WHERE
         [WebMethod(Description = "Regresa Nombre y codigo de los articulos pertenecientes a esa categoria")]
         public string ObtenerArticulosDeSubcategoria(string SubcategoriasID)
         {
-<<<<<<< HEAD
             String sQry = "select ArticulosID,Codigo,Nombre from Articulos where AppSubCategoriasID IN("+SubcategoriasID+") order by Nombre asc";
-=======
-            String sQry = "select ArticulosID,Codigo,Nombre from Articulos where AppSubCategoriasID = " + SubcategoriaID + " order by Nombre asc";
->>>>>>> 13946b168853a553ce24d55ab0cb2b63d4346360
             System.Data.DataSet ds;
             System.Xml.XmlElement xmlElement;
             try
