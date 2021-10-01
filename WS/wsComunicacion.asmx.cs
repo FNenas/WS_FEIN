@@ -3406,9 +3406,9 @@ WHERE
 
 
         [WebMethod(Description = "Regresa el Id de las subcategorias asi como su nombre")]
-        public string ObtenerSubCategorias()
+        public string ObtenerSubCategorias(string SubCategoriasID)
         {
-            String sQry = "select AppSubCategoriasID,Descripcion from AppSubCategorias";
+            String sQry = "select AppSubCategoriasID,Descripcion from AppSubCategorias where AppSubCategoriasID in ("+SubcategoriasID+")";
             System.Data.DataSet ds;
             System.Xml.XmlElement xmlElement;
             try
