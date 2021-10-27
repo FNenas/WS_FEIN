@@ -3554,16 +3554,16 @@ WHERE
         {
             String sQry = @"
                 SELECT *
-                FROM 
+                FROM q
                 AutorizacionMovimientosMermas
                 WHERE 
                 AutorizacionMovimientosMermas.ProcesadoDireccion = "+Activo;
                 
                 if (LineaID!="-1"){
-                     sQry+="AND AutorizacionMovimientosMermas.LineaID = "+LineaID;
+                     sQry+=" AND AutorizacionMovimientosMermas.LineaID = "+LineaID;
                 }
                 
-                sQry+="AND	AutorizacionMovimientosMermas.FechaHoraSolicitud BETWEEN '"+FechaSolicitudIncio+"' AND '"+FechaSolicitudFinal+@"'
+                sQry+=" AND	AutorizacionMovimientosMermas.FechaHoraSolicitud BETWEEN '"+FechaSolicitudIncio+"' AND '"+FechaSolicitudFinal+@"'
                 AND	AutorizacionMovimientosMermas.SucursaID = "+SucursalID;
                   
                     System.Data.DataSet ds;
