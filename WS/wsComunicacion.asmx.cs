@@ -3666,13 +3666,14 @@ CATSAT_ClaveProductosServicios.ClaveProdServ,
 CATSAT_ClaveProductosServicios.Descripcion,
 sum(Pedidos_Articulos.PiezasSurtidas) as Cantidad,
 Articulos.PermitirDecimales as EsKilogramo,
-sum (Articulos.PesoPromedio* Pedidos_Articulos.PiezasSurtidas) as PesoTotal
+sum (Articulos.PesoPromedio* Pedidos_Articulos.PiezasSurtidas) as PesoTotal,
+sum( Pedidos_Articulos.ImporteIVACosto) as importeCostoIVA
 from Pedidos_Articulos,Articulos,Pedidos,CATSAT_ClaveProductosServicios
 where
 Pedidos.PedidosID=Pedidos_Articulos.PedidosID
 and Pedidos_Articulos.ArticulosID=Articulos.ArticulosID
 and Articulos.CATSAT_ClaveProductosServiciosID=CATSAT_ClaveProductosServicios.CATSAT_ClaveProductosServiciosID
-and Pedidos_Articulos.PedidosID="+sPedido+@"
+and Pedidos_Articulos.PedidosID=" + sPedido+@"
 GROUP by 
 CATSAT_ClaveProductosServicios.ClaveProdServ,
 CATSAT_ClaveProductosServicios.Descripcion,
@@ -3690,7 +3691,7 @@ Articulos.PermitirDecimales ";
                     xmlElement = Serialize(ds.Tables[0]);
                     return xmlElement.OuterXml.ToString();
                 }
-                return "";
+                return "-1";
             }
             catch (Exception ex)
             {
@@ -3711,13 +3712,14 @@ CATSAT_ClaveProductosServicios.ClaveProdServ,
 CATSAT_ClaveProductosServicios.Descripcion,
 sum(SalidasArticulos.Cantidad) as Cantidad,
 Articulos.PermitirDecimales as EsKilogramo,
-sum (Articulos.PesoPromedio* SalidasArticulos.Cantidad) as PesoTotal
+sum (Articulos.PesoPromedio* SalidasArticulos.Cantidad) as PesoTotal,
+sum(SalidasArticulos.ImporteIVACosto) as ImporteIVACosto
 from SalidasArticulos,Articulos,salidas,CATSAT_ClaveProductosServicios
 where
 salidas.SalidasID=SalidasArticulos.SalidasID
 and SalidasArticulos.ArticulosID=Articulos.ArticulosID
 and Articulos.CATSAT_ClaveProductosServiciosID=CATSAT_ClaveProductosServicios.CATSAT_ClaveProductosServiciosID
-and SalidasArticulos.SalidasID="+ sTransferencias + @"
+and SalidasArticulos.SalidasID=" + sTransferencias + @"
 and Salidas.TiposMovimientosID=8001
 GROUP by 
 CATSAT_ClaveProductosServicios.ClaveProdServ,
@@ -3736,7 +3738,7 @@ Articulos.PermitirDecimales  ";
                     xmlElement = Serialize(ds.Tables[0]);
                     return xmlElement.OuterXml.ToString();
                 }
-                return "";
+                return "-1";
             }
             catch (Exception ex)
             {
