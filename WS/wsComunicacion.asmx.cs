@@ -3554,7 +3554,7 @@ WHERE
         {
             String sQry = @"
                 SELECT *
-                FROM q
+                FROM 
                 AutorizacionMovimientosMermas
                 WHERE 
                 AutorizacionMovimientosMermas.ProcesadoDireccion = "+Activo;
