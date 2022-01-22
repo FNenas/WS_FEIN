@@ -3454,6 +3454,9 @@ WHERE
         [WebMethod(Description = "Regresa los articulos que no se han contabilizado")]
         public string consultaArticulosNoContabilizados(String ParamFechaInicial, String ParamFechaFinal, String Param_ID_Sucursal, String Param_Articulo_Estatus, String Param_Linea_Producto, String Param_Tipo_De_Ciclico)
         {
+
+        
+
             String sQry = @"SELECT Articulos.Codigo,Articulos.Nombre,Articulos.ArticulosID,ArticulosExistencias.Existencia,'19990101' as Fecha FROM Articulos,ArticulosExistencias
   WHERE 
   Articulos.ArticulosID=ArticulosExistencias.ArticulosID
@@ -3473,11 +3476,18 @@ WHERE
  WHERE
  Conteos.ConteosID=ConteosArticulos.ConteosID
  AND Conteos.Fecha BETWEEN '" + ParamFechaInicial + @"' AND '" + ParamFechaFinal + @"'
- AND Conteos.SucursalesID=" + Param_ID_Sucursal + @"
- AND Conteos.EsBorrador=" + Param_Tipo_De_Ciclico + @"
-)
- ORDER BY 
- Nombre ASC";
+ AND Conteos.SucursalesID=" + Param_ID_Sucursal;
+
+    if (Param_Tipo_De_Ciclico=="") {
+              
+            }else{
+                sQry += " AND Conteos.EsBorrador = " + Param_Tipo_De_Ciclico ;
+}
+
+
+
+
+            sQry += " ) ORDER BY  Nombre ASC";
 
 
 
@@ -3611,7 +3621,7 @@ WHERE
                                     return sQry;
                                 }
 
-            //    }
+              // }
 
 
         [WebMethod(Description = "Agrega justificacion a los registros que se quedan en el limbo en mermas")]
@@ -3640,18 +3650,24 @@ WHERE
         [WebMethod(Description = "Obtener Preventa Especifica")]
         public string ObtenerPreventaEspecifica(String PreventaID)
         {
+
+            System.Xml.XmlElement xmlElement;
+            System.Data.DataSet ds;
             try
             {
+               
+
                 String query=@"Select FechaHora,NombreCliente,Subtotal,importe,EnDolares From PreVenta_Mayoreo
                 Where PreVenta_MayoreoID = "+PreventaID;
-                System.Data.DataSet ds = qryToDataSet(query);
-                System.Xml.XmlDocument xmlElement = Serialize(ds.tables[0]);
+                  ds = qryToDataSet(query);
+                 xmlElement = Serialize(ds.Tables[0]);
                 return xmlElement.OuterXml.ToString();   
             }
             catch (Exception ex)
             {
                 System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", ex.Message);
             }
+            return "-1";
         }
     }
                 
