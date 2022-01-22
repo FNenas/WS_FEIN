@@ -3642,7 +3642,7 @@ WHERE
         {
             try
             {
-                String query=@"Select FechaHora,NombreCliente,Subtotal,importe,EnDolares From PreVenta_Mayoreo
+                String query=@"Select FechaHora,NombreCliente,Subtotal,importe,EnDolares,ClientesID From PreVenta_Mayoreo
                 Where PreVenta_MayoreoID = "+PreventaID;
                 System.Data.DataSet ds = qryToDataSet(query);
                 System.Xml.XmlDocument xmlElement = Serialize(ds.tables[0]);
