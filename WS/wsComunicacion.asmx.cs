@@ -3653,6 +3653,21 @@ WHERE
                 System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", ex.Message);
             }
         }
-    }
-                
+        [WebMethod(Description = "Obtener Preventa Especifica")]
+        public string ObtenerClienteInformacion(String Codigo)
+        {
+            try
+            {
+                String query=@"Select ClientesID,NombreCompleto,RFC,CorreoElectronico,Telefono
+                From CLientes Where Clientes.codigo = "+Codigo;
+                System.Data.DataSet ds = qryToDataSet(query);
+                System.Xml.XmlDocument xmlElement = Serialize(ds.tables[0]);
+                return xmlElement.OuterXml.ToString();   
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", ex.Message);
+            }
+        }
+    }                
 }
