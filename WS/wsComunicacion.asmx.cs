@@ -3640,34 +3640,40 @@ WHERE
         [WebMethod(Description = "Obtener Preventa Especifica")]
         public string ObtenerPreventaEspecifica(String PreventaID)
         {
+            System.Xml.XmlElement xmlElement;
             try
             {
                 String query=@"Select FechaHora,NombreCliente,Subtotal,importe,EnDolares,ClientesID,Notas,Activo,esAutorizado,
                 IsProcesado From PreVenta_Mayoreo Where PreVenta_MayoreoID = "+PreventaID;
                 System.Data.DataSet ds = qryToDataSet(query);
-                System.Xml.XmlDocument xmlElement = Serialize(ds.tables[0]);
+                xmlElement = Serialize(ds.Tables[0]);
                 return xmlElement.OuterXml.ToString();   
             }
             catch (Exception ex)
             {
                 System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", ex.Message);
+                return "-1";
             }
+            return "-1";
         }
-        [WebMethod(Description = "Obtener Preventa Especifica")]
+        [WebMethod(Description = "Obtener Cliente Informacion por COdigo")]
         public string ObtenerClienteInformacion(String Codigo)
         {
+            System.Xml.XmlElement xmlElement;
             try
             {
                 String query=@"Select ClientesID,NombreCompleto,RFC,CorreoElectronico,Telefono
                 From CLientes Where Clientes.codigo = "+Codigo;
                 System.Data.DataSet ds = qryToDataSet(query);
-                System.Xml.XmlDocument xmlElement = Serialize(ds.tables[0]);
+                xmlElement = Serialize(ds.Tables[0]);
                 return xmlElement.OuterXml.ToString();   
             }
             catch (Exception ex)
             {
                 System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", ex.Message);
+                return "-1";
             }
+            return "-1";
         }
     }                
 }
