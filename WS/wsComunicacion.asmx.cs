@@ -3663,7 +3663,7 @@ WHERE
             try
             {
                 String query=@"Select ClientesID,NombreCompleto,RFC,CorreoElectronico,Telefono
-                From CLientes Where Clientes.codigo = "+Codigo;
+                From Clientes Where codigo = "+Codigo;
                 System.Data.DataSet ds = qryToDataSet(query);
                 xmlElement = Serialize(ds.Tables[0]);
                 return xmlElement.OuterXml.ToString();   
