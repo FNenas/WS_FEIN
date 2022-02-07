@@ -3675,5 +3675,212 @@ WHERE
             }
             return "-1";
         }
-    }                
+
+        //RAP-----------------------------
+        [WebMethod(Description = "Obtener distancia en kilomentro de dos puntos")]
+        public string distanciaKM(String sLat1, String sLon1, String sLat2, String sLon2)
+        {
+
+            //public const double EarthRadius = 6371;
+
+            double distance = 0;
+            double Lat = (double.Parse(sLat2) - double.Parse(sLat1)) * (Math.PI / 180);
+            double Lon = (double.Parse(sLon2) - double.Parse(sLon1)) * (Math.PI / 180);
+            double a = Math.Sin(Lat / 2) * Math.Sin(Lat / 2) + Math.Cos(double.Parse(sLat1) * (Math.PI / 180)) * Math.Cos(double.Parse(sLat2) * (Math.PI / 180)) * Math.Sin(Lon / 2) * Math.Sin(Lon / 2);
+            double c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
+            distance = 6371 * c;
+            return (distance * 1.20).ToString();// mandar  kilometros
+
+
+
+
+        }
+
+        [WebMethod(Description = "Obtener Pedido RAP")]
+        public string RAP_Pedidos(String sPedido)
+        {
+            String sQry = @"
+SELECT 
+CATSAT_ClaveProductosServicios.ClaveProdServ,
+CATSAT_ClaveProductosServicios.Descripcion,
+sum(Pedidos_Articulos.PiezasSurtidas) as Cantidad,
+Articulos.PermitirDecimales as EsKilogramo,
+sum (Articulos.PesoPromedio* Pedidos_Articulos.PiezasSurtidas) as PesoTotal,
+sum( Pedidos_Articulos.ImporteIVACosto) as importeCostoIVA
+from Pedidos_Articulos,Articulos,Pedidos,CATSAT_ClaveProductosServicios
+where
+Pedidos.PedidosID=Pedidos_Articulos.PedidosID
+and Pedidos_Articulos.ArticulosID=Articulos.ArticulosID
+and Articulos.CATSAT_ClaveProductosServiciosID=CATSAT_ClaveProductosServicios.CATSAT_ClaveProductosServiciosID
+and Pedidos_Articulos.PedidosID=" + sPedido + @"
+GROUP by 
+CATSAT_ClaveProductosServicios.ClaveProdServ,
+CATSAT_ClaveProductosServicios.Descripcion,
+Articulos.PermitirDecimales ";
+
+
+
+            System.Data.DataSet ds;
+            System.Xml.XmlElement xmlElement;
+            try
+            {
+                ds = qryToDataSet(sQry);
+                if (ds.Tables.Count > 0)
+                {
+                    xmlElement = Serialize(ds.Tables[0]);
+                    return xmlElement.OuterXml.ToString();
+                }
+                return "-1";
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "Regresa solicitudes de cancelacion:" + ex.Message + ex.StackTrace + "\n" + sQry);
+                return "Ocurrio un error inesperado";
+            }
+
+
+
+        }
+        [WebMethod(Description = "Obtener Pedido RAP Por articulo")]
+        public string RAP_Pedidos_PorArticulo(String sPedido)
+        {
+            String sQry = @"
+SELECT 
+CATSAT_ClaveProductosServicios.ClaveProdServ,
+CATSAT_ClaveProductosServicios.Descripcion,
+Pedidos_Articulos.PiezasSurtidas as Cantidad,
+Pedidos_Articulos.ArticulosID as ArticulosID,
+Articulos.Codigo as Codigo,
+Articulos.Nombre as descripcion_Articulo,
+Articulos.PermitirDecimales as EsKilogramo,
+(Articulos.PesoPromedio* Pedidos_Articulos.PiezasSurtidas) as PesoTotal,
+ Pedidos_Articulos.ImporteIVACosto as importeCostoIVA
+from Pedidos_Articulos,Articulos,Pedidos,CATSAT_ClaveProductosServicios
+where
+Pedidos.PedidosID=Pedidos_Articulos.PedidosID
+and Pedidos_Articulos.ArticulosID=Articulos.ArticulosID
+and Articulos.CATSAT_ClaveProductosServiciosID=CATSAT_ClaveProductosServicios.CATSAT_ClaveProductosServiciosID
+and Pedidos_Articulos.PedidosID==" + sPedido + @"
+and Pedidos_Articulos.PiezasSurtidas>0
+ ";
+
+
+
+            System.Data.DataSet ds;
+            System.Xml.XmlElement xmlElement;
+            try
+            {
+                ds = qryToDataSet(sQry);
+                if (ds.Tables.Count > 0)
+                {
+                    xmlElement = Serialize(ds.Tables[0]);
+                    return xmlElement.OuterXml.ToString();
+                }
+                return "-1";
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "Regresa solicitudes de cancelacion:" + ex.Message + ex.StackTrace + "\n" + sQry);
+                return "Ocurrio un error inesperado";
+            }
+
+
+
+        }
+        [WebMethod(Description = "Obtener Transferencias RAP")]
+        public string RAP_Transferencias_Salidas(String sTransferencias)
+        {
+            String sQry = @"
+SELECT 
+CATSAT_ClaveProductosServicios.ClaveProdServ,
+CATSAT_ClaveProductosServicios.Descripcion,
+sum(SalidasArticulos.Cantidad) as Cantidad,
+Articulos.PermitirDecimales as EsKilogramo,
+sum (Articulos.PesoPromedio* SalidasArticulos.Cantidad) as PesoTotal,
+sum(SalidasArticulos.ImporteIVACosto) as ImporteIVACosto
+from SalidasArticulos,Articulos,salidas,CATSAT_ClaveProductosServicios
+where
+salidas.SalidasID=SalidasArticulos.SalidasID
+and SalidasArticulos.ArticulosID=Articulos.ArticulosID
+and Articulos.CATSAT_ClaveProductosServiciosID=CATSAT_ClaveProductosServicios.CATSAT_ClaveProductosServiciosID
+and SalidasArticulos.SalidasID=" + sTransferencias + @"
+and Salidas.TiposMovimientosID=8001
+GROUP by 
+CATSAT_ClaveProductosServicios.ClaveProdServ,
+CATSAT_ClaveProductosServicios.Descripcion,
+Articulos.PermitirDecimales  ";
+
+
+
+            System.Data.DataSet ds;
+            System.Xml.XmlElement xmlElement;
+            try
+            {
+                ds = qryToDataSet(sQry);
+                if (ds.Tables.Count > 0)
+                {
+                    xmlElement = Serialize(ds.Tables[0]);
+                    return xmlElement.OuterXml.ToString();
+                }
+                return "-1";
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "Regresa solicitudes de cancelacion:" + ex.Message + ex.StackTrace + "\n" + sQry);
+                return "Ocurrio un error inesperado";
+            }
+
+
+        }
+        [WebMethod(Description = "Obtener Transferencias RAP Por Articulos")]
+        public string RAP_Transferencias_Salidas_Por_Articulos(String sTransferencias)
+        {
+            String sQry = @"
+SELECT 
+CATSAT_ClaveProductosServicios.ClaveProdServ,
+CATSAT_ClaveProductosServicios.Descripcion,
+SalidasArticulos.ArticulosID as ArticulosID,
+Articulos.Codigo as Codigo,
+Articulos.Nombre as descripcion_Articulo,
+SalidasArticulos.Cantidad as Cantidad,
+Articulos.PermitirDecimales as EsKilogramo,
+(Articulos.PesoPromedio* SalidasArticulos.Cantidad) as PesoTotal,
+SalidasArticulos.ImporteIVACosto as ImporteIVACosto
+from SalidasArticulos,Articulos,salidas,CATSAT_ClaveProductosServicios
+where
+salidas.SalidasID=SalidasArticulos.SalidasID
+and SalidasArticulos.ArticulosID=Articulos.ArticulosID
+and Articulos.CATSAT_ClaveProductosServiciosID=CATSAT_ClaveProductosServicios.CATSAT_ClaveProductosServiciosID
+and SalidasArticulos.SalidasID=" + sTransferencias + @"
+and Salidas.TiposMovimientosID=8001  ";
+
+
+
+            System.Data.DataSet ds;
+            System.Xml.XmlElement xmlElement;
+            try
+            {
+                ds = qryToDataSet(sQry);
+                if (ds.Tables.Count > 0)
+                {
+                    xmlElement = Serialize(ds.Tables[0]);
+                    return xmlElement.OuterXml.ToString();
+                }
+                return "-1";
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "Regresa solicitudes de cancelacion:" + ex.Message + ex.StackTrace + "\n" + sQry);
+                return "Ocurrio un error inesperado";
+            }
+
+
+        }
+
+
+      
+
+
+
+    }
 }
