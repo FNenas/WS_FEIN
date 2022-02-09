@@ -793,7 +793,7 @@ namespace WS
 
             //    String sResultado = "";
 
-            String query = "SELECT PreVenta_Mayoreo_Detalle.ArticulosID,Articulos.Nombre as NombreArticulo,Articulos.Codigo,PreVenta_Mayoreo_Detalle.PrecioUCIVA_Cliente as PrecioCIVA,PreVenta_Mayoreo_Detalle.Cantidad,Articulos.PermitirDecimales,PreVenta_Mayoreo_Detalle.Importe,PreVenta_Mayoreo_Detalle.Notas,PreVenta_Mayoreo_Detalle.EnDolares " +
+            String query = "SELECT PreVenta_Mayoreo_Detalle.ArticulosID,Articulos.Nombre as NombreArticulo,Articulos.Codigo,PreVenta_Mayoreo_Detalle.PrecioUCIVA_Cliente as PrecioCIVA,PreVenta_Mayoreo_Detalle.Cantidad,Articulos.PermitirDecimales,PreVenta_Mayoreo_Detalle.Importe,PreVenta_Mayoreo_Detalle.Notas,PreVenta_Mayoreo.EnDolares " +
             "  from PreVenta_Mayoreo_Detalle, Articulos, PreVenta_Mayoreo " +
             " where PreVenta_Mayoreo_Detalle.ArticulosID = Articulos.ArticulosID " +
             " and PreVenta_Mayoreo_Detalle.PreVenta_MayoreoID = PreVenta_Mayoreo.PreVenta_MayoreoID " +
