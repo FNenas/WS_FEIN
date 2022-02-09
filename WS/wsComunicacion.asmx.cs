@@ -827,12 +827,14 @@ namespace WS
                 String qry = "";
 
                 // version 2  para  facturacion
-                if (arr.Length > 11) {
+                if (arr.Length > 11)
+                {
                     qry = "Insert into PreVenta_Mayoreo (FechaHora,ClientesID,PorcentajeMayoreoID,NombreCliente,Subtotal,IVA,Importe,EmpleadosID,Notas,FechaEntrega,Activo,Facturacion,Tipo_Cambio,ImporteDolares) " +
                                                    " Values ('" + arr[0] + "'," + arr[1] + "," + arr[2] + ",'" + arr[3] + "'," + arr[4] + "," + arr[5] + "," + arr[6] + "," + arr[7] + ",'" + arr[8] + "','" + arr[9] + "',1," + arr[10] + "," + arr[11] + "," + arr[12] + ")";
 
                 }
-                else {
+                else
+                {
                     qry = "Insert into PreVenta_Mayoreo (FechaHora,ClientesID,PorcentajeMayoreoID,NombreCliente,Subtotal,IVA,Importe,EmpleadosID,Notas,FechaEntrega,Activo,Facturacion) " +
                                                    " Values ('" + arr[0] + "'," + arr[1] + "," + arr[2] + ",'" + arr[3] + "'," + arr[4] + "," + arr[5] + "," + arr[6] + "," + arr[7] + ",'" + arr[8] + "','" + arr[9] + "',1," + arr[10] + ")";
 
@@ -900,7 +902,8 @@ namespace WS
                 arrDetalle = sPedidoDetalle.Split('@');
 
 
-                foreach (String s in arrDetalle) {
+                foreach (String s in arrDetalle)
+                {
                     if (s.Length > 3)
                     {
 
@@ -910,10 +913,12 @@ namespace WS
 
 
 
-                        if (arr[8] == "") {
+                        if (arr[8] == "")
+                        {
                             precioCIVA_Original = "0";
                         }
-                        else {
+                        else
+                        {
                             precioCIVA_Original = arr[8];
                         }
 
@@ -1007,14 +1012,16 @@ namespace WS
                 ms.Write(byteArrayIn, 0, byteArrayIn.Length);
                 returnImage = System.Drawing.Image.FromStream(ms, true);//Exception occurs here
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "byteArraytoImage:/n" + ex.Message + ex.StackTrace);
 
             }
             return returnImage;
         }
         [WebMethod]
-        public Boolean guardarFotoCliente(byte[] f, String sClienteID) {
+        public Boolean guardarFotoCliente(byte[] f, String sClienteID)
+        {
 
             //no se utiliza
             // revisar  marca  error  10/12/2020
@@ -1066,7 +1073,8 @@ namespace WS
 
                 transaction.Rollback();
             }
-            finally {
+            finally
+            {
 
                 MyConnection.Close();
             }
@@ -1144,7 +1152,8 @@ namespace WS
             return false;
         }
         [WebMethod(Description = "get pdf")]
-        public String GetPedidoPDF(String NoPedido) {
+        public String GetPedidoPDF(String NoPedido)
+        {
             try
             {
 
@@ -1195,7 +1204,8 @@ namespace WS
 
             using (System.Net.Mail.SmtpClient smtp = new System.Net.Mail.SmtpClient())
             {
-                try {
+                try
+                {
                     smtp.Host = "smtp.ipage.com";
                     smtp.Port = 587;
                     smtp.EnableSsl = false;
@@ -1221,16 +1231,19 @@ namespace WS
         }
 
         [WebMethod(Description = "validacion de Usuario mobile, regresa el id y empleado")]
-        public String validarLoguin(String sUsuario, String sPassword) {
+        public String validarLoguin(String sUsuario, String sPassword)
+        {
 
-            try {
+            try
+            {
                 String q = "SELECT Usuarios.UsuariosID,Empleados.EmpleadosID , Empleados.Codigo, Empleados.NombreCompleto from Empleados,Usuarios where Empleados.EmpleadosID=Usuarios.EmpleadosID and Usuarios.ConreasenaAPP='" + sPassword + "' and Usuarios.Nombre='" + sUsuario + "' and Usuarios.Activo=1 and empleados.Baja_temporal=0 and Empleados.Activo=1 ";
 
 
                 System.Data.DataSet ds = qryToDataSet(q);
 
 
-                if (ds.Tables.Count > 0) {
+                if (ds.Tables.Count > 0)
+                {
 
 
                     System.Xml.XmlElement xmlElement = Serialize(ds.Tables[0]);
@@ -1270,7 +1283,8 @@ namespace WS
         }
 
         [WebMethod(Description = "Regresa un xml con las existencias configuradas")]
-        public String obtenerExistenciaMayoreo() {
+        public String obtenerExistenciaMayoreo()
+        {
 
             try
             {
@@ -1390,7 +1404,8 @@ namespace WS
 
                 if (ds2.Tables.Count > 0)
                 {
-                    if (ds2.Tables[0].Rows.Count > 0) {
+                    if (ds2.Tables[0].Rows.Count > 0)
+                    {
                         System.Data.DataRow r = ds.Tables[0].NewRow();
 
                         r["Tipo"] = "+" + ds2.Tables[0].Rows[0]["Nombre"].ToString();
@@ -1461,7 +1476,7 @@ namespace WS
 
 
 
-            return "1.0.0.20" ;
+            return "1.0.0.20";
 
         }
         [WebMethod(Description = "Regresa un xml con los Estados")]
@@ -1682,9 +1697,12 @@ namespace WS
                 System.IO.File.WriteAllText(@"C:\sXML\Registro Cliente_" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", ex.Message);
             }
 
-            if (bBandera) {
+            if (bBandera)
+            {
                 return "1";
-            } else {
+            }
+            else
+            {
                 return "";
             }
 
@@ -1693,7 +1711,8 @@ namespace WS
 
         }
 
-        private int siguienteFolio(String sArchivo) {
+        private int siguienteFolio(String sArchivo)
+        {
 
             String q = "SELECT * from ConsecutivoFolio where Archivo='" + sArchivo + "'";
             int nConsecutivo = 1;
@@ -1721,7 +1740,8 @@ namespace WS
 
 
                 }
-                else {
+                else
+                {
                     nConsecutivo = -1;
                 }
 
@@ -1732,7 +1752,8 @@ namespace WS
         }
 
         [WebMethod(Description = "Guarda la posicion del dispositivo")]
-        public Boolean HAddPosicion(String sEmpleadoID, String latr, String lon, String sAPP, String sIMEI, String sNota, String Fhora) {
+        public Boolean HAddPosicion(String sEmpleadoID, String latr, String lon, String sAPP, String sIMEI, String sNota, String Fhora)
+        {
 
             // se tien que crear una tabla  para k
             //almacenara el registro
@@ -1764,7 +1785,8 @@ namespace WS
 
 
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 System.IO.File.WriteAllText(@"C:\sXML\HAddPosicion_" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", ex.Message + "\n" + ex.StackTrace);
             }
 
@@ -1839,7 +1861,7 @@ namespace WS
             return "";
         }
         [WebMethod(Description = "Actualizar articulos app nenas separado por |")]
-        public Boolean articulosActivosAPP(String sArticulosID, String sSucursalesID,String bElimina)
+        public Boolean articulosActivosAPP(String sArticulosID, String sSucursalesID, String bElimina)
         {
 
 
@@ -1861,10 +1883,11 @@ namespace WS
 
                     bBandera = qryInsertUpdate(q);
                 }
-                else {
+                else
+                {
                     bBandera = true;
                 }
-               
+
 
 
                 if (bBandera)
@@ -2026,7 +2049,8 @@ WHERE
 	";
 
 
-                if (sArticuloID.Length > 2) {
+                if (sArticuloID.Length > 2)
+                {
 
                     q += @"  and Pedidos.PedidosID in (SELECT Pedidos.PedidosID from pedidos,Pedidos_Articulos 
                     where Pedidos.PedidosID = Pedidos_Articulos.PedidosID
@@ -2458,7 +2482,8 @@ WHERE
             try
             {
 
-                if (System.IO.Directory.Exists("C:/sXML/importacion /") == false) {
+                if (System.IO.Directory.Exists("C:/sXML/importacion /") == false)
+                {
                     System.IO.Directory.CreateDirectory("C:/sXML/importacion/");
 
                 }
@@ -2525,18 +2550,21 @@ WHERE
 	(
 			Pedidos.FechaSurtido BETWEEN '" + pFechaSInicio + @"' AND '" + pFechaSFinal + @"' ";
 
-                if (pFechaRInicio.Length > 0 && pFechaRFinal.Length > 0) {
+                if (pFechaRInicio.Length > 0 && pFechaRFinal.Length > 0)
+                {
 
                     q += " AND Pedidos.FechaRecibido BETWEEN '" + pFechaRInicio + "' AND '" + pFechaRFinal + "' ";
                 }
 
 
-                if (pSucursalesID.Length > 0) {
+                if (pSucursalesID.Length > 0)
+                {
 
                     q += " AND Pedidos.SucursalesID = " + pSucursalesID;
                 }
 
-                if (pSucursalAlmacenID.Length > 0) {
+                if (pSucursalAlmacenID.Length > 0)
+                {
 
 
                     q += " AND Pedidos.SucursalAlmacenID = " + pSucursalAlmacenID;
@@ -2644,47 +2672,57 @@ WHERE
 AND	Salidas.SucursalesID =" + pSucursalesID;
 
 
-                if (pArticulosID.Length > 0) {
+                if (pArticulosID.Length > 0)
+                {
                     q += " AND	SalidasArticulos.ArticulosID =  " + pArticulosID;
                 }
 
-                if (pDestinosID.Length > 0) {
+                if (pDestinosID.Length > 0)
+                {
 
                     q += " AND	Salidas.DestinosID =" + pDestinosID;
                 }
 
 
-                if (pTipoMovimientoID.Length > 0) {
+                if (pTipoMovimientoID.Length > 0)
+                {
 
                     q += " AND	Salidas.TiposMovimientosID =" + pTipoMovimientoID;
                 }
 
-                if (pSalidasID.Length > 0) {
+                if (pSalidasID.Length > 0)
+                {
 
                     q += "AND	Salidas.SalidasID =" + pSalidasID;
                 }
-                if (pfolioMovimiento.Length > 0) {
+                if (pfolioMovimiento.Length > 0)
+                {
 
                     q += "AND	Salidas.FolioMovimiento =" + pfolioMovimiento;
                 }
 
-                if (pEstatusMovimientoID.Length > 0) {
+                if (pEstatusMovimientoID.Length > 0)
+                {
 
                     q += " AND	Salidas.Estatus_MovimientosID =" + pEstatusMovimientoID;
                 }
-                if (pFamiliasID.Length > 0) {
+                if (pFamiliasID.Length > 0)
+                {
                     q += " AND	Articulos.FamiliasID = " + pFamiliasID;
                 }
 
-                if (pLineasID.Length > 0) {
+                if (pLineasID.Length > 0)
+                {
 
                     q += " AND	Articulos.LineaID =" + pLineasID;
                 }
-                if (pProveedoresID.Length > 0) {
+                if (pProveedoresID.Length > 0)
+                {
                     q += "	AND	Salidas.ProveedoresID = " + pProveedoresID;
                 }
 
-                if (pPendienteAplicarNC.Length > 0) {
+                if (pPendienteAplicarNC.Length > 0)
+                {
 
                     q += " AND	Salidas.PendienteAplicarNC =" + pPendienteAplicarNC;
                 }
@@ -3060,7 +3098,8 @@ WHERE
                     sPermitirDecimales = ds.Tables[0].Rows[0]["PermitirDecimales"].ToString();
 
                 }
-                else {
+                else
+                {
                     //se busca el articulo por el codigo de barras
                     sQry = @"SELECT 
 	Articulos.ArticulosID AS ArticulosID,	
@@ -3115,7 +3154,8 @@ WHERE
 
 
                     }
-                    else {
+                    else
+                    {
                         // regresa  vacio si no o encoentro
                         return "";
 
@@ -3167,7 +3207,8 @@ WHERE
                     }
 
                 }
-                else {
+                else
+                {
                     // se checa el precio para este articulo
                     sQry = @"SELECT 
 	ArticulosPrecios.ArticulosPreciosID AS ArticulosPreciosID,	
@@ -3221,11 +3262,15 @@ WHERE
             return "";
         }
 
-        private Boolean hayInfoDS(System.Data.DataSet ds) {
+        private Boolean hayInfoDS(System.Data.DataSet ds)
+        {
 
-            try {
-                if (ds.Tables.Count > 0) {
-                    if (ds.Tables[0].Rows.Count > 0) {
+            try
+            {
+                if (ds.Tables.Count > 0)
+                {
+                    if (ds.Tables[0].Rows.Count > 0)
+                    {
 
                         return true;
                     }
@@ -3234,7 +3279,9 @@ WHERE
                 }
                 return false;
 
-            } catch {
+            }
+            catch
+            {
 
                 return false;
             }
@@ -3338,9 +3385,12 @@ WHERE
                         SET ComentariosAutorizacion='" + JustificacionDesicion + "', FechaHoraAutorizacion='" + FechaAutorizacion + "', EmpleadoAutorizoID='" + IDEmpleadoAutorizo + "', Procesado=1";
 
                 //Marcamos la casilla de EsAprobado
-                if (Desicion == "1") {
+                if (Desicion == "1")
+                {
                     sQry += ", EsAprobado=1";
-                } else {
+                }
+                else
+                {
                     //Marcamos la casilla de EsRechazado
                     sQry += ", EsDenegado=1";
                 }
@@ -3350,7 +3400,8 @@ WHERE
                 //ejecutamos el qry
                 qryInsertUpdate(sQry);
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", ex.Message);
             }
             return sQry;
@@ -3404,7 +3455,8 @@ WHERE
                 //ejecutamos el qry
                 qryInsertUpdate(sQry);
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", ex.Message);
             }
             return sQry;
@@ -3415,7 +3467,7 @@ WHERE
         [WebMethod(Description = "Regresa el Id de las subcategorias asi como su nombre")]
         public string ObtenerSubCategorias(string SubCategoriasID)
         {
-            String sQry = "select AppSubCategoriasID,Descripcion from AppSubCategorias where AppSubCategoriasID in ("+SubCategoriasID+")";
+            String sQry = "select AppSubCategoriasID,Descripcion from AppSubCategorias where AppSubCategoriasID in (" + SubCategoriasID + ")";
             System.Data.DataSet ds;
             System.Xml.XmlElement xmlElement;
             try
@@ -3438,7 +3490,7 @@ WHERE
         [WebMethod(Description = "Regresa Nombre y codigo de los articulos pertenecientes a esa categoria")]
         public string ObtenerArticulosDeSubcategoria(string SubcategoriaID)
         {
-            String sQry = "select ArticulosID,Codigo,Nombre from Articulos where AppSubCategoriasID = "+SubcategoriaID+" order by Nombre asc";
+            String sQry = "select ArticulosID,Codigo,Nombre from Articulos where AppSubCategoriasID = " + SubcategoriaID + " order by Nombre asc";
             System.Data.DataSet ds;
             System.Xml.XmlElement xmlElement;
             try
@@ -3468,7 +3520,8 @@ WHERE
   AND Articulos.Activo=" + Param_Articulo_Estatus + @"
   AND Articulos.SeVende=1 ";
 
-            if (Param_Linea_Producto.Length > 0) {
+            if (Param_Linea_Producto.Length > 0)
+            {
 
                 sQry += " AND Articulos.LineaID=" + Param_Linea_Producto;
             }
@@ -3497,9 +3550,11 @@ WHERE
 
                 String sArticulosID = "";
 
-                foreach (System.Data.DataRow nRow in ds.Tables[0].Rows) {
+                foreach (System.Data.DataRow nRow in ds.Tables[0].Rows)
+                {
 
-                    if (nRow["ArticulosID"].ToString().Length > 1) {
+                    if (nRow["ArticulosID"].ToString().Length > 1)
+                    {
 
                         sArticulosID += nRow["ArticulosID"].ToString() + ",";
                     }
@@ -3531,7 +3586,8 @@ WHERE
                     {
                         int SelectedIndex = ds.Tables[0].Rows.IndexOf(result[0]);
 
-                        if (SelectedIndex > -1) {
+                        if (SelectedIndex > -1)
+                        {
                             ds.Tables[0].Rows[SelectedIndex]["Fecha"] = nRow["UltimaFecha"];
                         }
 
@@ -3564,61 +3620,67 @@ WHERE
                 FROM 
                 AutorizacionMovimientosMermas
                 WHERE 
-                AutorizacionMovimientosMermas.ProcesadoDireccion = "+Activo;
-                
-                if (LineaID!="-1"){
-                     sQry+=" AND AutorizacionMovimientosMermas.LineaID = "+LineaID;
+                AutorizacionMovimientosMermas.ProcesadoDireccion = " + Activo;
+
+            if (LineaID != "-1")
+            {
+                sQry += " AND AutorizacionMovimientosMermas.LineaID = " + LineaID;
+            }
+
+            sQry += " AND	AutorizacionMovimientosMermas.FechaHoraSolicitud BETWEEN '" + FechaSolicitudIncio + "' AND '" + FechaSolicitudFinal + @"'
+                AND	AutorizacionMovimientosMermas.SucursaID = " + SucursalID;
+
+            System.Data.DataSet ds;
+            System.Xml.XmlElement xmlElement;
+            try
+            {
+                ds = qryToDataSet(sQry);
+                if (ds.Tables.Count > 0)
+                {
+                    xmlElement = Serialize(ds.Tables[0]);
+                    return xmlElement.OuterXml.ToString();
                 }
-                
-                sQry+=" AND	AutorizacionMovimientosMermas.FechaHoraSolicitud BETWEEN '"+FechaSolicitudIncio+"' AND '"+FechaSolicitudFinal+@"'
-                AND	AutorizacionMovimientosMermas.SucursaID = "+SucursalID;
-                  
-                    System.Data.DataSet ds;
-                    System.Xml.XmlElement xmlElement;
-                    try
-                    {
-                        ds = qryToDataSet(sQry);
-                        if(ds.Tables.Count>0)
-                        {
-                            xmlElement = Serialize(ds.Tables[0]);
-                            return xmlElement.OuterXml.ToString();
-                        }
-                        return "Nada para regresar";
-                    }
-                    catch (Exception ex)
-                    {
-                        System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "Regresa solicitudes de cancelacion:" + ex.Message + ex.StackTrace + "\n" + sQry);
-                        return "Ocurrio un error inesperado";
-                    }
+                return "Nada para regresar";
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "Regresa solicitudes de cancelacion:" + ex.Message + ex.StackTrace + "\n" + sQry);
+                return "Ocurrio un error inesperado";
+            }
         }
         [WebMethod(Description = "Modifica la tabla AutorizacionMovientosMermas")]
-                        public string Autorizacion_Direccion_Mermas(String MovimientoID, String Desicion, String JustificacionDesicion, String FechaAutorizacion, String IDEmpleadoAutorizo)
-                        {
-                        String sQry = "";
-                        //Construimos el qry 
-                         try{
-                            sQry =@"UPDATE AutorizacionMovimientosMermas
-                                 SET ComentariosAutorizacion='"+JustificacionDesicion+"', FechaHoraAutorizacion='"+FechaAutorizacion+"', EmpleadoAutorizoID='"+IDEmpleadoAutorizo+"', ProcesadoDireccion=1";
-                                            
-                                //Marcamos la casilla de EsAprobado
-                                if(Desicion=="1"){
-                                 sQry+=", EsAprobado=1";
-                                }else{
-                                 //Marcamos la casilla de EsRechazado
-                                sQry+=", EsDenegado=1";
-                                }
-                                //Instruccion final del qry
-                                sQry+=" WHERE AutorizacionMovimientosMermasID="+MovimientoID;
-                                //ejecutamos el qry
-                                qryInsertUpdate(sQry);           
-                                }
-                                catch (Exception ex){
-                                    System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", ex.Message);
-                                }
-                                    return sQry;
-                                }
+        public string Autorizacion_Direccion_Mermas(String MovimientoID, String Desicion, String JustificacionDesicion, String FechaAutorizacion, String IDEmpleadoAutorizo)
+        {
+            String sQry = "";
+            //Construimos el qry 
+            try
+            {
+                sQry = @"UPDATE AutorizacionMovimientosMermas
+                                 SET ComentariosAutorizacion='" + JustificacionDesicion + "', FechaHoraAutorizacion='" + FechaAutorizacion + "', EmpleadoAutorizoID='" + IDEmpleadoAutorizo + "', ProcesadoDireccion=1";
 
-            //    }
+                //Marcamos la casilla de EsAprobado
+                if (Desicion == "1")
+                {
+                    sQry += ", EsAprobado=1";
+                }
+                else
+                {
+                    //Marcamos la casilla de EsRechazado
+                    sQry += ", EsDenegado=1";
+                }
+                //Instruccion final del qry
+                sQry += " WHERE AutorizacionMovimientosMermasID=" + MovimientoID;
+                //ejecutamos el qry
+                qryInsertUpdate(sQry);
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", ex.Message);
+            }
+            return sQry;
+        }
+
+        //    }
 
 
         [WebMethod(Description = "Agrega justificacion a los registros que se quedan en el limbo en mermas")]
@@ -3650,11 +3712,11 @@ WHERE
             System.Xml.XmlElement xmlElement;
             try
             {
-                String query=@"Select FechaHora,NombreCliente,Subtotal,importe,EnDolares,ClientesID,Notas,Activo,esAutorizado,
-                IsProcesado,Tipo_Cambio From PreVenta_Mayoreo Where PreVenta_MayoreoID = "+PreventaID;
+                String query = @"Select FechaHora,NombreCliente,Subtotal,importe,EnDolares,ClientesID,Notas,Activo,esAutorizado,
+                IsProcesado,Tipo_Cambio From PreVenta_Mayoreo Where PreVenta_MayoreoID = " + PreventaID;
                 System.Data.DataSet ds = qryToDataSet(query);
                 xmlElement = Serialize(ds.Tables[0]);
-                return xmlElement.OuterXml.ToString();   
+                return xmlElement.OuterXml.ToString();
             }
             catch (Exception ex)
             {
@@ -3669,11 +3731,11 @@ WHERE
             System.Xml.XmlElement xmlElement;
             try
             {
-                String query=@"Select ClientesID,NombreCompleto,RFC,CorreoElectronico,NoTelefono
-                From Clientes Where codigo = "+Codigo;
+                String query = @"Select ClientesID,NombreCompleto,RFC,CorreoElectronico,NoTelefono
+                From Clientes Where codigo = " + Codigo;
                 System.Data.DataSet ds = qryToDataSet(query);
                 xmlElement = Serialize(ds.Tables[0]);
-                return xmlElement.OuterXml.ToString();   
+                return xmlElement.OuterXml.ToString();
             }
             catch (Exception ex)
             {
@@ -3682,5 +3744,212 @@ WHERE
             }
             return "-1";
         }
-    }                
+
+        //RAP-----------------------------
+        [WebMethod(Description = "Obtener distancia en kilomentro de dos puntos")]
+        public string distanciaKM(String sLat1, String sLon1, String sLat2, String sLon2)
+        {
+
+            //public const double EarthRadius = 6371;
+
+            double distance = 0;
+            double Lat = (double.Parse(sLat2) - double.Parse(sLat1)) * (Math.PI / 180);
+            double Lon = (double.Parse(sLon2) - double.Parse(sLon1)) * (Math.PI / 180);
+            double a = Math.Sin(Lat / 2) * Math.Sin(Lat / 2) + Math.Cos(double.Parse(sLat1) * (Math.PI / 180)) * Math.Cos(double.Parse(sLat2) * (Math.PI / 180)) * Math.Sin(Lon / 2) * Math.Sin(Lon / 2);
+            double c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
+            distance = 6371 * c;
+            return (distance * 1.20).ToString();// mandar  kilometros
+
+
+
+
+        }
+
+        [WebMethod(Description = "Obtener Pedido RAP")]
+        public string RAP_Pedidos(String sPedido)
+        {
+            String sQry = @"
+SELECT 
+CATSAT_ClaveProductosServicios.ClaveProdServ,
+CATSAT_ClaveProductosServicios.Descripcion,
+sum(Pedidos_Articulos.PiezasSurtidas) as Cantidad,
+Articulos.PermitirDecimales as EsKilogramo,
+sum (Articulos.PesoPromedio* Pedidos_Articulos.PiezasSurtidas) as PesoTotal,
+sum( Pedidos_Articulos.ImporteIVACosto) as importeCostoIVA
+from Pedidos_Articulos,Articulos,Pedidos,CATSAT_ClaveProductosServicios
+where
+Pedidos.PedidosID=Pedidos_Articulos.PedidosID
+and Pedidos_Articulos.ArticulosID=Articulos.ArticulosID
+and Articulos.CATSAT_ClaveProductosServiciosID=CATSAT_ClaveProductosServicios.CATSAT_ClaveProductosServiciosID
+and Pedidos_Articulos.PedidosID=" + sPedido + @"
+GROUP by 
+CATSAT_ClaveProductosServicios.ClaveProdServ,
+CATSAT_ClaveProductosServicios.Descripcion,
+Articulos.PermitirDecimales ";
+
+
+
+            System.Data.DataSet ds;
+            System.Xml.XmlElement xmlElement;
+            try
+            {
+                ds = qryToDataSet(sQry);
+                if (ds.Tables.Count > 0)
+                {
+                    xmlElement = Serialize(ds.Tables[0]);
+                    return xmlElement.OuterXml.ToString();
+                }
+                return "-1";
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "Regresa solicitudes de cancelacion:" + ex.Message + ex.StackTrace + "\n" + sQry);
+                return "Ocurrio un error inesperado";
+            }
+
+
+
+        }
+        [WebMethod(Description = "Obtener Pedido RAP Por articulo")]
+        public string RAP_Pedidos_PorArticulo(String sPedido)
+        {
+            String sQry = @"
+SELECT 
+CATSAT_ClaveProductosServicios.ClaveProdServ,
+CATSAT_ClaveProductosServicios.Descripcion,
+Pedidos_Articulos.PiezasSurtidas as Cantidad,
+Pedidos_Articulos.ArticulosID as ArticulosID,
+Articulos.Codigo as Codigo,
+Articulos.Nombre as descripcion_Articulo,
+Articulos.PermitirDecimales as EsKilogramo,
+(Articulos.PesoPromedio* Pedidos_Articulos.PiezasSurtidas) as PesoTotal,
+ Pedidos_Articulos.ImporteIVACosto as importeCostoIVA
+from Pedidos_Articulos,Articulos,Pedidos,CATSAT_ClaveProductosServicios
+where
+Pedidos.PedidosID=Pedidos_Articulos.PedidosID
+and Pedidos_Articulos.ArticulosID=Articulos.ArticulosID
+and Articulos.CATSAT_ClaveProductosServiciosID=CATSAT_ClaveProductosServicios.CATSAT_ClaveProductosServiciosID
+and Pedidos_Articulos.PedidosID==" + sPedido + @"
+and Pedidos_Articulos.PiezasSurtidas>0
+ ";
+
+
+
+            System.Data.DataSet ds;
+            System.Xml.XmlElement xmlElement;
+            try
+            {
+                ds = qryToDataSet(sQry);
+                if (ds.Tables.Count > 0)
+                {
+                    xmlElement = Serialize(ds.Tables[0]);
+                    return xmlElement.OuterXml.ToString();
+                }
+                return "-1";
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "Regresa solicitudes de cancelacion:" + ex.Message + ex.StackTrace + "\n" + sQry);
+                return "Ocurrio un error inesperado";
+            }
+
+
+
+        }
+        [WebMethod(Description = "Obtener Transferencias RAP")]
+        public string RAP_Transferencias_Salidas(String sTransferencias)
+        {
+            String sQry = @"
+SELECT 
+CATSAT_ClaveProductosServicios.ClaveProdServ,
+CATSAT_ClaveProductosServicios.Descripcion,
+sum(SalidasArticulos.Cantidad) as Cantidad,
+Articulos.PermitirDecimales as EsKilogramo,
+sum (Articulos.PesoPromedio* SalidasArticulos.Cantidad) as PesoTotal,
+sum(SalidasArticulos.ImporteIVACosto) as ImporteIVACosto
+from SalidasArticulos,Articulos,salidas,CATSAT_ClaveProductosServicios
+where
+salidas.SalidasID=SalidasArticulos.SalidasID
+and SalidasArticulos.ArticulosID=Articulos.ArticulosID
+and Articulos.CATSAT_ClaveProductosServiciosID=CATSAT_ClaveProductosServicios.CATSAT_ClaveProductosServiciosID
+and SalidasArticulos.SalidasID=" + sTransferencias + @"
+and Salidas.TiposMovimientosID=8001
+GROUP by 
+CATSAT_ClaveProductosServicios.ClaveProdServ,
+CATSAT_ClaveProductosServicios.Descripcion,
+Articulos.PermitirDecimales  ";
+
+
+
+            System.Data.DataSet ds;
+            System.Xml.XmlElement xmlElement;
+            try
+            {
+                ds = qryToDataSet(sQry);
+                if (ds.Tables.Count > 0)
+                {
+                    xmlElement = Serialize(ds.Tables[0]);
+                    return xmlElement.OuterXml.ToString();
+                }
+                return "-1";
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "Regresa solicitudes de cancelacion:" + ex.Message + ex.StackTrace + "\n" + sQry);
+                return "Ocurrio un error inesperado";
+            }
+
+
+        }
+        [WebMethod(Description = "Obtener Transferencias RAP Por Articulos")]
+        public string RAP_Transferencias_Salidas_Por_Articulos(String sTransferencias)
+        {
+            String sQry = @"
+SELECT 
+CATSAT_ClaveProductosServicios.ClaveProdServ,
+CATSAT_ClaveProductosServicios.Descripcion,
+SalidasArticulos.ArticulosID as ArticulosID,
+Articulos.Codigo as Codigo,
+Articulos.Nombre as descripcion_Articulo,
+SalidasArticulos.Cantidad as Cantidad,
+Articulos.PermitirDecimales as EsKilogramo,
+(Articulos.PesoPromedio* SalidasArticulos.Cantidad) as PesoTotal,
+SalidasArticulos.ImporteIVACosto as ImporteIVACosto
+from SalidasArticulos,Articulos,salidas,CATSAT_ClaveProductosServicios
+where
+salidas.SalidasID=SalidasArticulos.SalidasID
+and SalidasArticulos.ArticulosID=Articulos.ArticulosID
+and Articulos.CATSAT_ClaveProductosServiciosID=CATSAT_ClaveProductosServicios.CATSAT_ClaveProductosServiciosID
+and SalidasArticulos.SalidasID=" + sTransferencias + @"
+and Salidas.TiposMovimientosID=8001  ";
+
+
+
+            System.Data.DataSet ds;
+            System.Xml.XmlElement xmlElement;
+            try
+            {
+                ds = qryToDataSet(sQry);
+                if (ds.Tables.Count > 0)
+                {
+                    xmlElement = Serialize(ds.Tables[0]);
+                    return xmlElement.OuterXml.ToString();
+                }
+                return "-1";
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "Regresa solicitudes de cancelacion:" + ex.Message + ex.StackTrace + "\n" + sQry);
+                return "Ocurrio un error inesperado";
+            }
+
+
+        }
+
+
+
+
+
+
+    }
 }
