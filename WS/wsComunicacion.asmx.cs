@@ -1839,7 +1839,7 @@ namespace WS
             return "";
         }
         [WebMethod(Description = "Actualizar articulos app nenas separado por |")]
-        public Boolean articulosActivosAPP(String sArticulosID, String sSucursalesID)
+        public Boolean articulosActivosAPP(String sArticulosID, String sSucursalesID,String bElimina)
         {
 
 
@@ -1856,8 +1856,15 @@ namespace WS
             try
             {
                 bBandera = false;
+                if (bElimina == "1")
+                {
 
-                bBandera = qryInsertUpdate(q);
+                    bBandera = qryInsertUpdate(q);
+                }
+                else {
+                    bBandera = true;
+                }
+               
 
 
                 if (bBandera)
