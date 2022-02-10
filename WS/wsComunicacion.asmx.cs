@@ -3948,6 +3948,87 @@ and Salidas.TiposMovimientosID=8001  ";
 
 
 
+[WebMethod(Description = "Obtener Encabezados Pedidos RAP")]
+        public string RAP_Pedido_Encabezados(String sPedido)
+        {
+            String sQry = @"
+SELECT 
+Sucursales.Nombre as NombreSucural,
+Pedidos.NoPedido as Folio,
+Estatus_Pedidos.Nombre as EstatusDescripcion,
+Pedidos.Fecha as FechaGeneracion
+from
+Sucursales, Pedidos, Estatus_Pedidos
+WHERE
+Pedidos.PedidosID=" + sPedido + @"
+and 
+Pedidos.SucursalesID=Sucursales.SucursalesID
+and
+Pedidos.Estatus_PedidosID=Estatus_Pedidos.Estatus_PedidosID  ";
+
+
+
+            System.Data.DataSet ds;
+            System.Xml.XmlElement xmlElement;
+            try
+            {
+                ds = qryToDataSet(sQry);
+                if (ds.Tables.Count > 0)
+                {
+                    xmlElement = Serialize(ds.Tables[0]);
+                    return xmlElement.OuterXml.ToString();
+                }
+                return "-1";
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "Regresa solicitudes de cancelacion:" + ex.Message + ex.StackTrace + "\n" + sQry);
+                return "Ocurrio un error inesperado";
+            }
+
+
+        }
+
+
+
+[WebMethod(Description = "Obtener Encabezados Transferencia RAP")]
+        public string RAP_Transferencia_Encabezados(String sTransferencias)
+        {
+            String sQry = @"
+select 
+Sucursales.Nombre as NombreSucural,
+Salidas.FolioMovimiento as Folio,
+Salidas.FechaSalida as FechaGeneracion
+from
+salidas,Sucursales
+where
+Salidas.SalidasID=" + sTransferencias + @"
+and
+Salidas.DestinosID=Sucursales.SucursalesID ";
+
+
+
+            System.Data.DataSet ds;
+            System.Xml.XmlElement xmlElement;
+            try
+            {
+                ds = qryToDataSet(sQry);
+                if (ds.Tables.Count > 0)
+                {
+                    xmlElement = Serialize(ds.Tables[0]);
+                    return xmlElement.OuterXml.ToString();
+                }
+                return "-1";
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "Regresa solicitudes de cancelacion:" + ex.Message + ex.StackTrace + "\n" + sQry);
+                return "Ocurrio un error inesperado";
+            }
+
+
+        }
+
 
 
 
