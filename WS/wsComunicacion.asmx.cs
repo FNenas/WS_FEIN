@@ -4022,13 +4022,107 @@ Salidas.DestinosID=Sucursales.SucursalesID ";
             }
             catch (Exception ex)
             {
-                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "Regresa solicitudes de cancelacion:" + ex.Message + ex.StackTrace + "\n" + sQry);
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "Regresa envabezadis transferencuas:" + ex.Message + ex.StackTrace + "\n" + sQry);
                 return "Ocurrio un error inesperado";
             }
 
 
         }
 
+
+//-----------------------[Rap Orden de Compra]------------------
+    [WebMethod(Description = "Obtener Orden de Compra por articulo RAP")]
+        public string RAP_Orden_Compra_Por_Articulo(String sOrdenCompra)
+        {
+            String sQry = @"
+select 
+CATSAT_ClaveProductosServicios.ClaveProdServ,
+CATSAT_ClaveProductosServicios.Descripcion,
+(PedidosComprasArticulos.CantidadPedida + PedidosComprasArticulos.CantidadBonificacion)  as Cantidad,
+PedidosComprasArticulos.ArticulosID as ArticulosID,
+Articulos.Codigo as Codigo,
+Articulos.Nombre as descripcion_Articulo,
+Articulos.PermitirDecimales as EsKilogramo,
+(Articulos.PesoPromedio* PedidosComprasArticulos.CantidadPedida + PedidosComprasArticulos.CantidadBonificacion) as PesoTotal,
+PedidosComprasArticulos.Importe as importeCostoIVA
+from
+CATSAT_ClaveProductosServicios,PedidosComprasArticulos,Articulos,PedidosCompras
+where
+PedidosCompras.PedidosComprasID = PedidosComprasArticulos.PedidosComprasID
+and
+PedidosComprasArticulos.ArticulosID = Articulos.ArticulosID
+and
+Articulos.CATSAT_ClaveProductosServiciosID=CATSAT_ClaveProductosServicios.CATSAT_ClaveProductosServiciosID
+and
+PedidosCompras.PedidosComprasID=" + sOrdenCompra + @"
+and
+(PedidosComprasArticulos.CantidadPedida + PedidosComprasArticulos.CantidadBonificacion)>0
+";
+
+
+
+            System.Data.DataSet ds;
+            System.Xml.XmlElement xmlElement;
+            try
+            {
+                ds = qryToDataSet(sQry);
+                if (ds.Tables.Count > 0)
+                {
+                    xmlElement = Serialize(ds.Tables[0]);
+                    return xmlElement.OuterXml.ToString();
+                }
+                return "-1";
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "Regresa ordenes de compras articulos:" + ex.Message + ex.StackTrace + "\n" + sQry);
+                return "Ocurrio un error inesperado";
+            }
+
+
+        }
+
+
+
+  [WebMethod(Description = "Obtener Encabezados Orden Compra RAP")]
+        public string RAP_Orden_Compra_Encabezado(String sOrdenCompra)
+        {
+            String sQry = @"
+select 
+Sucursales.Nombre as NombreSucural,
+PedidosCompras.FolioMovimiento as Folio,
+PedidosCompras.FechaHoraCreacion as FechaGeneracion,
+Proveedores.Nombre as Nombre
+from
+PedidosCompras,Sucursales,Proveedores
+where
+PedidosCompras.SucursalesID = Sucursales.SucursalesID
+and
+PedidosCompras.PedidosComprasID=" + sOrdenCompra + @"
+and
+PedidosCompras.ProveedoresID=Proveedores.ProveedoresID
+";
+
+            System.Data.DataSet ds;
+            System.Xml.XmlElement xmlElement;
+            try
+            {
+                ds = qryToDataSet(sQry);
+                if (ds.Tables.Count > 0)
+                {
+                    xmlElement = Serialize(ds.Tables[0]);
+                    return xmlElement.OuterXml.ToString();
+                }
+                return "-1";
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "Regresa ordenes de compras encabezado:" + ex.Message + ex.StackTrace + "\n" + sQry);
+                return "Ocurrio un error inesperado";
+            }
+
+
+        }
 
 
 
