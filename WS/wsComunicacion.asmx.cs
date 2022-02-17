@@ -3866,7 +3866,7 @@ CATSAT_ClaveProductosServicios.Descripcion,
 sum(SalidasArticulos.Cantidad) as Cantidad,
 Articulos.PermitirDecimales as EsKilogramo,
 sum (Articulos.PesoPromedio* SalidasArticulos.Cantidad) as PesoTotal,
-sum(SalidasArticulos.ImporteIVACosto) as ImporteIVACosto
+sum(SalidasArticulos.ImporteIVACosto) as importeCostoIVA
 from SalidasArticulos,Articulos,salidas,CATSAT_ClaveProductosServicios
 where
 salidas.SalidasID=SalidasArticulos.SalidasID
@@ -3914,7 +3914,7 @@ Articulos.Nombre as descripcion_Articulo,
 SalidasArticulos.Cantidad as Cantidad,
 Articulos.PermitirDecimales as EsKilogramo,
 (Articulos.PesoPromedio* SalidasArticulos.Cantidad) as PesoTotal,
-SalidasArticulos.ImporteIVACosto as ImporteIVACosto
+SalidasArticulos.ImporteIVACosto as importeCostoIVA
 from SalidasArticulos,Articulos,salidas,CATSAT_ClaveProductosServicios
 where
 salidas.SalidasID=SalidasArticulos.SalidasID
