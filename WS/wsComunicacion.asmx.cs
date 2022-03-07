@@ -3866,7 +3866,7 @@ CATSAT_ClaveProductosServicios.Descripcion,
 sum(SalidasArticulos.Cantidad) as Cantidad,
 Articulos.PermitirDecimales as EsKilogramo,
 sum (Articulos.PesoPromedio* SalidasArticulos.Cantidad) as PesoTotal,
-sum(SalidasArticulos.ImporteIVACosto) as ImporteIVACosto
+sum(SalidasArticulos.ImporteIVACosto) as importeCostoIVA
 from SalidasArticulos,Articulos,salidas,CATSAT_ClaveProductosServicios
 where
 salidas.SalidasID=SalidasArticulos.SalidasID
@@ -3914,13 +3914,13 @@ Articulos.Nombre as descripcion_Articulo,
 SalidasArticulos.Cantidad as Cantidad,
 Articulos.PermitirDecimales as EsKilogramo,
 (Articulos.PesoPromedio* SalidasArticulos.Cantidad) as PesoTotal,
-SalidasArticulos.ImporteIVACosto as ImporteIVACosto
-from SalidasArticulos,Articulos,salidas,CATSAT_ClaveProductosServicios
+SalidasArticulos.ImporteIVACosto as importeCostoIVA
+from Salidas 
+inner JOIN SalidasArticulos on Salidas.SalidasID = SalidasArticulos.SalidasID
+inner join Articulos on SalidasArticulos.ArticulosID = Articulos.ArticulosID
+left join CATSAT_ClaveProductosServicios on Articulos.CATSAT_ClaveProductosServiciosID = CATSAT_ClaveProductosServicios.CATSAT_ClaveProductosServiciosID
 where
-salidas.SalidasID=SalidasArticulos.SalidasID
-and SalidasArticulos.ArticulosID=Articulos.ArticulosID
-and Articulos.CATSAT_ClaveProductosServiciosID=CATSAT_ClaveProductosServicios.CATSAT_ClaveProductosServiciosID
-and SalidasArticulos.SalidasID=" + sTransferencias + @"
+SalidasArticulos.SalidasID=" + sTransferencias + @"
 and Salidas.TiposMovimientosID=8001  ";
 
 
@@ -4124,7 +4124,9 @@ PedidosCompras.ProveedoresID=Proveedores.ProveedoresID
 
         }
 
+//metodos para obtener info de  rap
 
+     
 
     }
 }
