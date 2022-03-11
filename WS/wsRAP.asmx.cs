@@ -18,9 +18,9 @@ namespace WS
     {
 
         [WebMethod]
-        public string HelloWorld()
+        public string HelloWorld(String sNombre)
         {
-            return "Hello World";
+            return "Hello World "+ sNombre;
         }
     }
 }
