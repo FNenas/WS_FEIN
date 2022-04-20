@@ -4161,10 +4161,9 @@ WHERE
             }
             catch (Exception ex)
             {
-                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "ConsultarArticulo:" + ex.Message + ex.StackTrace + "\n" + sQry);
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "ConsultarArticulo:" + ex.Message + ex.StackTrace + "\n" + Query);
                 return "Ocurrio un error inesperado";
             }
-            return "";
         }
     }
 }
