@@ -17,9 +17,9 @@ namespace WS
     public class wsRAP : System.Web.Services.WebService
     {
         [WebMethod]
-        public string HelloWorld()
+        public string HelloWorld(String sNombre)
         {
-            return "Hello World";
+            return "Hello World "+ sNombre;
         }
    
 
