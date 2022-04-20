@@ -2094,68 +2094,68 @@ WHERE
             try
             {
                 q = @"SELECT DISTINCT 
-Entradas.EntradasID AS EntradasID,	
-Entradas.ProveedoresID AS ProveedoresID,	
-Entradas.TiposMovimientosID AS TiposMovimientosID,	
-Entradas.FechaEntrada AS FechaEntrada,	
-Entradas.Referencia AS Referencia,	
-Entradas.Subtotal AS Subtotal,	
-Entradas.IVA AS IVA,	
-Entradas.Importe AS Importe,	
-Entradas.Notas AS Notas,	
-Proveedores.Nombre AS Nombre,	
-TiposMovimientos.DescripcionMovimiento AS DescripcionMovimiento,	
-Entradas.FolioMovimiento AS FolioMovimiento,	
-Entradas.Estatus_MovimientosID AS Estatus_MovimientosID,	
-Estatus_Movimientos.Nombre AS EstatusNombre,	
-Entradas.EmpleadoGeneroID AS EmpleadoGeneroID,	
-Destinos.Nombre AS Nombre_OrigenDestino,	
-Entradas.TieneBonificacion AS TieneBonificacion,	
-Entradas.OrigenID AS OrigenID,	
-Entradas.MotivoCancelacion AS MotivoCancelacion,
-Entradas.ImporteDescuento AS ImporteDescuento,
-Entradas.CantidadEntrada AS CantidadEntrada,
-Entradas.Dolares AS Dolares
-FROM 
-Destinos
-RIGHT OUTER JOIN
-(
-Estatus_Movimientos
-LEFT OUTER JOIN
-(
-Proveedores
-RIGHT OUTER JOIN
-(
-TiposMovimientos
-INNER JOIN
-(
-Familias
-LEFT OUTER JOIN
-(
-Entradas
-LEFT OUTER JOIN
-(
-Articulos
-INNER JOIN
-EntradasArticulos
-ON Articulos.ArticulosID = EntradasArticulos.ArticulosID
-)
-ON Entradas.EntradasID = EntradasArticulos.EntradasID
-)
-ON Familias.FamiliasID = Articulos.FamiliasID
-)
-ON TiposMovimientos.TiposMovimientosID = Entradas.TiposMovimientosID
-)
-ON Proveedores.ProveedoresID = Entradas.ProveedoresID
-)
-ON Entradas.Estatus_MovimientosID = Estatus_Movimientos.Estatus_MovimientosID
-)
-ON Destinos.DestinosID = Entradas.OrigenID
-WHERE 
-(
-	Entradas.SucursalesID =" + SucursalesID + @"
+                    Entradas.EntradasID AS EntradasID,	
+                    Entradas.ProveedoresID AS ProveedoresID,	
+                    Entradas.TiposMovimientosID AS TiposMovimientosID,	
+                    Entradas.FechaEntrada AS FechaEntrada,	
+                    Entradas.Referencia AS Referencia,	
+                    Entradas.Subtotal AS Subtotal,	
+                    Entradas.IVA AS IVA,	
+                    Entradas.Importe AS Importe,	
+                    Entradas.Notas AS Notas,	
+                    Proveedores.Nombre AS Nombre,	
+                    TiposMovimientos.DescripcionMovimiento AS DescripcionMovimiento,	
+                    Entradas.FolioMovimiento AS FolioMovimiento,	
+                    Entradas.Estatus_MovimientosID AS Estatus_MovimientosID,	
+                    Estatus_Movimientos.Nombre AS EstatusNombre,	
+                    Entradas.EmpleadoGeneroID AS EmpleadoGeneroID,	
+                    Destinos.Nombre AS Nombre_OrigenDestino,	
+                    Entradas.TieneBonificacion AS TieneBonificacion,	
+                    Entradas.OrigenID AS OrigenID,	
+                    Entradas.MotivoCancelacion AS MotivoCancelacion,
+                    Entradas.ImporteDescuento AS ImporteDescuento,
+                    Entradas.CantidadEntrada AS CantidadEntrada,
+                    Entradas.Dolares AS Dolares
+                    FROM 
+                    Destinos
+                    RIGHT OUTER JOIN
+                    (
+                    Estatus_Movimientos
+                    LEFT OUTER JOIN
+                    (
+                    Proveedores
+                    RIGHT OUTER JOIN
+                    (
+                    TiposMovimientos
+                    INNER JOIN
+                    (
+                    Familias
+                    LEFT OUTER JOIN
+                    (
+                    Entradas
+                    LEFT OUTER JOIN
+                    (
+                    Articulos
+                    INNER JOIN
+                    EntradasArticulos
+                    ON Articulos.ArticulosID = EntradasArticulos.ArticulosID
+                    )
+                    ON Entradas.EntradasID = EntradasArticulos.EntradasID
+                    )
+                    ON Familias.FamiliasID = Articulos.FamiliasID
+                    )
+                    ON TiposMovimientos.TiposMovimientosID = Entradas.TiposMovimientosID
+                    )
+                    ON Proveedores.ProveedoresID = Entradas.ProveedoresID
+                    )
+                    ON Entradas.Estatus_MovimientosID = Estatus_Movimientos.Estatus_MovimientosID
+                    )
+                    ON Destinos.DestinosID = Entradas.OrigenID
+                    WHERE 
+                    (
+	                    Entradas.SucursalesID =" + SucursalesID + @"
 
-AND	Entradas.FechaEntrada BETWEEN '" + sFini + @"' AND '" + sFFin + @"' ";
+                    AND	Entradas.FechaEntrada BETWEEN '" + sFini + @"' AND '" + sFFin + @"' ";
 
 
                 if (sTipoMovimientoID.Length > 1)
@@ -2274,31 +2274,31 @@ AND	Entradas.FechaEntrada BETWEEN '" + sFini + @"' AND '" + sFFin + @"' ";
             String q = "";
             try
             {
-                q = @"SELECT 
-	EntradasArticulos.EntradasID AS EntradasID,	
-	EntradasArticulos.EntradasArticulosID AS EntradasArticulosID,	
-	EntradasArticulos.ArticulosID AS ArticulosID,	
-	EntradasArticulos.Cantidad AS Cantidad,	
-	EntradasArticulos.CostoSIVA AS CostoSIVA,	
-	EntradasArticulos.Costo AS Costo,	
-	Articulos.Nombre AS Nombre,	
-	EntradasArticulos.ImporteCosto AS ImporteCosto,	
-	EntradasArticulos.ImporteIVACosto AS ImporteIVACosto,	
-	Articulos.Codigo AS Codigo,	
-	EntradasArticulos.Devuelto AS Devuelto,	
-	EntradasArticulos.CantidadRecibida AS CantidadRecibida,	
-	EntradasArticulos.CantidadBonificacion AS CantidadBonificacion,	
-	EntradasArticulos.CantidadBonificacionRecibida AS CantidadBonificacionRecibida,	
-	EntradasArticulos.PresentacionesID AS PresentacionesID,	
-	EntradasArticulos.presentacionesID_Empaque AS presentacionesID_Empaque
-FROM 
-	Articulos,	
-	EntradasArticulos
-WHERE 
-	Articulos.ArticulosID = EntradasArticulos.ArticulosID
-	AND
-	(
-		EntradasArticulos.EntradasID =" + sEntradasID + ")";
+                                q = @"SELECT 
+	                EntradasArticulos.EntradasID AS EntradasID,	
+	                EntradasArticulos.EntradasArticulosID AS EntradasArticulosID,	
+	                EntradasArticulos.ArticulosID AS ArticulosID,	
+	                EntradasArticulos.Cantidad AS Cantidad,	
+	                EntradasArticulos.CostoSIVA AS CostoSIVA,	
+	                EntradasArticulos.Costo AS Costo,	
+	                Articulos.Nombre AS Nombre,	
+	                EntradasArticulos.ImporteCosto AS ImporteCosto,	
+	                EntradasArticulos.ImporteIVACosto AS ImporteIVACosto,	
+	                Articulos.Codigo AS Codigo,	
+	                EntradasArticulos.Devuelto AS Devuelto,	
+	                EntradasArticulos.CantidadRecibida AS CantidadRecibida,	
+	                EntradasArticulos.CantidadBonificacion AS CantidadBonificacion,	
+	                EntradasArticulos.CantidadBonificacionRecibida AS CantidadBonificacionRecibida,	
+	                EntradasArticulos.PresentacionesID AS PresentacionesID,	
+	                EntradasArticulos.presentacionesID_Empaque AS presentacionesID_Empaque
+                FROM 
+	                Articulos,	
+	                EntradasArticulos
+                WHERE 
+	                Articulos.ArticulosID = EntradasArticulos.ArticulosID
+	                AND
+	                (
+		                EntradasArticulos.EntradasID =" + sEntradasID + ")";
 
 
 
@@ -2331,31 +2331,31 @@ WHERE
             String q = "";
             try
             {
-                q = @"SELECT 
-	EntradasArticulos.EntradasID AS EntradasID,	
-	EntradasArticulos.EntradasArticulosID AS EntradasArticulosID,	
-	EntradasArticulos.ArticulosID AS ArticulosID,	
-	EntradasArticulos.Cantidad AS Cantidad,	
-	EntradasArticulos.CostoSIVA AS CostoSIVA,	
-	EntradasArticulos.Costo AS Costo,	
-	Articulos.Nombre AS Nombre,	
-	EntradasArticulos.ImporteCosto AS ImporteCosto,	
-	EntradasArticulos.ImporteIVACosto AS ImporteIVACosto,	
-	Articulos.Codigo AS Codigo,	
-	EntradasArticulos.Devuelto AS Devuelto,	
-	EntradasArticulos.CantidadRecibida AS CantidadRecibida,	
-	EntradasArticulos.CantidadBonificacion AS CantidadBonificacion,	
-	EntradasArticulos.CantidadBonificacionRecibida AS CantidadBonificacionRecibida,	
-	EntradasArticulos.PresentacionesID AS PresentacionesID,	
-	EntradasArticulos.presentacionesID_Empaque AS presentacionesID_Empaque
-FROM 
-	Articulos,	
-	EntradasArticulos
-WHERE 
-	Articulos.ArticulosID = EntradasArticulos.ArticulosID
-	AND
-	(
-		EntradasArticulos.EntradasID = " + sPedidosID + ")";
+                            q = @"SELECT 
+	            EntradasArticulos.EntradasID AS EntradasID,	
+	            EntradasArticulos.EntradasArticulosID AS EntradasArticulosID,	
+	            EntradasArticulos.ArticulosID AS ArticulosID,	
+	            EntradasArticulos.Cantidad AS Cantidad,	
+	            EntradasArticulos.CostoSIVA AS CostoSIVA,	
+	            EntradasArticulos.Costo AS Costo,	
+	            Articulos.Nombre AS Nombre,	
+	            EntradasArticulos.ImporteCosto AS ImporteCosto,	
+	            EntradasArticulos.ImporteIVACosto AS ImporteIVACosto,	
+	            Articulos.Codigo AS Codigo,	
+	            EntradasArticulos.Devuelto AS Devuelto,	
+	            EntradasArticulos.CantidadRecibida AS CantidadRecibida,	
+	            EntradasArticulos.CantidadBonificacion AS CantidadBonificacion,	
+	            EntradasArticulos.CantidadBonificacionRecibida AS CantidadBonificacionRecibida,	
+	            EntradasArticulos.PresentacionesID AS PresentacionesID,	
+	            EntradasArticulos.presentacionesID_Empaque AS presentacionesID_Empaque
+            FROM 
+	            Articulos,	
+	            EntradasArticulos
+            WHERE 
+	            Articulos.ArticulosID = EntradasArticulos.ArticulosID
+	            AND
+	            (
+		            EntradasArticulos.EntradasID = " + sPedidosID + ")";
 
 
 
@@ -2388,32 +2388,32 @@ WHERE
             String q = "";
             try
             {
-                q = @"SELECT 
-	Ventas.FechaVenta AS FechaVenta,	
-	Ventas.IPInventarioAfecto AS IPInventarioAfecto,	
-	Ventas.Cancelada AS Cancelada,	
-	Ventas.SucursalesID AS SucursalesID,	
-	Ventas_Articulos.ArticulosID AS ArticulosID,	
-	Articulos.Codigo AS Codigo,	
-    Articulos.ImpuestosID as ImpuestosID,
-    Articulos.PermitirDecimales as PermitirDecimales,
-	Ventas_Articulos.LineaID AS LineaID,	
-	Ventas_Articulos.Cantidad AS Cantidad,	
-	Ventas_Articulos.Importe AS Importe,
-	ventas.VentasID
-FROM 
-	Ventas,	
-	Ventas_Articulos,	
-	Articulos
-WHERE 
-	Ventas.VentasID = Ventas_Articulos.VentasID
-	AND		Ventas_Articulos.ArticulosID = Articulos.ArticulosID
-	AND
-	(
-		Ventas.Cancelada = 0
-		AND	Ventas.FechaVenta ='" + sFecha + @"'
-		AND	LENGTH(Ventas.IPInventarioAfecto )  > 0
-	)";
+                            q = @"SELECT 
+	            Ventas.FechaVenta AS FechaVenta,	
+	            Ventas.IPInventarioAfecto AS IPInventarioAfecto,	
+	            Ventas.Cancelada AS Cancelada,	
+	            Ventas.SucursalesID AS SucursalesID,	
+	            Ventas_Articulos.ArticulosID AS ArticulosID,	
+	            Articulos.Codigo AS Codigo,	
+                Articulos.ImpuestosID as ImpuestosID,
+                Articulos.PermitirDecimales as PermitirDecimales,
+	            Ventas_Articulos.LineaID AS LineaID,	
+	            Ventas_Articulos.Cantidad AS Cantidad,	
+	            Ventas_Articulos.Importe AS Importe,
+	            ventas.VentasID
+            FROM 
+	            Ventas,	
+	            Ventas_Articulos,	
+	            Articulos
+            WHERE 
+	            Ventas.VentasID = Ventas_Articulos.VentasID
+	            AND		Ventas_Articulos.ArticulosID = Articulos.ArticulosID
+	            AND
+	            (
+		            Ventas.Cancelada = 0
+		            AND	Ventas.FechaVenta ='" + sFecha + @"'
+		            AND	LENGTH(Ventas.IPInventarioAfecto )  > 0
+	            )";
 
 
 
@@ -2446,12 +2446,12 @@ WHERE
 
             Boolean bBandera = false;
             String q = @"UPDATE 
-	Ventas
-SET
-	IPInventarioAfecto =''
-WHERE 
-	Ventas.IPInventarioAfecto ='192.168.10.253'
-	 AND Ventas.FechaVenta=" + sFecha;
+	                    Ventas
+                    SET
+	                    IPInventarioAfecto =''
+                    WHERE 
+	                    Ventas.IPInventarioAfecto ='192.168.10.253'
+	                     AND Ventas.FechaVenta=" + sFecha;
             //   System.IO.File.WriteAllText(@"C:\sXML\HAddPosicion_" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", q);
 
 
@@ -2522,33 +2522,33 @@ WHERE
             try
             {
                 q = @" SELECT 
-	Pedidos.PedidosID AS PedidosID,	
-	Pedidos.SucursalesID AS SucursalesID,	
-	Pedidos.SucursalAlmacenID AS SucursalAlmacenID,	
-	Pedidos.NoPedido AS NoPedido,	
-	Pedidos.FechaRecibido AS FechaRecibido,	
-	Pedidos.FechaSurtido AS FechaSurtido,	
-	Pedidos.Total AS Total,	
-	Pedidos.CajasSurtidas AS CajasSurtidas,	
-	Pedidos.ArticulosSurtidos AS ArticulosSurtidos,	
-	Empleados.NombreCompleto AS NombreCompleto,	
-	Empleados.EmpleadosID AS EmpleadosID,	
-	Sucursales.Nombre AS NombreSucursal,	
-	Pedidos.Estatus_PedidosID AS Estatus_PedidosID,	
-	Estatus_Pedidos.Nombre AS NombreEstatus,	
-	Pedidos.Notas AS Notas
-  FROM 
-	Sucursales,	
-	Pedidos,	
-	Empleados,	
-	Estatus_Pedidos
- WHERE 
-	Sucursales.SucursalesID = Pedidos.SucursalesID
-	AND		Pedidos.EmpleadoSurtioID = Empleados.EmpleadosID
-	AND		Pedidos.Estatus_PedidosID = Estatus_Pedidos.Estatus_PedidosID
-	AND
-	(
-			Pedidos.FechaSurtido BETWEEN '" + pFechaSInicio + @"' AND '" + pFechaSFinal + @"' ";
+	                    Pedidos.PedidosID AS PedidosID,	
+	                    Pedidos.SucursalesID AS SucursalesID,	
+	                    Pedidos.SucursalAlmacenID AS SucursalAlmacenID,	
+	                    Pedidos.NoPedido AS NoPedido,	
+	                    Pedidos.FechaRecibido AS FechaRecibido,	
+	                    Pedidos.FechaSurtido AS FechaSurtido,	
+	                    Pedidos.Total AS Total,	
+	                    Pedidos.CajasSurtidas AS CajasSurtidas,	
+	                    Pedidos.ArticulosSurtidos AS ArticulosSurtidos,	
+	                    Empleados.NombreCompleto AS NombreCompleto,	
+	                    Empleados.EmpleadosID AS EmpleadosID,	
+	                    Sucursales.Nombre AS NombreSucursal,	
+	                    Pedidos.Estatus_PedidosID AS Estatus_PedidosID,	
+	                    Estatus_Pedidos.Nombre AS NombreEstatus,	
+	                    Pedidos.Notas AS Notas
+                      FROM 
+	                    Sucursales,	
+	                    Pedidos,	
+	                    Empleados,	
+	                    Estatus_Pedidos
+                     WHERE 
+	                    Sucursales.SucursalesID = Pedidos.SucursalesID
+	                    AND		Pedidos.EmpleadoSurtioID = Empleados.EmpleadosID
+	                    AND		Pedidos.Estatus_PedidosID = Estatus_Pedidos.Estatus_PedidosID
+	                    AND
+	                    (
+			                    Pedidos.FechaSurtido BETWEEN '" + pFechaSInicio + @"' AND '" + pFechaSFinal + @"' ";
 
                 if (pFechaRInicio.Length > 0 && pFechaRFinal.Length > 0)
                 {
@@ -2614,62 +2614,62 @@ WHERE
             try
             {
                 q = @" SELECT DISTINCT 
-	Salidas.SalidasID AS SalidasID,	
-	Salidas.DestinosID AS DestinosID,	
-	Salidas.TiposMovimientosID AS TiposMovimientosID,	
-	Salidas.FechaSalida AS FechaSalida,	
-	Salidas.Subtotal AS Subtotal,	
-	Salidas.IVA AS IVA,	
-	Salidas.Importe AS Importe,	
-	Salidas.Notas AS Notas,	
-	Destinos.Nombre AS Nombre,	
-	TiposMovimientos.DescripcionMovimiento AS DescripcionMovimiento,	
-	Salidas.FolioMovimiento AS FolioMovimiento,	
-	Salidas.Estatus_MovimientosID AS Estatus_MovimientosID,	
-	Estatus_Movimientos.Nombre AS EstatusNombre,	
-	Proveedores.Nombre AS ProveedorNombre,	
-	Salidas.EmpleadoGeneroID AS EmpleadoGeneroID,	
-	Salidas.ProveedoresID AS ProveedoresID,	
-	Salidas.Referencia AS Referencia,	
-	Salidas.MotivoCancelacion AS MotivoCancelacion,	
-	Salidas.Recibido AS Recibido,	
-	Salidas.CantidadSalida AS CantidadSalida,	
-	Salidas.PendienteAplicarNC AS PendienteAplicarNC,	
-	Salidas.FolioRecepcionID AS FolioRecepcionID
-FROM 
-	Estatus_Movimientos
-	INNER JOIN
-	(
-		Articulos
-		INNER JOIN
-		(
-			(
-				TiposMovimientos
-				INNER JOIN
-				(
-					Destinos
-					RIGHT OUTER JOIN
-					(
-						Proveedores
-						RIGHT OUTER JOIN
-						Salidas
-						ON Proveedores.ProveedoresID = Salidas.ProveedoresID
-					)
-					ON Destinos.DestinosID = Salidas.DestinosID
-				)
-				ON TiposMovimientos.TiposMovimientosID = Salidas.TiposMovimientosID
-			)
-			INNER JOIN
-			SalidasArticulos
-			ON Salidas.SalidasID = SalidasArticulos.SalidasID
-		)
-		ON Articulos.ArticulosID = SalidasArticulos.ArticulosID
-	)
-	ON Estatus_Movimientos.Estatus_MovimientosID = Salidas.Estatus_MovimientosID
-WHERE 
-	(
-	Salidas.FechaSalida BETWEEN '" + pFechaInicial + @"' AND '" + pFechaFInal + @"'
-AND	Salidas.SucursalesID =" + pSucursalesID;
+	                    Salidas.SalidasID AS SalidasID,	
+	                    Salidas.DestinosID AS DestinosID,	
+	                    Salidas.TiposMovimientosID AS TiposMovimientosID,	
+	                    Salidas.FechaSalida AS FechaSalida,	
+	                    Salidas.Subtotal AS Subtotal,	
+	                    Salidas.IVA AS IVA,	
+	                    Salidas.Importe AS Importe,	
+	                    Salidas.Notas AS Notas,	
+	                    Destinos.Nombre AS Nombre,	
+	                    TiposMovimientos.DescripcionMovimiento AS DescripcionMovimiento,	
+	                    Salidas.FolioMovimiento AS FolioMovimiento,	
+	                    Salidas.Estatus_MovimientosID AS Estatus_MovimientosID,	
+	                    Estatus_Movimientos.Nombre AS EstatusNombre,	
+	                    Proveedores.Nombre AS ProveedorNombre,	
+	                    Salidas.EmpleadoGeneroID AS EmpleadoGeneroID,	
+	                    Salidas.ProveedoresID AS ProveedoresID,	
+	                    Salidas.Referencia AS Referencia,	
+	                    Salidas.MotivoCancelacion AS MotivoCancelacion,	
+	                    Salidas.Recibido AS Recibido,	
+	                    Salidas.CantidadSalida AS CantidadSalida,	
+	                    Salidas.PendienteAplicarNC AS PendienteAplicarNC,	
+	                    Salidas.FolioRecepcionID AS FolioRecepcionID
+                    FROM 
+	                    Estatus_Movimientos
+	                    INNER JOIN
+	                    (
+		                    Articulos
+		                    INNER JOIN
+		                    (
+			                    (
+				                    TiposMovimientos
+				                    INNER JOIN
+				                    (
+					                    Destinos
+					                    RIGHT OUTER JOIN
+					                    (
+						                    Proveedores
+						                    RIGHT OUTER JOIN
+						                    Salidas
+						                    ON Proveedores.ProveedoresID = Salidas.ProveedoresID
+					                    )
+					                    ON Destinos.DestinosID = Salidas.DestinosID
+				                    )
+				                    ON TiposMovimientos.TiposMovimientosID = Salidas.TiposMovimientosID
+			                    )
+			                    INNER JOIN
+			                    SalidasArticulos
+			                    ON Salidas.SalidasID = SalidasArticulos.SalidasID
+		                    )
+		                    ON Articulos.ArticulosID = SalidasArticulos.ArticulosID
+	                    )
+	                    ON Estatus_Movimientos.Estatus_MovimientosID = Salidas.Estatus_MovimientosID
+                    WHERE 
+	                    (
+	                    Salidas.FechaSalida BETWEEN '" + pFechaInicial + @"' AND '" + pFechaFInal + @"'
+                    AND	Salidas.SucursalesID =" + pSucursalesID;
 
 
                 if (pArticulosID.Length > 0)
@@ -2775,40 +2775,40 @@ AND	Salidas.SucursalesID =" + pSucursalesID;
             try
             {
                 q = @" SELECT 
-	Salidas.SucursalesID AS SucursalesID,		
-	SalidasArticulos.ArticulosID AS ArticulosID,	
-	SalidasArticulos.PresentacionesID AS PresentacionesID,	
-	Articulos.LineaID AS LineaID,	
-	Articulos.Codigo AS Codigo,	
-	Articulos.Nombre AS Nombre,	
-	SalidasArticulos.CostoSIVA AS CostoSIVA,	
-	SalidasArticulos.Costo AS Costo,	
-	SUM(SalidasArticulos.Cantidad) AS sum_Cantidad
-FROM 
-	Articulos,	
-	SalidasArticulos,	
-	Salidas
-WHERE 
-	Articulos.ArticulosID = SalidasArticulos.ArticulosID
-	AND		Salidas.SalidasID = SalidasArticulos.SalidasID
-	and
-	(
-			Salidas.SucursalesID =" + pSucursalesID + @"
-		AND	SalidasArticulos.SalidasID IN (" + pSalidasID + @")
+	                    Salidas.SucursalesID AS SucursalesID,		
+	                    SalidasArticulos.ArticulosID AS ArticulosID,	
+	                    SalidasArticulos.PresentacionesID AS PresentacionesID,	
+	                    Articulos.LineaID AS LineaID,	
+	                    Articulos.Codigo AS Codigo,	
+	                    Articulos.Nombre AS Nombre,	
+	                    SalidasArticulos.CostoSIVA AS CostoSIVA,	
+	                    SalidasArticulos.Costo AS Costo,	
+	                    SUM(SalidasArticulos.Cantidad) AS sum_Cantidad
+                    FROM 
+	                    Articulos,	
+	                    SalidasArticulos,	
+	                    Salidas
+                    WHERE 
+	                    Articulos.ArticulosID = SalidasArticulos.ArticulosID
+	                    AND		Salidas.SalidasID = SalidasArticulos.SalidasID
+	                    and
+	                    (
+			                    Salidas.SucursalesID =" + pSucursalesID + @"
+		                    AND	SalidasArticulos.SalidasID IN (" + pSalidasID + @")
 		
-	)
-GROUP BY 
-	Salidas.SucursalesID,		
-	SalidasArticulos.ArticulosID,	
-	SalidasArticulos.PresentacionesID,	
-	Articulos.LineaID,	
-	Articulos.Codigo,	
-	Articulos.Nombre,	
-	SalidasArticulos.CostoSIVA,	
-	SalidasArticulos.Costo
-ORDER BY 
+	                    )
+                    GROUP BY 
+	                    Salidas.SucursalesID,		
+	                    SalidasArticulos.ArticulosID,	
+	                    SalidasArticulos.PresentacionesID,	
+	                    Articulos.LineaID,	
+	                    Articulos.Codigo,	
+	                    Articulos.Nombre,	
+	                    SalidasArticulos.CostoSIVA,	
+	                    SalidasArticulos.Costo
+                    ORDER BY 
 	
-	Nombre ASC";
+	                    Nombre ASC";
 
 
 
@@ -2845,28 +2845,28 @@ ORDER BY
             try
             {
                 String q = @"SELECT 
-	Pedidos_Articulos.ArticulosID as ArticulosID,
-     Articulos.Codigo as Codigo,
-   Articulos.Nombre as Nombre,
-  sum(Pedidos_Articulos.PiezasSurtidas) as SUM_PiezasSurtidas,
-  avG(Pedidos_Articulos.CostoConIvaUnitario) as AVG_CostoCIVA,
-  sum( Pedidos_Articulos.ImporteIVACosto) as SUN_ImporteCostoCIVA
-FROM 
+	                        Pedidos_Articulos.ArticulosID as ArticulosID,
+                             Articulos.Codigo as Codigo,
+                           Articulos.Nombre as Nombre,
+                          sum(Pedidos_Articulos.PiezasSurtidas) as SUM_PiezasSurtidas,
+                          avG(Pedidos_Articulos.CostoConIvaUnitario) as AVG_CostoCIVA,
+                          sum( Pedidos_Articulos.ImporteIVACosto) as SUN_ImporteCostoCIVA
+                        FROM 
 	
-	Pedidos,Pedidos_Articulos,Articulos
+	                        Pedidos,Pedidos_Articulos,Articulos
 		
-WHERE 
-        Pedidos.PedidosID=Pedidos_Articulos.PedidosID
-	and Pedidos_Articulos.ArticulosID=Articulos.ArticulosID
-	AND
-	(
+                        WHERE 
+                                Pedidos.PedidosID=Pedidos_Articulos.PedidosID
+	                        and Pedidos_Articulos.ArticulosID=Articulos.ArticulosID
+	                        AND
+	                        (
 	
-		 Pedidos.Estatus_PedidosID = 3 
-        AND Pedidos.PedidosID in (" + pInPedidosID + @")
-) GROUP by 
-Pedidos_Articulos.ArticulosID ,
-     Articulos.Codigo,
-   Articulos.Nombre ";
+		                         Pedidos.Estatus_PedidosID = 3 
+                                AND Pedidos.PedidosID in (" + pInPedidosID + @")
+                        ) GROUP by 
+                        Pedidos_Articulos.ArticulosID ,
+                             Articulos.Codigo,
+                        Articulos.Nombre ";
 
 
 
@@ -2900,29 +2900,29 @@ Pedidos_Articulos.ArticulosID ,
             try
             {
                 q = @"SELECT 
-    EntradasArticulos.ArticulosID AS ArticulosID,	
-    Articulos.Codigo AS Codigo,
-    Articulos.Nombre AS Nombre,	
-    sum(EntradasArticulos.CantidadRecibida) as SUM_CantidadRecibida,	
-    AVG(EntradasArticulos.Costo) AS AVG_Costo,	
-    Sum(	EntradasArticulos.ImporteIVACosto) AS SUM_ImporteIVACosto	
+                    EntradasArticulos.ArticulosID AS ArticulosID,	
+                    Articulos.Codigo AS Codigo,
+                    Articulos.Nombre AS Nombre,	
+                    sum(EntradasArticulos.CantidadRecibida) as SUM_CantidadRecibida,	
+                    AVG(EntradasArticulos.Costo) AS AVG_Costo,	
+                    Sum(	EntradasArticulos.ImporteIVACosto) AS SUM_ImporteIVACosto	
 	
-    FROM 
-	Articulos,	
-	EntradasArticulos
+                    FROM 
+	                Articulos,	
+	                EntradasArticulos
     
-    WHERE 
-	Articulos.ArticulosID = EntradasArticulos.ArticulosID
-	AND
-	(
-		EntradasArticulos.EntradasID IN (" + psINEntradasID + @")
+                    WHERE 
+	                Articulos.ArticulosID = EntradasArticulos.ArticulosID
+	                AND
+	                (
+		                EntradasArticulos.EntradasID IN (" + psINEntradasID + @")
         
-    )
-    group by
-    EntradasArticulos.ArticulosID,
-    Articulos.Codigo ,
-    Articulos.Nombre	
-   ";
+                    )
+                    group by
+                    EntradasArticulos.ArticulosID,
+                    Articulos.Codigo ,
+                    Articulos.Nombre	
+                   ";
 
 
 
@@ -2959,12 +2959,12 @@ Pedidos_Articulos.ArticulosID ,
             try
             {
                 sQry = @"SELECT Empleados.PuestosID, Puestos.Nombre AS nombrePuesto, Empleados.DepartamentosID, Departamentos.Descripcion AS nombreDepartamento, Empleados.Activo,
-Empleados.Nombre, Empleados.ApellidoPaterno, Empleados.ApellidoMaterno, Empleados.sexo, Empleados.FechaIngreso, Empleados.FechaNacimiento, Empleados.EstadoCivil, Empleados.NivelEstudios,
-Historial_Bajas.Fecha_Baja, Historial_Bajas.Comentarios, Historial_Bajas.EmpleadosID,Historial_Bajas.MotivosDeBajaCatalogo 
-FROM Historial_Bajas JOIN Empleados on Empleados.EmpleadosID = Historial_Bajas.EmpleadosID 
-JOIN Puestos ON Empleados.PuestosID = Puestos.PuestosID 
-JOIN Departamentos ON Empleados.DepartamentosID = Departamentos.DepartamentosID WHERE Empleados.SucursalesID = " + pSucursalesID + @" AND 
- Historial_Bajas.Fecha_Baja BETWEEN '" + FechaInicio + @"' AND '" + FechaFinal + "' ORDER BY Fecha_Baja";
+                        Empleados.Nombre, Empleados.ApellidoPaterno, Empleados.ApellidoMaterno, Empleados.sexo, Empleados.FechaIngreso, Empleados.FechaNacimiento, Empleados.EstadoCivil, Empleados.NivelEstudios,
+                        Historial_Bajas.Fecha_Baja, Historial_Bajas.Comentarios, Historial_Bajas.EmpleadosID,Historial_Bajas.MotivosDeBajaCatalogo 
+                        FROM Historial_Bajas JOIN Empleados on Empleados.EmpleadosID = Historial_Bajas.EmpleadosID 
+                        JOIN Puestos ON Empleados.PuestosID = Puestos.PuestosID 
+                        JOIN Departamentos ON Empleados.DepartamentosID = Departamentos.DepartamentosID WHERE Empleados.SucursalesID = " + pSucursalesID + @" AND 
+                         Historial_Bajas.Fecha_Baja BETWEEN '" + FechaInicio + @"' AND '" + FechaFinal + "' ORDER BY Fecha_Baja";
 
 
                 System.Data.DataSet ds = qryToDataSet(sQry);
@@ -3055,38 +3055,38 @@ JOIN Departamentos ON Empleados.DepartamentosID = Departamentos.DepartamentosID 
             {
                 //se busca el articulo por el codigo
                 sQry = @"SELECT 
-	Articulos.ArticulosID AS ArticulosID,	
-	Articulos.Nombre AS Nombre,	
-	Articulos.Codigo AS Codigo,	
-	Articulos.SeVende AS SeVende,	
-	Articulos.UsoInterno AS UsoInterno,	
-	Articulos.Activo AS Activo,	
-	Articulos.UnidadSalida AS UnidadSalida,	
-	Articulos.AplicaDescuento AS AplicaDescuento,	
-	Articulos.ImpuestosID AS ImpuestosID,	
-	Articulos.LineaID AS LineaID,	
-	Articulos.PermitirDecimales AS PermitirDecimales,	
-	Articulos.EmpaqueEntradaID AS EmpaqueEntradaID,	
-	Articulos.EmpaqueSalidaID AS EmpaqueSalidaID,	
-	Articulos.EmpaqueEntradaReciboID AS EmpaqueEntradaReciboID,	
-	Articulos.PrecioVariable AS PrecioVariable,	
-	Articulos.NoVendeNegativo AS NoVendeNegativo,	
-	Articulos.SeManufactura AS SeManufactura,	
-	Articulos.NoRestarExistencia AS NoRestarExistencia,	
-	Articulos.TiposIEPSID AS TiposIEPSID,	
-	Articulos.ValorIEPS AS ValorIEPS,	
-	Articulos.CantidadIEPS AS CantidadIEPS,	
-	Articulos.RespetaPrecioAunqueUtiliceBascula AS RespetaPrecioAunqueUtiliceBascula,	
-	Articulos.RotacionInventarioID AS RotacionInventarioID,	
-	Articulos.esServicio AS esServicio,	
-	Articulos.articuloID_Comision AS articuloID_Comision,	
-	Articulos.esComision AS esComision,	
-	Articulos.esDeposito AS esDeposito,	
-	Articulos.esRetiro AS esRetiro
-FROM 
-	Articulos
-WHERE 
-	Articulos.Codigo =" + "'" + sCodigo + "'";
+	                    Articulos.ArticulosID AS ArticulosID,	
+	                    Articulos.Nombre AS Nombre,	
+	                    Articulos.Codigo AS Codigo,	
+	                    Articulos.SeVende AS SeVende,	
+	                    Articulos.UsoInterno AS UsoInterno,	
+	                    Articulos.Activo AS Activo,	
+	                    Articulos.UnidadSalida AS UnidadSalida,	
+	                    Articulos.AplicaDescuento AS AplicaDescuento,	
+	                    Articulos.ImpuestosID AS ImpuestosID,	
+	                    Articulos.LineaID AS LineaID,	
+	                    Articulos.PermitirDecimales AS PermitirDecimales,	
+	                    Articulos.EmpaqueEntradaID AS EmpaqueEntradaID,	
+	                    Articulos.EmpaqueSalidaID AS EmpaqueSalidaID,	
+	                    Articulos.EmpaqueEntradaReciboID AS EmpaqueEntradaReciboID,	
+	                    Articulos.PrecioVariable AS PrecioVariable,	
+	                    Articulos.NoVendeNegativo AS NoVendeNegativo,	
+	                    Articulos.SeManufactura AS SeManufactura,	
+	                    Articulos.NoRestarExistencia AS NoRestarExistencia,	
+	                    Articulos.TiposIEPSID AS TiposIEPSID,	
+	                    Articulos.ValorIEPS AS ValorIEPS,	
+	                    Articulos.CantidadIEPS AS CantidadIEPS,	
+	                    Articulos.RespetaPrecioAunqueUtiliceBascula AS RespetaPrecioAunqueUtiliceBascula,	
+	                    Articulos.RotacionInventarioID AS RotacionInventarioID,	
+	                    Articulos.esServicio AS esServicio,	
+	                    Articulos.articuloID_Comision AS articuloID_Comision,	
+	                    Articulos.esComision AS esComision,	
+	                    Articulos.esDeposito AS esDeposito,	
+	                    Articulos.esRetiro AS esRetiro
+                    FROM 
+	                    Articulos
+                    WHERE 
+	                    Articulos.Codigo =" + "'" + sCodigo + "'";
 
 
                 System.Data.DataSet ds = qryToDataSet(sQry);
@@ -3102,43 +3102,43 @@ WHERE
                 {
                     //se busca el articulo por el codigo de barras
                     sQry = @"SELECT 
-	Articulos.ArticulosID AS ArticulosID,	
-	Articulos.Nombre AS Nombre,	
-	Articulos.Codigo AS Codigo,	
-	Articulos.SeVende AS SeVende,	
-	Articulos.UsoInterno AS UsoInterno,	
-	Articulos.Activo AS Activo,	
-	Articulos.UnidadSalida AS UnidadSalida,	
-	CodigosBarra_Articulos.CodigoBarra AS CodigoBarra,	
-	Articulos.AplicaDescuento AS AplicaDescuento,	
-	Articulos.ImpuestosID AS ImpuestosID,	
-	Articulos.LineaID AS LineaID,	
-	Articulos.PermitirDecimales AS PermitirDecimales,	
-	Articulos.EmpaqueEntradaID AS EmpaqueEntradaID,	
-	Articulos.EmpaqueSalidaID AS EmpaqueSalidaID,	
-	Articulos.EmpaqueEntradaReciboID AS EmpaqueEntradaReciboID,	
-	Articulos.PrecioVariable AS PrecioVariable,	
-	Articulos.NoVendeNegativo AS NoVendeNegativo,	
-	Articulos.SeManufactura AS SeManufactura,	
-	Articulos.NoRestarExistencia AS NoRestarExistencia,	
-	Articulos.TiposIEPSID AS TiposIEPSID,	
-	Articulos.ValorIEPS AS ValorIEPS,	
-	Articulos.CantidadIEPS AS CantidadIEPS,	
-	Articulos.RespetaPrecioAunqueUtiliceBascula AS RespetaPrecioAunqueUtiliceBascula,	
-	Articulos.RotacionInventarioID AS RotacionInventarioID,	
-	Articulos.esServicio AS esServicio,
-	Articulos.articuloID_Comision AS articuloID_Comision,
-	Articulos.esComision AS esComision,
-	Articulos.esRetiro AS esRetiro,
-	Articulos.esDeposito AS esDeposito
-FROM 
-	Articulos,	
-	CodigosBarra_Articulos
-WHERE 
-	Articulos.ArticulosID = CodigosBarra_Articulos.ArticulosID
-	AND
-	(
-		CodigosBarra_Articulos.CodigoBarra =" + "'" + sCodigo + "'" + ")";
+	                        Articulos.ArticulosID AS ArticulosID,	
+	                        Articulos.Nombre AS Nombre,	
+	                        Articulos.Codigo AS Codigo,	
+	                        Articulos.SeVende AS SeVende,	
+	                        Articulos.UsoInterno AS UsoInterno,	
+	                        Articulos.Activo AS Activo,	
+	                        Articulos.UnidadSalida AS UnidadSalida,	
+	                        CodigosBarra_Articulos.CodigoBarra AS CodigoBarra,	
+	                        Articulos.AplicaDescuento AS AplicaDescuento,	
+	                        Articulos.ImpuestosID AS ImpuestosID,	
+	                        Articulos.LineaID AS LineaID,	
+	                        Articulos.PermitirDecimales AS PermitirDecimales,	
+	                        Articulos.EmpaqueEntradaID AS EmpaqueEntradaID,	
+	                        Articulos.EmpaqueSalidaID AS EmpaqueSalidaID,	
+	                        Articulos.EmpaqueEntradaReciboID AS EmpaqueEntradaReciboID,	
+	                        Articulos.PrecioVariable AS PrecioVariable,	
+	                        Articulos.NoVendeNegativo AS NoVendeNegativo,	
+	                        Articulos.SeManufactura AS SeManufactura,	
+	                        Articulos.NoRestarExistencia AS NoRestarExistencia,	
+	                        Articulos.TiposIEPSID AS TiposIEPSID,	
+	                        Articulos.ValorIEPS AS ValorIEPS,	
+	                        Articulos.CantidadIEPS AS CantidadIEPS,	
+	                        Articulos.RespetaPrecioAunqueUtiliceBascula AS RespetaPrecioAunqueUtiliceBascula,	
+	                        Articulos.RotacionInventarioID AS RotacionInventarioID,	
+	                        Articulos.esServicio AS esServicio,
+	                        Articulos.articuloID_Comision AS articuloID_Comision,
+	                        Articulos.esComision AS esComision,
+	                        Articulos.esRetiro AS esRetiro,
+	                        Articulos.esDeposito AS esDeposito
+                        FROM 
+	                        Articulos,	
+	                        CodigosBarra_Articulos
+                        WHERE 
+	                        Articulos.ArticulosID = CodigosBarra_Articulos.ArticulosID
+	                        AND
+	                        (
+		                        CodigosBarra_Articulos.CodigoBarra =" + "'" + sCodigo + "'" + ")";
                     ds = null;
                     ds = qryToDataSet(sQry);
 
@@ -3167,27 +3167,27 @@ WHERE
                 // continuar con el proceso
                 //se checa si hay alguna promocion activa para este articul
                 sQry = @"SELECT 
-	ArticulosPrecios.ArticulosPreciosID AS ArticulosPreciosID,	
-	ArticulosPrecios.Precio AS Precio,	
-	ArticulosPrecios.IVAPrecio AS IVAPrecio,	
-	ArticulosPrecios.PrecioCIVA AS PrecioCIVA,	
-	ArticulosPrecios.Costo AS Costo,	
-	ArticulosPrecios.CostoCIVA AS CostoCIVA,	
-	ArticulosPrecios.ArticulosID AS ArticulosID,	
-	ArticulosPrecios.EsPromocion AS EsPromocion,	
-	ArticulosPrecios.FechaInicio AS FechaInicio,	
-	ArticulosPrecios.FechaFinal AS FechaFinal,	
-	ArticulosPrecios.Nivel AS Nivel,	
-	ArticulosPrecios.LimiteDeUnidades AS LimiteDeUnidades
-FROM 
-	ArticulosPrecios
-WHERE 
-	ArticulosPrecios.ArticulosID = " + sArticulosID + @"
-	AND	ArticulosPrecios.SucursalesID =" + pSucursalesID + @"
-	AND	ArticulosPrecios.EsPromocion = 1
-	AND	ArticulosPrecios.FechaInicio <= '" + DateTime.Now.ToString("yyyyMMdd") + @"'
-	AND	ArticulosPrecios.FechaFinal >= '" + DateTime.Now.ToString("yyyyMMdd") + @"'
-	AND	ArticulosPrecios.Activo =1";
+	                    ArticulosPrecios.ArticulosPreciosID AS ArticulosPreciosID,	
+	                    ArticulosPrecios.Precio AS Precio,	
+	                    ArticulosPrecios.IVAPrecio AS IVAPrecio,	
+	                    ArticulosPrecios.PrecioCIVA AS PrecioCIVA,	
+	                    ArticulosPrecios.Costo AS Costo,	
+	                    ArticulosPrecios.CostoCIVA AS CostoCIVA,	
+	                    ArticulosPrecios.ArticulosID AS ArticulosID,	
+	                    ArticulosPrecios.EsPromocion AS EsPromocion,	
+	                    ArticulosPrecios.FechaInicio AS FechaInicio,	
+	                    ArticulosPrecios.FechaFinal AS FechaFinal,	
+	                    ArticulosPrecios.Nivel AS Nivel,	
+	                    ArticulosPrecios.LimiteDeUnidades AS LimiteDeUnidades
+                    FROM 
+	                    ArticulosPrecios
+                    WHERE 
+	                    ArticulosPrecios.ArticulosID = " + sArticulosID + @"
+	                    AND	ArticulosPrecios.SucursalesID =" + pSucursalesID + @"
+	                    AND	ArticulosPrecios.EsPromocion = 1
+	                    AND	ArticulosPrecios.FechaInicio <= '" + DateTime.Now.ToString("yyyyMMdd") + @"'
+	                    AND	ArticulosPrecios.FechaFinal >= '" + DateTime.Now.ToString("yyyyMMdd") + @"'
+	                    AND	ArticulosPrecios.Activo =1";
                 ds = null;
                 ds = qryToDataSet(sQry);
                 if (hayInfoDS(ds))
@@ -3211,25 +3211,25 @@ WHERE
                 {
                     // se checa el precio para este articulo
                     sQry = @"SELECT 
-	ArticulosPrecios.ArticulosPreciosID AS ArticulosPreciosID,	
-	ArticulosPrecios.Precio AS Precio,	
-	ArticulosPrecios.IVAPrecio AS IVAPrecio,	
-	ArticulosPrecios.PrecioCIVA AS PrecioCIVA,	
-	ArticulosPrecios.Costo AS Costo,	
-	ArticulosPrecios.CostoCIVA AS CostoCIVA,	
-	ArticulosPrecios.ArticulosID AS ArticulosID,	
-	ArticulosPrecios.EsPromocion AS EsPromocion,	
-	ArticulosPrecios.FechaInicio AS FechaInicio,	
-	ArticulosPrecios.FechaFinal AS FechaFinal,	
-	ArticulosPrecios.Nivel AS Nivel,	
-	ArticulosPrecios.LimiteDeUnidades AS LimiteDeUnidades
-FROM 
-	ArticulosPrecios
-WHERE 
-	ArticulosPrecios.ArticulosID = " + sArticulosID + @"
-	AND	ArticulosPrecios.SucursalesID = " + pSucursalesID + @"
-	AND	ArticulosPrecios.EsPromocion = 0
-		AND	ArticulosPrecios.Nivel ='NV1'";
+	                        ArticulosPrecios.ArticulosPreciosID AS ArticulosPreciosID,	
+	                        ArticulosPrecios.Precio AS Precio,	
+	                        ArticulosPrecios.IVAPrecio AS IVAPrecio,	
+	                        ArticulosPrecios.PrecioCIVA AS PrecioCIVA,	
+	                        ArticulosPrecios.Costo AS Costo,	
+	                        ArticulosPrecios.CostoCIVA AS CostoCIVA,	
+	                        ArticulosPrecios.ArticulosID AS ArticulosID,	
+	                        ArticulosPrecios.EsPromocion AS EsPromocion,	
+	                        ArticulosPrecios.FechaInicio AS FechaInicio,	
+	                        ArticulosPrecios.FechaFinal AS FechaFinal,	
+	                        ArticulosPrecios.Nivel AS Nivel,	
+	                        ArticulosPrecios.LimiteDeUnidades AS LimiteDeUnidades
+                        FROM 
+	                        ArticulosPrecios
+                        WHERE 
+	                        ArticulosPrecios.ArticulosID = " + sArticulosID + @"
+	                        AND	ArticulosPrecios.SucursalesID = " + pSucursalesID + @"
+	                        AND	ArticulosPrecios.EsPromocion = 0
+		                        AND	ArticulosPrecios.Nivel ='NV1'";
                     ds = null;
                     ds = qryToDataSet(sQry);
                     if (hayInfoDS(ds))
@@ -3514,30 +3514,30 @@ WHERE
         public string consultaArticulosNoContabilizados(String ParamFechaInicial, String ParamFechaFinal, String Param_ID_Sucursal, String Param_Articulo_Estatus, String Param_Linea_Producto, String Param_Tipo_De_Ciclico)
         {
             String sQry = @"SELECT Articulos.Codigo,Articulos.Nombre,Articulos.ArticulosID,ArticulosExistencias.Existencia,'19990101' as Fecha FROM Articulos,ArticulosExistencias
-  WHERE 
-  Articulos.ArticulosID=ArticulosExistencias.ArticulosID
-  AND ArticulosExistencias.SucursalesID=" + Param_ID_Sucursal + @"
-  AND Articulos.Activo=" + Param_Articulo_Estatus + @"
-  AND Articulos.SeVende=1 ";
+                          WHERE 
+                          Articulos.ArticulosID=ArticulosExistencias.ArticulosID
+                          AND ArticulosExistencias.SucursalesID=" + Param_ID_Sucursal + @"
+                          AND Articulos.Activo=" + Param_Articulo_Estatus + @"
+                          AND Articulos.SeVende=1 ";
 
-            if (Param_Linea_Producto.Length > 0)
-            {
+                                    if (Param_Linea_Producto.Length > 0)
+                                    {
 
-                sQry += " AND Articulos.LineaID=" + Param_Linea_Producto;
-            }
+                                        sQry += " AND Articulos.LineaID=" + Param_Linea_Producto;
+                                    }
 
-            sQry += @" AND Articulos.ArticulosID NOT IN (
+                                    sQry += @" AND Articulos.ArticulosID NOT IN (
 
- SELECT DISTINCT(ConteosArticulos. ArticulosID) AS ArticulosID
- FROM Conteos,ConteosArticulos
- WHERE
- Conteos.ConteosID=ConteosArticulos.ConteosID
- AND Conteos.Fecha BETWEEN '" + ParamFechaInicial + @"' AND '" + ParamFechaFinal + @"'
- AND Conteos.SucursalesID=" + Param_ID_Sucursal + @"
- AND Conteos.EsBorrador=" + Param_Tipo_De_Ciclico + @"
-)
- ORDER BY 
- Nombre ASC";
+                         SELECT DISTINCT(ConteosArticulos. ArticulosID) AS ArticulosID
+                         FROM Conteos,ConteosArticulos
+                         WHERE
+                         Conteos.ConteosID=ConteosArticulos.ConteosID
+                         AND Conteos.Fecha BETWEEN '" + ParamFechaInicial + @"' AND '" + ParamFechaFinal + @"'
+                         AND Conteos.SucursalesID=" + Param_ID_Sucursal + @"
+                         AND Conteos.EsBorrador=" + Param_Tipo_De_Ciclico + @"
+                        )
+                         ORDER BY 
+                         Nombre ASC";
 
 
 
@@ -3769,23 +3769,24 @@ WHERE
         public string RAP_Pedidos(String sPedido)
         {
             String sQry = @"
-SELECT 
-CATSAT_ClaveProductosServicios.ClaveProdServ,
-CATSAT_ClaveProductosServicios.Descripcion,
-sum(Pedidos_Articulos.PiezasSurtidas) as Cantidad,
-Articulos.PermitirDecimales as EsKilogramo,
-sum (Articulos.PesoPromedio* Pedidos_Articulos.PiezasSurtidas) as PesoTotal,
-sum( Pedidos_Articulos.ImporteIVACosto) as importeCostoIVA
-from Pedidos_Articulos,Articulos,Pedidos,CATSAT_ClaveProductosServicios
-where
-Pedidos.PedidosID=Pedidos_Articulos.PedidosID
-and Pedidos_Articulos.ArticulosID=Articulos.ArticulosID
-and Articulos.CATSAT_ClaveProductosServiciosID=CATSAT_ClaveProductosServicios.CATSAT_ClaveProductosServiciosID
-and Pedidos_Articulos.PedidosID=" + sPedido + @"
-GROUP by 
-CATSAT_ClaveProductosServicios.ClaveProdServ,
-CATSAT_ClaveProductosServicios.Descripcion,
-Articulos.PermitirDecimales ";
+                            SELECT 
+                            CATSAT_ClaveProductosServicios.ClaveProdServ,
+                            CATSAT_ClaveProductosServicios.Descripcion,
+                            sum(Pedidos_Articulos.PiezasSurtidas) as Cantidad,
+                            Articulos.PermitirDecimales as EsKilogramo,
+                            Articulos.CATSAT_ClaveUnidadID as ClaveUnidadSAT,
+                            sum (Articulos.PesoPromedio* Pedidos_Articulos.PiezasSurtidas) as PesoTotal,
+                            sum( Pedidos_Articulos.ImporteIVACosto) as importeCostoIVA
+                            from Pedidos_Articulos,Articulos,Pedidos,CATSAT_ClaveProductosServicios
+                            where
+                            Pedidos.PedidosID=Pedidos_Articulos.PedidosID
+                            and Pedidos_Articulos.ArticulosID=Articulos.ArticulosID
+                            and Articulos.CATSAT_ClaveProductosServiciosID=CATSAT_ClaveProductosServicios.CATSAT_ClaveProductosServiciosID
+                            and Pedidos_Articulos.PedidosID=" + sPedido + @"
+                            GROUP by 
+                            CATSAT_ClaveProductosServicios.ClaveProdServ,
+                            CATSAT_ClaveProductosServicios.Descripcion,
+                            Articulos.PermitirDecimales ";
 
 
 
@@ -3814,24 +3815,26 @@ Articulos.PermitirDecimales ";
         public string RAP_Pedidos_PorArticulo(String sPedido)
         {
             String sQry = @"
-SELECT 
-CATSAT_ClaveProductosServicios.ClaveProdServ,
-CATSAT_ClaveProductosServicios.Descripcion,
-Pedidos_Articulos.PiezasSurtidas as Cantidad,
-Pedidos_Articulos.ArticulosID as ArticulosID,
-Articulos.Codigo as Codigo,
-Articulos.Nombre as descripcion_Articulo,
-Articulos.PermitirDecimales as EsKilogramo,
-(Articulos.PesoPromedio* Pedidos_Articulos.PiezasSurtidas) as PesoTotal,
- Pedidos_Articulos.ImporteIVACosto as importeCostoIVA
-from Pedidos_Articulos,Articulos,Pedidos,CATSAT_ClaveProductosServicios
-where
-Pedidos.PedidosID=Pedidos_Articulos.PedidosID
-and Pedidos_Articulos.ArticulosID=Articulos.ArticulosID
-and Articulos.CATSAT_ClaveProductosServiciosID=CATSAT_ClaveProductosServicios.CATSAT_ClaveProductosServiciosID
-and Pedidos_Articulos.PedidosID==" + sPedido + @"
-and Pedidos_Articulos.PiezasSurtidas>0
- ";
+                            SELECT 
+                            CATSAT_ClaveProductosServicios.ClaveProdServ,
+                            CATSAT_ClaveProductosServicios.Descripcion,
+                            Pedidos_Articulos.PiezasSurtidas as Cantidad,
+                            CATSAT_ClaveUnidad.ClaveUnidad as ClaveUnidadSAT,
+                            Pedidos_Articulos.ArticulosID as ArticulosID,
+                            Articulos.Codigo as Codigo,
+                            Articulos.Nombre as descripcion_Articulo,
+                            Articulos.PermitirDecimales as EsKilogramo,
+                            (Articulos.PesoPromedio* Pedidos_Articulos.PiezasSurtidas) as PesoTotal,
+                             Pedidos_Articulos.ImporteIVACosto as importeCostoIVA
+                            from Pedidos_Articulos,Articulos,Pedidos,CATSAT_ClaveProductosServicios,CATSAT_ClaveUnidad
+                            where
+                            Pedidos.PedidosID=Pedidos_Articulos.PedidosID
+							and Articulos.CATSAT_ClaveUnidadID=CATSAT_ClaveUnidad.CATSAT_ClaveUnidadID
+                            and Pedidos_Articulos.ArticulosID=Articulos.ArticulosID
+                            and Articulos.CATSAT_ClaveProductosServiciosID=CATSAT_ClaveProductosServicios.CATSAT_ClaveProductosServiciosID
+                            and Pedidos_Articulos.PedidosID=" + sPedido + @"
+                            and Pedidos_Articulos.PiezasSurtidas>0
+                             ";
 
 
 
@@ -3860,24 +3863,25 @@ and Pedidos_Articulos.PiezasSurtidas>0
         public string RAP_Transferencias_Salidas(String sTransferencias)
         {
             String sQry = @"
-SELECT 
-CATSAT_ClaveProductosServicios.ClaveProdServ,
-CATSAT_ClaveProductosServicios.Descripcion,
-sum(SalidasArticulos.Cantidad) as Cantidad,
-Articulos.PermitirDecimales as EsKilogramo,
-sum (Articulos.PesoPromedio* SalidasArticulos.Cantidad) as PesoTotal,
-sum(SalidasArticulos.ImporteIVACosto) as importeCostoIVA
-from SalidasArticulos,Articulos,salidas,CATSAT_ClaveProductosServicios
-where
-salidas.SalidasID=SalidasArticulos.SalidasID
-and SalidasArticulos.ArticulosID=Articulos.ArticulosID
-and Articulos.CATSAT_ClaveProductosServiciosID=CATSAT_ClaveProductosServicios.CATSAT_ClaveProductosServiciosID
-and SalidasArticulos.SalidasID=" + sTransferencias + @"
-and Salidas.TiposMovimientosID=8001
-GROUP by 
-CATSAT_ClaveProductosServicios.ClaveProdServ,
-CATSAT_ClaveProductosServicios.Descripcion,
-Articulos.PermitirDecimales  ";
+                            SELECT 
+                            CATSAT_ClaveProductosServicios.ClaveProdServ,
+                            CATSAT_ClaveProductosServicios.Descripcion,
+                            sum(SalidasArticulos.Cantidad) as Cantidad,
+                            Articulos.PermitirDecimales as EsKilogramo,
+                            Articulos.CATSAT_ClaveUnidadID as ClaveUnidadSAT,
+                            sum (Articulos.PesoPromedio* SalidasArticulos.Cantidad) as PesoTotal,
+                            sum(SalidasArticulos.ImporteIVACosto) as importeCostoIVA
+                            from SalidasArticulos,Articulos,salidas,CATSAT_ClaveProductosServicios
+                            where
+                            salidas.SalidasID=SalidasArticulos.SalidasID
+                            and SalidasArticulos.ArticulosID=Articulos.ArticulosID
+                            and Articulos.CATSAT_ClaveProductosServiciosID=CATSAT_ClaveProductosServicios.CATSAT_ClaveProductosServiciosID
+                            and SalidasArticulos.SalidasID=" + sTransferencias + @"
+                            and Salidas.TiposMovimientosID=8001
+                            GROUP by 
+                            CATSAT_ClaveProductosServicios.ClaveProdServ,
+                            CATSAT_ClaveProductosServicios.Descripcion,
+                            Articulos.PermitirDecimales  ";
 
 
 
@@ -3905,23 +3909,25 @@ Articulos.PermitirDecimales  ";
         public string RAP_Transferencias_Salidas_Por_Articulos(String sTransferencias)
         {
             String sQry = @"
-SELECT 
-CATSAT_ClaveProductosServicios.ClaveProdServ,
-CATSAT_ClaveProductosServicios.Descripcion,
-SalidasArticulos.ArticulosID as ArticulosID,
-Articulos.Codigo as Codigo,
-Articulos.Nombre as descripcion_Articulo,
-SalidasArticulos.Cantidad as Cantidad,
-Articulos.PermitirDecimales as EsKilogramo,
-(Articulos.PesoPromedio* SalidasArticulos.Cantidad) as PesoTotal,
-SalidasArticulos.ImporteIVACosto as importeCostoIVA
-from Salidas 
-inner JOIN SalidasArticulos on Salidas.SalidasID = SalidasArticulos.SalidasID
-inner join Articulos on SalidasArticulos.ArticulosID = Articulos.ArticulosID
-left join CATSAT_ClaveProductosServicios on Articulos.CATSAT_ClaveProductosServiciosID = CATSAT_ClaveProductosServicios.CATSAT_ClaveProductosServiciosID
-where
-SalidasArticulos.SalidasID=" + sTransferencias + @"
-and Salidas.TiposMovimientosID=8001  ";
+                            SELECT 
+                            CATSAT_ClaveProductosServicios.ClaveProdServ,
+                            CATSAT_ClaveProductosServicios.Descripcion,
+                            SalidasArticulos.ArticulosID as ArticulosID,
+                            Articulos.Codigo as Codigo,
+                            Articulos.Nombre as descripcion_Articulo,
+                            SalidasArticulos.Cantidad as Cantidad,
+                            Articulos.PermitirDecimales as EsKilogramo,
+                            CATSAT_ClaveUnidad.ClaveUnidad as ClaveUnidadSAT,
+                            (Articulos.PesoPromedio* SalidasArticulos.Cantidad) as PesoTotal,
+                            SalidasArticulos.ImporteIVACosto as importeCostoIVA
+                            from Salidas 
+                            inner JOIN SalidasArticulos on Salidas.SalidasID = SalidasArticulos.SalidasID
+                            inner join Articulos on SalidasArticulos.ArticulosID = Articulos.ArticulosID
+						    inner join CATSAT_ClaveUnidad on Articulos.CATSAT_ClaveUnidadID=CATSAT_ClaveUnidad.CATSAT_ClaveUnidadID
+                            left join CATSAT_ClaveProductosServicios on Articulos.CATSAT_ClaveProductosServiciosID = CATSAT_ClaveProductosServicios.CATSAT_ClaveProductosServiciosID
+                            where
+                            SalidasArticulos.SalidasID=" + sTransferencias + @"
+                            and Salidas.TiposMovimientosID=8001  ";
 
 
 
@@ -3952,19 +3958,19 @@ and Salidas.TiposMovimientosID=8001  ";
         public string RAP_Pedido_Encabezados(String sPedido)
         {
             String sQry = @"
-SELECT 
-Sucursales.Nombre as NombreSucural,
-Pedidos.NoPedido as Folio,
-Estatus_Pedidos.Nombre as EstatusDescripcion,
-Pedidos.Fecha as FechaGeneracion
-from
-Sucursales, Pedidos, Estatus_Pedidos
-WHERE
-Pedidos.PedidosID=" + sPedido + @"
-and 
-Pedidos.SucursalesID=Sucursales.SucursalesID
-and
-Pedidos.Estatus_PedidosID=Estatus_Pedidos.Estatus_PedidosID  ";
+                            SELECT 
+                            Sucursales.Nombre as NombreSucural,
+                            Pedidos.NoPedido as Folio,
+                            Estatus_Pedidos.Nombre as EstatusDescripcion,
+                            Pedidos.Fecha as FechaGeneracion
+                            from
+                            Sucursales, Pedidos, Estatus_Pedidos
+                            WHERE
+                            Pedidos.PedidosID=" + sPedido + @"
+                            and 
+                            Pedidos.SucursalesID=Sucursales.SucursalesID
+                            and
+                            Pedidos.Estatus_PedidosID=Estatus_Pedidos.Estatus_PedidosID  ";
 
 
 
@@ -3995,16 +4001,16 @@ Pedidos.Estatus_PedidosID=Estatus_Pedidos.Estatus_PedidosID  ";
         public string RAP_Transferencia_Encabezados(String sTransferencias)
         {
             String sQry = @"
-select 
-Sucursales.Nombre as NombreSucural,
-Salidas.FolioMovimiento as Folio,
-Salidas.FechaSalida as FechaGeneracion
-from
-salidas,Sucursales
-where
-Salidas.SalidasID=" + sTransferencias + @"
-and
-Salidas.DestinosID=Sucursales.SucursalesID ";
+                            select 
+                            Destinos.Nombre as NombreSucural,
+                            Salidas.FolioMovimiento as Folio,
+                            Salidas.FechaSalida as FechaGeneracion
+                            from
+                            salidas,Destinos
+                            where
+                            Salidas.SalidasID=" + sTransferencias + @"
+                            and
+                            Salidas.DestinosID=Destinos.DestinosID  ";
 
 
 
@@ -4035,29 +4041,32 @@ Salidas.DestinosID=Sucursales.SucursalesID ";
         public string RAP_Orden_Compra_Por_Articulo(String sOrdenCompra)
         {
             String sQry = @"
-select 
-CATSAT_ClaveProductosServicios.ClaveProdServ,
-CATSAT_ClaveProductosServicios.Descripcion,
-(PedidosComprasArticulos.CantidadPedida + PedidosComprasArticulos.CantidadBonificacion)  as Cantidad,
-PedidosComprasArticulos.ArticulosID as ArticulosID,
-Articulos.Codigo as Codigo,
-Articulos.Nombre as descripcion_Articulo,
-Articulos.PermitirDecimales as EsKilogramo,
-(Articulos.PesoPromedio* PedidosComprasArticulos.CantidadPedida + PedidosComprasArticulos.CantidadBonificacion) as PesoTotal,
-PedidosComprasArticulos.Importe as importeCostoIVA
-from
-CATSAT_ClaveProductosServicios,PedidosComprasArticulos,Articulos,PedidosCompras
-where
-PedidosCompras.PedidosComprasID = PedidosComprasArticulos.PedidosComprasID
-and
-PedidosComprasArticulos.ArticulosID = Articulos.ArticulosID
-and
-Articulos.CATSAT_ClaveProductosServiciosID=CATSAT_ClaveProductosServicios.CATSAT_ClaveProductosServiciosID
-and
-PedidosCompras.PedidosComprasID=" + sOrdenCompra + @"
-and
-(PedidosComprasArticulos.CantidadPedida + PedidosComprasArticulos.CantidadBonificacion)>0
-";
+                                select 
+                            CATSAT_ClaveProductosServicios.ClaveProdServ,
+                            CATSAT_ClaveProductosServicios.Descripcion,
+                            (PedidosComprasArticulos.CantidadPedida + PedidosComprasArticulos.CantidadBonificacion)  as Cantidad,
+                            PedidosComprasArticulos.ArticulosID as ArticulosID,
+                            Articulos.Codigo as Codigo,
+                            Articulos.Nombre as descripcion_Articulo,
+                            Articulos.PermitirDecimales as EsKilogramo,
+                            CATSAT_ClaveUnidad.ClaveUnidad as ClaveUnidadSAT,
+                            (Articulos.PesoPromedio* PedidosComprasArticulos.CantidadPedida + PedidosComprasArticulos.CantidadBonificacion) as PesoTotal,
+                            PedidosComprasArticulos.Importe as importeCostoIVA
+                            from
+                            CATSAT_ClaveProductosServicios,PedidosComprasArticulos,Articulos,PedidosCompras,CATSAT_ClaveUnidad
+                            where
+                            PedidosCompras.PedidosComprasID = PedidosComprasArticulos.PedidosComprasID
+                            and
+							CATSAT_ClaveUnidad.CATSAT_ClaveUnidadID=Articulos.CATSAT_ClaveUnidadID
+						    and
+                            PedidosComprasArticulos.ArticulosID = Articulos.ArticulosID
+                            and
+                            Articulos.CATSAT_ClaveProductosServiciosID=CATSAT_ClaveProductosServicios.CATSAT_ClaveProductosServiciosID
+                            and
+                            PedidosCompras.PedidosComprasID=" + sOrdenCompra + @"
+                            and
+                            (PedidosComprasArticulos.CantidadPedida + PedidosComprasArticulos.CantidadBonificacion)>0
+                            ";
 
 
 
@@ -4088,20 +4097,20 @@ and
         public string RAP_Orden_Compra_Encabezado(String sOrdenCompra)
         {
             String sQry = @"
-select 
-Sucursales.Nombre as NombreSucural,
-PedidosCompras.FolioMovimiento as Folio,
-PedidosCompras.FechaHoraCreacion as FechaGeneracion,
-Proveedores.Nombre as Nombre
-from
-PedidosCompras,Sucursales,Proveedores
-where
-PedidosCompras.SucursalesID = Sucursales.SucursalesID
-and
-PedidosCompras.PedidosComprasID=" + sOrdenCompra + @"
-and
-PedidosCompras.ProveedoresID=Proveedores.ProveedoresID
-";
+                                    select 
+                                    Sucursales.Nombre as NombreSucural,
+                                    PedidosCompras.FolioMovimiento as Folio,
+                                    PedidosCompras.FechaHoraCreacion as FechaGeneracion,
+                                    Proveedores.Nombre as Nombre
+                                    from
+                                    PedidosCompras,Sucursales,Proveedores
+                                    where
+                                    PedidosCompras.SucursalesID = Sucursales.SucursalesID
+                                    and
+                                    PedidosCompras.PedidosComprasID=" + sOrdenCompra + @"
+                                    and
+                                    PedidosCompras.ProveedoresID=Proveedores.ProveedoresID
+                                    ";
 
             System.Data.DataSet ds;
             System.Xml.XmlElement xmlElement;
@@ -4124,7 +4133,6 @@ PedidosCompras.ProveedoresID=Proveedores.ProveedoresID
 
         }
 
-//metodos para obtener info de  rap
 
      
 

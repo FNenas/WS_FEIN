@@ -124,22 +124,22 @@ namespace WS
         [WebMethod(Description = "Obtener Envios RAP")]
         public string ObtenerEnviosRAP(String FechaInicial, String FechaFinal)
         {
-            String sQry = @"SELECT DISTINCT
+            String sQry = @"SELECT DISTINCT    
                                 Envios.IDEnvios AS EnvioID,
-                                Envios.ChoferesID AS ChoferesID,
+                                Envios.CAT_FiguraTransporteID AS ChoferesID,
                                 Envios.VehiculoID AS VehiculoID,
                                 Envios.IDRemolques AS RemolqueID,
                                 Envios.PesoBrutoTotal AS PesoBrutoTotal,
                                 Envios.PesoNetoTotal AS PesoNetoTotal,                                                        
 	                            Envios.Folio AS Folio,	
 	                            CONCAT(Tipo_Vehiculo.Descripcion, ' ', Marca.Descripcion, ' ', Modelo.Descripcion) AS Vehiculo,
-                                CONCAT(Choferes.Nombre, ' ', Choferes.ApellidoPaterno, ' ', Choferes.ApellidoPaterno) AS NombreChofer,
+                                CONCAT(CAT_FiguraTransporte.Nombre, ' ', CAT_FiguraTransporte.ApellidoPaterno, ' ', CAT_FiguraTransporte.ApellidoPaterno) AS NombreChofer,
                                 Usuario.Nombre_Completo AS UsuarioGeneroNombre,
 	                            Envios.Fecha_Hora_Generacion AS FechaHoraGeneracion,
 	                            Envios.Facturado AS Facturado
                             FROM Envios
                                 INNER JOIN Vehiculo ON Envios.VehiculoID = Vehiculo.VehiculoID
-                                INNER JOIN Choferes ON Envios.ChoferesID = Choferes.ChoferesID
+                                INNER JOIN CAT_FiguraTransporte ON Envios.CAT_FiguraTransporteID = CAT_FiguraTransporte.CAT_FiguraTransporteID
                                 INNER JOIN Marca ON Vehiculo.MarcaID = Marca.MarcaID
                                 INNER JOIN Modelo ON Vehiculo.ModeloID = Modelo.ModeloID
                                 INNER JOIN Tipo_Vehiculo ON Vehiculo.Tipo_VehiculoID = Tipo_Vehiculo.Tipo_VehiculoID
@@ -175,17 +175,17 @@ namespace WS
         public string ObtenerRutaEnvioRAP(String EnvioID)
         {
             String sQry = @"SELECT
-                            Envio_Ruta.Origen AS OrigenID,
-                            Envio_Ruta.Destino AS DestinoID,
-                            Envio_Ruta.Orden AS Orden,
-                            Envio_Ruta.Distancia AS Distancia,
-                            Envio_Ruta.FechaHoraSalidaEstimada AS FechaHoraSalida,
-                            Envio_Ruta.FechaHoraLlegadaEstimada AS FechaHoraLlegada
+                                Envio_Ruta.Origen AS OrigenID,
+                                Envio_Ruta.Destino AS DestinoID,
+                                Envio_Ruta.Orden AS Orden,
+                                Envio_Ruta.Distancia AS Distancia,
+                                Envio_Ruta.FechaHoraSalidaEstimada AS FechaHoraSalida,
+                                Envio_Ruta.FechaHoraLlegadaEstimada AS FechaHoraLlegada
                             FROM 
-                            Envio_Ruta
+                                Envio_Ruta
                             WHERE
-                            Envio_Ruta.IDEnvios=" + EnvioID +
-                            @"AND Envio_Ruta.Orden > 0 ";
+                                Envio_Ruta.IDEnvios=" + EnvioID +
+                                @"AND Envio_Ruta.Orden > 0 ";
 
             System.Data.DataSet ds;
             System.Xml.XmlElement xmlElement;
@@ -266,7 +266,7 @@ namespace WS
 	                            Envios_Detalles_Articulos.ClaveSAT as ArticuloCodigo,
 	                            Envios_Detalles_Articulos.Descripcion AS ArticuloDescripcion,	
 	                            Envios_Detalles_Articulos.Cantidad AS Cantidad,
-	                            //Envios_Detalles_Articulos.Unidad AS UnidadCodigo,
+	                            Envios_Detalles_Articulos.UnidadSAT AS UnidadCodigo,
 	                            Envios_Detalles_Articulos.EsPeligroso AS EsMaterialPeligroso,	
 	                            MaterialPeligroso.Clave AS MaterialPeligrosoCodigo,
 	                            TipoEmbalaje.Clave AS TipoEmbalajeCodigo,
