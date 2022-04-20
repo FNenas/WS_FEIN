@@ -4123,10 +4123,38 @@ PedidosCompras.ProveedoresID=Proveedores.ProveedoresID
 
 
         }
-
-//metodos para obtener info de  rap
-
-     
-
+      
+       [WebMethod(Description = "Obtener Encabezados Orden Compra RAP")]
+        public string ConsultarArticulo(String CodigoArticulo)
+        {   string Query;
+            System.Data.DataSet ds;
+            System.Xml.XmlElement xmlElement;
+            Query = @"select 
+                        articulos.ArticulosID,
+                        articulos.Nombre as Descripcion,
+                        articulos.codigo as Codigo,
+                        articulos.CATSAT_ClaveUnidadID,
+                        articulos.LineaID,
+                        articulosprecios.PrecioCIVA,
+                        impuestos.NombreIVA,
+                        articulos.CATSAT_TasasCuotasImpuestosID,
+                        CATSAT_TasasCuotasImpuestos.Factor";
+            try
+            {
+                ds = qryToDataSet(Query);
+                if (ds.Tables.Count > 0)
+                {
+                    xmlElement = Serialize(ds.Tables[0]);
+                    return xmlElement.OuterXml.ToString();
+                }
+                return "";
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "ConsultarArticulo:" + ex.Message + ex.StackTrace + "\n" + sQry);
+                return "Ocurrio un error inesperado";
+            }
+            return "";
+        }
     }
 }
