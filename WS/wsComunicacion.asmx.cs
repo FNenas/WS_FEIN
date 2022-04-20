@@ -4123,8 +4123,7 @@ PedidosCompras.ProveedoresID=Proveedores.ProveedoresID
 
 
         }
-      
-       [WebMethod(Description = "Obtener Encabezados Orden Compra RAP")]
+    [WebMethod(Description = "Obtener articulos por codigo")]
         public string ConsultarArticulo(String CodigoArticulo)
         {   string Query;
             System.Data.DataSet ds;
