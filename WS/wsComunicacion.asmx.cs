@@ -4157,7 +4157,7 @@ WHERE
                     where
                         Articulos.articulosID = ArticulosPrecios.ArticulosID and
                         Articulos.ImpuestosID = Impuestos.ImpuestosID and
-                        CATSAT_TasasCuotasImpuestos.CATSAT_TasasCuotasImpuestosID = articulos.CATSAT_TasasCuotasImpuestosID
+                        CATSAT_TasasCuotasImpuestos.CATSAT_TasasCuotasImpuestosID = articulos.CATSAT_TasasCuotasImpuestosID and
                         Articulosprecios.Nivel = 'NV1' and
                         Articulosprecios.SucursalesID = 24 and
                         Articulos.codigo = "+CodigoArticulo;
