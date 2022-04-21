@@ -4159,7 +4159,8 @@ WHERE
                         Articulos.ImpuestosID = Impuestos.ImpuestosID and
                         CATSAT_TasasCuotasImpuestos.CATSAT_TasasCuotasImpuestosID = articulos.CATSAT_TasasCuotasImpuestosID
                         Articulosprecios.Nivel = 'NV1' and
-                        Articulosprecios.SucursalesID = 24";
+                        Articulosprecios.SucursalesID = 24 and
+                        Articulos.codigo = "+CodigoArticulo;
             try
             {
                 ds = qryToDataSet(Query);
