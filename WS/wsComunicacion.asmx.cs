@@ -4148,7 +4148,18 @@ WHERE
                         articulosprecios.PrecioCIVA,
                         impuestos.NombreIVA,
                         articulos.CATSAT_TasasCuotasImpuestosID,
-                        CATSAT_TasasCuotasImpuestos.Factor";
+                        CATSAT_TasasCuotasImpuestos.Factor
+                    from 
+                        Articulos,
+                        articulosprecios,
+                        impuestos,
+                        CATSAT_tasasCuotasImpuestos
+                    where
+                        Articulos.articulosID = ArticulosPrecios.ArticulosID and
+                        Articulos.ImpuestosID = Impuestos.ImpuestosID and
+                        CATSAT_TasasCuotasImpuestos.CATSAT_TasasCuotasImpuestosID = articulos.CATSAT_TasasCuotasImpuestosID
+                        Articulosprecios.Nivel = 'NV1' and
+                        Articulosprecios.SucursalesID = 24";
             try
             {
                 ds = qryToDataSet(Query);
@@ -4167,3 +4178,4 @@ WHERE
         }
     }
 }
+ 
