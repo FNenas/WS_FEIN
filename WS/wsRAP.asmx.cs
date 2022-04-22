@@ -310,9 +310,82 @@ namespace WS
             }
         }
 
+        //---------------------[Obtener Datos Transporte Vehiculo]--------------------------
 
- 
+        [WebMethod(Description = "Obtener Articulos Envio RAP")]
+        public string ObtenerDatosTransporteVehiculo(String VehiculoID)
+        {
+            String sQry = @"SELECT
+	                            Vehiculo.Matricula as VehiculoMatricula,
+	                            Modelo.Descripcion AS ModeloVehiculo,
+	                            Permiso.Clave AS ClavePermisoSCT,
+	                            Vehiculo_Datos_SAT.NumPermisoSCT as NumeroPermiso,
+	                            Configuracion_Vehicular_SAT.ClaveNomeclatura as ConfiguracionVehicular,
+	                            Tipo_Aseguradora.Descripcion as TipoSeguro, 
+	                            Aseguradora.Nombre AS NombreAseguradora,
+	                            Polizas_Datos_SAT.Numero_de_Poliza as NumeroPoliza
+                            FROM Vehiculo_Datos_SAT
+	                            inner join Vehiculo on Vehiculo_Datos_SAT.VehiculoID = Vehiculo.VehiculoID 	
+	                            INNER JOIN Modelo ON Vehiculo.ModeloID = Modelo.ModeloID
+	                            inner join Configuracion_Vehicular_SAT on Vehiculo_Datos_SAT.Configuracion_Vehicular_SATID=Configuracion_Vehicular_SAT.Configuracion_Vehicular_SATID
+	                            inner JOIN permiso ON Vehiculo_Datos_SAT.IDPermiso =  permiso.IDPermiso
+	                            inner join Polizas_Datos_SAT on Vehiculo_Datos_SAT.Vehiculo_Datos_SATID=Polizas_Datos_SAT.Vehiculo_Datos_SATID
+	                            INNER JOIN Polizas ON Polizas_Datos_SAT.PolizasID = Polizas.PolizasID
+	                            INNER JOIN Aseguradora ON Polizas.AseguradoraID = Aseguradora.AseguradoraID
+	                            inner join Tipo_Aseguradora on Aseguradora.IDTipo_Aseguradora=Tipo_Aseguradora.IDTipo_Aseguradora
+                            WHERE 
+	                            vehiculo.VehiculoID=" + VehiculoID;
 
+            System.Data.DataSet ds;
+            System.Xml.XmlElement xmlElement;
+            try
+            {
+                ds = qryToDataSet(sQry);
+                if (ds.Tables.Count > 0)
+                {
+                    xmlElement = Serialize(ds.Tables[0]);
+                    return xmlElement.OuterXml.ToString();
+                }
+                return "-1";
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "Obtener Articulos Envio RAP:" + ex.Message + ex.StackTrace + "\n" + sQry);
+                return "Ocurrio un error inesperado";
+            }
+        }
+
+        //---------------------[Obtener Datos Transporte Remolque]--------------------------
+
+        [WebMethod(Description = "Obtener Articulos Envio RAP")]
+        public string ObtenerDatosTransporteRemolque(String RemolqueID)
+        {
+            String sQry = @"SELECT
+		                        Tipos_Remolques.Clave as ClaveRemolque,
+		                        remolques.Placas as PlacasRemolque
+	                       from remolques
+		                        inner JOIN Tipos_Remolques on Tipos_Remolques.IDTipos_Remolques=remolques.IDTipos_Remolques
+	                        where
+		                        remolques.IDRemolques=" + RemolqueID;
+                                     
+            System.Data.DataSet ds;
+            System.Xml.XmlElement xmlElement;
+            try
+            {
+                ds = qryToDataSet(sQry);
+                if (ds.Tables.Count > 0)
+                {
+                    xmlElement = Serialize(ds.Tables[0]);
+                    return xmlElement.OuterXml.ToString();
+                }
+                return "-1";
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "Obtener Datos Transporte Remolque:" + ex.Message + ex.StackTrace + "\n" + sQry);
+                return "Ocurrio un error inesperado";
+            }
+        }
 
 
     }
