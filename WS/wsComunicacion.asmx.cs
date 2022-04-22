@@ -4146,7 +4146,7 @@ WHERE
                         CATSAT_ClaveUnidad.ClaveUnidad,
                         lineas.NombreLinea,
                         Articulosprecios.PrecioCIVA,
-                        impuestos.NombreIVA,
+                        impuestos.Porcentaje,
                         articulos.CATSAT_TasasCuotasImpuestosID,
                         CATSAT_TasasCuotasImpuestos.Impuesto,
                         CATSAT_TasasCuotasImpuestos.Factor,
