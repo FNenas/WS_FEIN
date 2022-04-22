@@ -4149,20 +4149,23 @@ WHERE
                         impuestos.NombreIVA,
                         articulos.CATSAT_TasasCuotasImpuestosID,
                         CATSAT_TasasCuotasImpuestos.Impuesto,
-                        CATSAT_TasasCuotasImpuestos.Factor
+                        CATSAT_TasasCuotasImpuestos.Factor,
+                        CATSAT_ClaveProductosServicios.ClaveProdServ
                     from 
                         articulos,
                         articulosprecios,
                         Impuestos,
                         lineas,
                         CATSAT_TasasCuotasImpuestos,
-                        CATSAT_ClaveUnidad
+                        CATSAT_ClaveUnidad,
+                        CATSAT_ClaveProductosServicios
                     where
                         Articulos.articulosID = ArticulosPrecios.ArticulosID and
                         Articulos.ImpuestosID = Impuestos.ImpuestosID and
                         Articulos.LineaID = Lineas.LineasID and
                         articulos.CATSAT_TasasCuotasImpuestosID = CATSAT_TasasCuotasImpuestos.CATSAT_TasasCuotasImpuestosID and
                         articulos.CATSAT_ClaveUnidadID = CATSAT_ClaveUnidad.CATSAT_ClaveUnidadID and
+                        articulos.CATSAT_ClaveProductosServiciosID = CATSAT_ClaveProductosServicios.CATSAT_ClaveProductosServiciosID and
                         Articulosprecios.Nivel = 'NV1' and
                         Articulosprecios.SucursalesID = 24 and
                         Articulos.codigo = "+CodigoArticulo;
