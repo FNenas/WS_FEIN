@@ -4198,7 +4198,8 @@ WHERE
                         articulos
                     where 
                         articulos.SeVende = 1 and 
-                        articulos.activo = 1";
+                        articulos.activo = 1
+                        order by nombre asc";
             try
             {
                 ds = qryToDataSet(Query);
