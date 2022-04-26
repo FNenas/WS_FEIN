@@ -770,6 +770,7 @@ namespace WS
 
             return xmlElement.OuterXml.ToString();
         }
+        [WebMethod(Description = "Regresa un xml del cliente enviado por codigo")]
         public String obtenerClientesPorCodigo(String sCodigo)
         {
 
