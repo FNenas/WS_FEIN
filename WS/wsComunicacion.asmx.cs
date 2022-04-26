@@ -4134,40 +4134,48 @@ WHERE
         }
 
         [WebMethod(Description = "Obtener articulos por codigo")]
-        public string ConsultarArticulo(String CodigoArticulo)
+        public string ConsultarArticulo(String CodigoArticulo,int SucursalID)
         {
             string Query;
             System.Data.DataSet ds;
             System.Xml.XmlElement xmlElement;
             Query = @"select 
-                        articulos.ArticulosID,
-                        articulos.Nombre as Descripcion,
-                        articulos.codigo as Codigo,
+                        Articulos.ArticulosID,
+                        Articulos.Nombre as Descripcion,
+                        Articulos.codigo as Codigo,
+                        Lineas.NombreLinea,
                         CATSAT_ClaveUnidad.ClaveUnidad,
-                        lineas.NombreLinea,
                         Articulosprecios.PrecioCIVA,
-                        impuestos.Porcentaje,
-                        articulos.CATSAT_TasasCuotasImpuestosID,
-                        CATSAT_TasasCuotasImpuestos.Impuesto,
-                        CATSAT_TasasCuotasImpuestos.Factor,
-                        CATSAT_ClaveProductosServicios.ClaveProdServ
+                        CATSAT_Impuestos.ClaveImpuesto as ClaveImpuesto,
+                        CATSAT_TiposFactores.TipoFactor,
+                        CATSAT_TasasCuotasImpuestos.ValorMaximo as PorcentajeImpuesto,
+                        CATSAT_ClaveProductosServicios.ClaveProdServ,
+                        Articulos.TiposIEPSID,
+                        Articulos.ValorIEPS as valorIEPS,
+                        Articulos.PesoPromedio,
+                        Articulos.activo as Activo
                     from 
-                        articulos,
-                        articulosprecios,
-                        Impuestos,
-                        lineas,
-                        CATSAT_TasasCuotasImpuestos,
+                        Articulos,
+                        Articulosprecios,
+                        Lineas,
                         CATSAT_ClaveUnidad,
-                        CATSAT_ClaveProductosServicios
+                        CATSAT_ClaveProductosServicios,
+                        CATSAT_Impuestos,
+                        CATSAT_TasasCuotasImpuestos,
+                        CATSAT_TiposFactores
                     where
                         Articulos.articulosID = ArticulosPrecios.ArticulosID and
-                        Articulos.ImpuestosID = Impuestos.ImpuestosID and
                         Articulos.LineaID = Lineas.LineasID and
-                        articulos.CATSAT_TasasCuotasImpuestosID = CATSAT_TasasCuotasImpuestos.CATSAT_TasasCuotasImpuestosID and
-                        articulos.CATSAT_ClaveUnidadID = CATSAT_ClaveUnidad.CATSAT_ClaveUnidadID and
-                        articulos.CATSAT_ClaveProductosServiciosID = CATSAT_ClaveProductosServicios.CATSAT_ClaveProductosServiciosID and
+                        Articulos.CATSAT_TasasCuotasImpuestosID=CATSAT_TasasCuotasImpuestos.CATSAT_TasasCuotasImpuestosID and
+                        CATSAT_Impuestos.Descripcion=CATSAT_TasasCuotasImpuestos.Impuesto and
+                        Articulos.CATSAT_ClaveUnidadID = CATSAT_ClaveUnidad.CATSAT_ClaveUnidadID and
+                        Articulos.CATSAT_ClaveProductosServiciosID = CATSAT_ClaveProductosServicios.CATSAT_ClaveProductosServiciosID and
+                        Articulos.CATSAT_TiposFactoresID=CATSAT_TiposFactores.CATSAT_TiposFactoresID and
                         Articulosprecios.Nivel = 'NV1' and
-                        Articulosprecios.SucursalesID = 24 and
+                        Articulosprecios.SucursalesID = "+SucursalID+@" and 
+                        ArticulosPrecios.Activo=1 and
+                        Articulos.SeVende = 1 and 
+                        Articulos.activo = 1
                         Articulos.codigo = "+CodigoArticulo;
             try
             {
@@ -4186,7 +4194,7 @@ WHERE
             }
         }
         [WebMethod(Description = "Obtener todos los articulos en venta activos")]
-        public string ConsultarArticulos()
+        public string ConsultarArticulos(int SucursalID)
         {
             string Query;
             System.Data.DataSet ds;
@@ -4195,10 +4203,27 @@ WHERE
                         articulos.codigo,
                         articulos.nombre
                     from 
-                        articulos
-                    where 
-                        articulos.SeVende = 1 and 
-                        articulos.activo = 1
+                        Articulos,
+                        Articulosprecios,
+                        Lineas,
+                        CATSAT_ClaveUnidad,
+                        CATSAT_ClaveProductosServicios,
+                        CATSAT_Impuestos,
+                        CATSAT_TasasCuotasImpuestos,
+                        CATSAT_TiposFactores
+                    where
+                        Articulos.articulosID = ArticulosPrecios.ArticulosID and
+                        Articulos.LineaID = Lineas.LineasID and
+                        Articulos.CATSAT_TasasCuotasImpuestosID=CATSAT_TasasCuotasImpuestos.CATSAT_TasasCuotasImpuestosID and
+                        CATSAT_Impuestos.Descripcion=CATSAT_TasasCuotasImpuestos.Impuesto and
+                        Articulos.CATSAT_ClaveUnidadID = CATSAT_ClaveUnidad.CATSAT_ClaveUnidadID and
+                        Articulos.CATSAT_ClaveProductosServiciosID = CATSAT_ClaveProductosServicios.CATSAT_ClaveProductosServiciosID and
+                        Articulos.CATSAT_TiposFactoresID=CATSAT_TiposFactores.CATSAT_TiposFactoresID and
+                        Articulosprecios.Nivel = 'NV1' and
+                        Articulosprecios.SucursalesID = "+SucursalID+@" and 
+                        ArticulosPrecios.Activo=1 and
+                        Articulos.SeVende = 1 and 
+                        Articulos.activo = 1
                         order by nombre asc";
             try
             {
