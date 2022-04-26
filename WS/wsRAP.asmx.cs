@@ -124,22 +124,22 @@ namespace WS
         [WebMethod(Description = "Obtener Envios RAP")]
         public string ObtenerEnviosRAP(String FechaInicial, String FechaFinal)
         {
-            String sQry = @"SELECT DISTINCT
+            String sQry = @"SELECT DISTINCT    
                                 Envios.IDEnvios AS EnvioID,
-                                Envios.ChoferesID AS ChoferesID,
+                                Envios.CAT_FiguraTransporteID AS ChoferesID,
                                 Envios.VehiculoID AS VehiculoID,
                                 Envios.IDRemolques AS RemolqueID,
                                 Envios.PesoBrutoTotal AS PesoBrutoTotal,
                                 Envios.PesoNetoTotal AS PesoNetoTotal,                                                        
 	                            Envios.Folio AS Folio,	
 	                            CONCAT(Tipo_Vehiculo.Descripcion, ' ', Marca.Descripcion, ' ', Modelo.Descripcion) AS Vehiculo,
-                                CONCAT(Choferes.Nombre, ' ', Choferes.ApellidoPaterno, ' ', Choferes.ApellidoPaterno) AS NombreChofer,
+                                CONCAT(CAT_FiguraTransporte.Nombre, ' ', CAT_FiguraTransporte.ApellidoPaterno, ' ', CAT_FiguraTransporte.ApellidoPaterno) AS NombreChofer,
                                 Usuario.Nombre_Completo AS UsuarioGeneroNombre,
 	                            Envios.Fecha_Hora_Generacion AS FechaHoraGeneracion,
 	                            Envios.Facturado AS Facturado
                             FROM Envios
                                 INNER JOIN Vehiculo ON Envios.VehiculoID = Vehiculo.VehiculoID
-                                INNER JOIN Choferes ON Envios.ChoferesID = Choferes.ChoferesID
+                                INNER JOIN CAT_FiguraTransporte ON Envios.CAT_FiguraTransporteID = CAT_FiguraTransporte.CAT_FiguraTransporteID
                                 INNER JOIN Marca ON Vehiculo.MarcaID = Marca.MarcaID
                                 INNER JOIN Modelo ON Vehiculo.ModeloID = Modelo.ModeloID
                                 INNER JOIN Tipo_Vehiculo ON Vehiculo.Tipo_VehiculoID = Tipo_Vehiculo.Tipo_VehiculoID
@@ -175,17 +175,17 @@ namespace WS
         public string ObtenerRutaEnvioRAP(String EnvioID)
         {
             String sQry = @"SELECT
-                            Envio_Ruta.Origen AS OrigenID,
-                            Envio_Ruta.Destino AS DestinoID,
-                            Envio_Ruta.Orden AS Orden,
-                            Envio_Ruta.Distancia AS Distancia,
-                            Envio_Ruta.FechaHoraSalidaEstimada AS FechaHoraSalida,
-                            Envio_Ruta.FechaHoraLlegadaEstimada AS FechaHoraLlegada
+                                Envio_Ruta.Origen AS OrigenID,
+                                Envio_Ruta.Destino AS DestinoID,
+                                Envio_Ruta.Orden AS Orden,
+                                Envio_Ruta.Distancia AS Distancia,
+                                Envio_Ruta.FechaHoraSalidaEstimada AS FechaHoraSalida,
+                                Envio_Ruta.FechaHoraLlegadaEstimada AS FechaHoraLlegada
                             FROM 
-                            Envio_Ruta
+                                Envio_Ruta
                             WHERE
-                            Envio_Ruta.IDEnvios=" + EnvioID +
-                            @"AND Envio_Ruta.Orden > 0 ";
+                                Envio_Ruta.IDEnvios=" + EnvioID +
+                                @"AND Envio_Ruta.Orden > 0 ";
 
             System.Data.DataSet ds;
             System.Xml.XmlElement xmlElement;
@@ -266,7 +266,7 @@ namespace WS
 	                            Envios_Detalles_Articulos.ClaveSAT as ArticuloCodigo,
 	                            Envios_Detalles_Articulos.Descripcion AS ArticuloDescripcion,	
 	                            Envios_Detalles_Articulos.Cantidad AS Cantidad,
-	                            //Envios_Detalles_Articulos.Unidad AS UnidadCodigo,
+	                            Envios_Detalles_Articulos.UnidadSAT AS UnidadCodigo,
 	                            Envios_Detalles_Articulos.EsPeligroso AS EsMaterialPeligroso,	
 	                            MaterialPeligroso.Clave AS MaterialPeligrosoCodigo,
 	                            TipoEmbalaje.Clave AS TipoEmbalajeCodigo,
@@ -310,9 +310,138 @@ namespace WS
             }
         }
 
+        //---------------------[Obtener Datos Transporte Vehiculo]--------------------------
+
+        [WebMethod(Description = "Obtener Datos Transporte Vehiculo RAP")]
+        public string ObtenerDatosTransporteVehiculo(String VehiculoID)
+        {
+            String sQry = @"SELECT
+	                            Vehiculo.Matricula as VehiculoMatricula,
+	                            Vehiculo.Anio AS ModeloVehiculo,
+							    CAT_FiguraTransporte.RFC as RFC_RegistroSAT,
+							    CATSAT_ParteTransporte.Clave as ClaveParteTransporte,		
+	                            Permiso.Clave AS ClavePermisoSCT,
+	                            Vehiculo_Datos_SAT.NumPermisoSCT as NumeroPermiso,
+	                            Configuracion_Vehicular_SAT.ClaveNomeclatura as ConfiguracionVehicular,
+	                            Tipo_Aseguradora.Descripcion as TipoSeguro, 
+	                            Aseguradora.Nombre AS NombreAseguradora,
+	                            Polizas_Datos_SAT.Numero_de_Poliza as NumeroPoliza
+                            FROM Vehiculo_Datos_SAT
+	                            inner join Vehiculo on Vehiculo_Datos_SAT.VehiculoID = Vehiculo.VehiculoID 	
+	                            inner join Configuracion_Vehicular_SAT on Vehiculo_Datos_SAT.Configuracion_Vehicular_SATID=Configuracion_Vehicular_SAT.Configuracion_Vehicular_SATID
+	                            inner JOIN permiso ON Vehiculo_Datos_SAT.IDPermiso =  permiso.IDPermiso
+	                            inner join Polizas_Datos_SAT on Vehiculo_Datos_SAT.Vehiculo_Datos_SATID=Polizas_Datos_SAT.Vehiculo_Datos_SATID
+	                            INNER JOIN Polizas ON Polizas_Datos_SAT.PolizasID = Polizas.PolizasID
+	                            INNER JOIN Aseguradora ON Polizas.AseguradoraID = Aseguradora.AseguradoraID
+	                            inner join Tipo_Aseguradora on Aseguradora.IDTipo_Aseguradora=Tipo_Aseguradora.IDTipo_Aseguradora
+							    inner join CAT_FiguraTransporte on Vehiculo.CAT_FiguraTransporteID = CAT_FiguraTransporte.CAT_FiguraTransporteID
+							    inner join CATSAT_ParteTransporte on Vehiculo.CATSAT_ParteTransporteID=CATSAT_ParteTransporte.CATSAT_ParteTransporteID
+                            WHERE 
+	                            vehiculo.VehiculoID=" + VehiculoID;
+
+            System.Data.DataSet ds;
+            System.Xml.XmlElement xmlElement;
+            try
+            {
+                ds = qryToDataSet(sQry);
+                if (ds.Tables.Count > 0)
+                {
+                    xmlElement = Serialize(ds.Tables[0]);
+                    return xmlElement.OuterXml.ToString();
+                }
+                return "-1";
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "Obtener Articulos Envio RAP:" + ex.Message + ex.StackTrace + "\n" + sQry);
+                return "Ocurrio un error inesperado";
+            }
+        }
+
+        //---------------------[Obtener Datos Transporte Remolque]--------------------------
+
+        [WebMethod(Description = "Obtener Articulos Envio RAP")]
+        public string ObtenerDatosTransporteRemolque(String RemolqueID)
+        {
+            String sQry = @"SELECT
+	                            Tipos_Remolques.Clave as ClaveRemolque,
+	                            remolques.Placas as PlacasRemolque,
+	                            CAT_FiguraTransporte.RFC as RFC_RegistroSAT,
+	                            CATSAT_ParteTransporte.Clave as ClaveParteTransporte		
+                            from remolques
+	                            inner JOIN Tipos_Remolques on Tipos_Remolques.IDTipos_Remolques=remolques.IDTipos_Remolques
+	                            inner join CAT_FiguraTransporte on remolques.CAT_FiguraTransporteID = CAT_FiguraTransporte.CAT_FiguraTransporteID
+	                            inner join CATSAT_ParteTransporte on remolques.CATSAT_ParteTransporteID=CATSAT_ParteTransporte.CATSAT_ParteTransporteID
+                            where
+	                            remolques.IDRemolques=" + RemolqueID;
+                                     
+            System.Data.DataSet ds;
+            System.Xml.XmlElement xmlElement;
+            try
+            {
+                ds = qryToDataSet(sQry);
+                if (ds.Tables.Count > 0)
+                {
+                    xmlElement = Serialize(ds.Tables[0]);
+                    return xmlElement.OuterXml.ToString();
+                }
+                return "-1";
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "Obtener Datos Transporte Remolque:" + ex.Message + ex.StackTrace + "\n" + sQry);
+                return "Ocurrio un error inesperado";
+            }
+        }
 
 
+        //---------------------[Obtener Datos Transporte Remolque]--------------------------
 
+        [WebMethod(Description = "Obtener Figura Transporte RAP")]
+        public string ObtenerDatosFiguraTransporte(String Operador_Vehiculo_Remolque)
+        {
+            String sQry = @"SELECT
+	                            CAT_FiguraTransporte.CAT_FiguraTransporteID as FiguraTransporteID,
+	                            CATSAT_FiguraTransporte.Descripcion as TipoFiguraTransporte,
+	                            CAT_FiguraTransporte.RFC as RFCFiguraTransporte,
+	                            CAT_FiguraTransporte.NumeroLicencia as NumeroLicencia,
+	                            CONCAT(CAT_FiguraTransporte.Nombre,' ',CAT_FiguraTransporte.ApellidoPaterno,' ',CAT_FiguraTransporte.ApellidoMaterno) as NombreFigura,
+	                            CAT_FiguraTransporte.NRI_Extrangero as NumeroIdentificacionFiguraTransporte,
+	                            CAT_FiguraTransporte.CodigoPais as ResidenciaFiscal,
+	                            CAT_FiguraTransporte.Calle as Calle,
+	                            CAT_FiguraTransporte.NumeroExterior as NumeroExterior,
+	                            CAT_FiguraTransporte.NumeroInterior as NumeroInterior,
+	                            CONCAT(CAT_FiguraTransporte.CodigoColonia,'-',CAT_FiguraTransporte.Colonia) as Colonia,
+	                            CONCAT(CAT_FiguraTransporte.CodigoLocalidad,'-',CAT_FiguraTransporte.Localidad) as Localidad,
+	                            CAT_FiguraTransporte.Referencia as Referencia,
+	                            CONCAT(CAT_FiguraTransporte.CodigoMunicipio,'-',CAT_FiguraTransporte.Municipio) as Municipio,
+	                            CONCAT(CAT_FiguraTransporte.CodigoEstado,'-',CAT_FiguraTransporte.Estado) as Estado,
+	                            CONCAT(CAT_FiguraTransporte.CodigoPais,'-',CAT_FiguraTransporte.Pais) as Pais,
+	                            CAT_FiguraTransporte.CodigoPostal as CodigoPostal
+                            from
+	                            CAT_FiguraTransporte
+	                            inner join CATSAT_FiguraTransporte on CAT_FiguraTransporte.CATSAT_FiguraTransporteID=CATSAT_FiguraTransporte.CATSAT_FiguraTransporteID
+                            where
+	                            CAT_FiguraTransporte.CAT_FiguraTransporteID in (" + Operador_Vehiculo_Remolque+ @")";
+
+            System.Data.DataSet ds;
+            System.Xml.XmlElement xmlElement;
+            try
+            {
+                ds = qryToDataSet(sQry);
+                if (ds.Tables.Count > 0)
+                {
+                    xmlElement = Serialize(ds.Tables[0]);
+                    return xmlElement.OuterXml.ToString();
+                }
+                return "-1";
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "ObtenerDatosFiguraTransporte:" + ex.Message + ex.StackTrace + "\n" + sQry);
+                return "Ocurrio un error inesperado";
+            }
+        }
 
 
     }
