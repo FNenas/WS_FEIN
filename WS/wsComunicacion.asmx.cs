@@ -770,6 +770,22 @@ namespace WS
 
             return xmlElement.OuterXml.ToString();
         }
+        public String obtenerClientesPorCodigo(String sCodigo)
+        {
+
+            //    String sResultado = "";
+
+            String query = "SELECT * FROM [Clientes] WHERE Codigo=" + sCodigo;
+
+
+
+            System.Data.DataSet ds = qryToDataSet(query);
+
+
+            System.Xml.XmlElement xmlElement = Serialize(ds.Tables[0]);
+
+            return xmlElement.OuterXml.ToString();
+        }
         [WebMethod(Description = "Regresa un xml del cliente enviado")]
         public String obtenerPedidos(String sClientesID, String sMes)
         {
