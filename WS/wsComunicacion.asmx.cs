@@ -4192,7 +4192,7 @@ WHERE
                         ArticulosPrecios.Activo=1 and
                         Articulos.SeVende = 1 and 
                         Articulos.activo = 1 and
-                        Articulos.codigo = "+CodigoArticulo;
+                        Articulos.codigo = '"+CodigoArticulo+"'";
             try
             {
                 ds = qryToDataSet(Query);
