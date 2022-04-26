@@ -4134,7 +4134,7 @@ WHERE
         }
 
         [WebMethod(Description = "Obtener articulos por codigo")]
-        public string ConsultarArticulo(String CodigoArticulo,int SucursalID)
+        public string ConsultarArticulo(String CodigoArticulo,string SucursalID)
         {
             string Query;
             System.Data.DataSet ds;
@@ -4194,7 +4194,7 @@ WHERE
             }
         }
         [WebMethod(Description = "Obtener todos los articulos en venta activos")]
-        public string ConsultarArticulos(int SucursalID)
+        public string ConsultarArticulos(string SucursalID)
         {
             string Query;
             System.Data.DataSet ds;
