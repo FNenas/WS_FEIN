@@ -4175,7 +4175,7 @@ WHERE
                         Articulosprecios.SucursalesID = "+SucursalID+@" and 
                         ArticulosPrecios.Activo=1 and
                         Articulos.SeVende = 1 and 
-                        Articulos.activo = 1
+                        Articulos.activo = 1 and
                         Articulos.codigo = "+CodigoArticulo;
             try
             {
