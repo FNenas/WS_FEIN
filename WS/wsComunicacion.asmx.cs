@@ -4258,5 +4258,37 @@ WHERE
                 return "Ocurrio un error inesperado";
             }
         }
+        [WebMethod(Description = "Obtener todos codigos de articulos de una venta especifica")]
+        public string consultarCodigosArticulos(string VentaID)
+        {
+            string Query;
+            System.Data.DataSet ds;
+            System.Xml.XmlElement xmlElement;
+            Query = @"select 
+                        Articulos.codigo
+                    from 
+                        ventas,
+                        Ventas_Articulos,
+                        articulos
+                    where 
+                        Ventas.VentasID = Ventas_Articulos.VentasID and
+                        Ventas_Articulos.ArticulosID = Articulos.ArticulosID and
+                        ventas.VentasID = "+VentaID;
+            try
+            {
+                ds = qryToDataSet(Query);
+                if (ds.Tables.Count > 0)
+                {
+                    xmlElement = Serialize(ds.Tables[0]);
+                    return xmlElement.OuterXml.ToString();
+                }
+                return "";
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "ConsultarArticulo:" + ex.Message + ex.StackTrace + "\n" + Query);
+                return "Ocurrio un error inesperado";
+            }
+        }
     }
 }
