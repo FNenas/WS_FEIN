@@ -325,7 +325,8 @@ namespace WS
 	                            Configuracion_Vehicular_SAT.ClaveNomeclatura as ConfiguracionVehicular,
 	                            Tipo_Aseguradora.Descripcion as TipoSeguro, 
 	                            Aseguradora.Nombre AS NombreAseguradora,
-	                            Polizas_Datos_SAT.Numero_de_Poliza as NumeroPoliza
+	                            Polizas_Datos_SAT.Numero_de_Poliza as NumeroPoliza,
+                                Vehiculo.CAT_FiguraTransporteID as FiguraTransporteID
                             FROM Vehiculo_Datos_SAT
 	                            inner join Vehiculo on Vehiculo_Datos_SAT.VehiculoID = Vehiculo.VehiculoID 	
 	                            inner join Configuracion_Vehicular_SAT on Vehiculo_Datos_SAT.Configuracion_Vehicular_SATID=Configuracion_Vehicular_SAT.Configuracion_Vehicular_SATID
@@ -367,7 +368,8 @@ namespace WS
 	                            Tipos_Remolques.Clave as ClaveRemolque,
 	                            remolques.Placas as PlacasRemolque,
 	                            CAT_FiguraTransporte.RFC as RFC_RegistroSAT,
-	                            CATSAT_ParteTransporte.Clave as ClaveParteTransporte		
+	                            CATSAT_ParteTransporte.Clave as ClaveParteTransporte,
+                                remolques.CAT_FiguraTransporteID as FiguraTransporteID		
                             from remolques
 	                            inner JOIN Tipos_Remolques on Tipos_Remolques.IDTipos_Remolques=remolques.IDTipos_Remolques
 	                            inner join CAT_FiguraTransporte on remolques.CAT_FiguraTransporteID = CAT_FiguraTransporte.CAT_FiguraTransporteID
@@ -395,14 +397,14 @@ namespace WS
         }
 
 
-        //---------------------[Obtener Datos Transporte Remolque]--------------------------
+        //---------------------[Obtener Datos Figura Transporte]--------------------------
 
         [WebMethod(Description = "Obtener Figura Transporte RAP")]
         public string ObtenerDatosFiguraTransporte(String Operador_Vehiculo_Remolque)
         {
-            String sQry = @"SELECT
+            String sQry = @"SELECT                              
 	                            CAT_FiguraTransporte.CAT_FiguraTransporteID as FiguraTransporteID,
-	                            CATSAT_FiguraTransporte.Descripcion as TipoFiguraTransporte,
+                                CONCAT(CATSAT_FiguraTransporte.Clave,'-',CATSAT_FiguraTransporte.Descripcion) as TipoFiguraTransporte,
 	                            CAT_FiguraTransporte.RFC as RFCFiguraTransporte,
 	                            CAT_FiguraTransporte.NumeroLicencia as NumeroLicencia,
 	                            CONCAT(CAT_FiguraTransporte.Nombre,' ',CAT_FiguraTransporte.ApellidoPaterno,' ',CAT_FiguraTransporte.ApellidoMaterno) as NombreFigura,
