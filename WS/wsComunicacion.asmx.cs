@@ -4266,14 +4266,26 @@ WHERE
             System.Xml.XmlElement xmlElement;
             Query = @"select DISTINCT
                         Articulos.codigo
+                        Ventas_Articulos.Cantidad,
+                        TiposdePagos.CATSAT_FormaPagoID,
+                        max(VentasTiposPagos.ImporteRecibido) as ImporteRecibido
                     from 
                         ventas,
                         Ventas_Articulos,
+                        VentasTiposPagos,
+                        TiposdePagos,
                         articulos
                     where 
                         Ventas.VentasID = Ventas_Articulos.VentasID and
+                        ventas.VentasID = VentasTiposPagos.VentasID and
                         Ventas_Articulos.ArticulosID = Articulos.ArticulosID and
-                        ventas.VentasID = "+VentaID;
+                        VentasTiposPagos.TiposdePagosID = TiposdePagos.TiposdePagosID and
+                        ventas.Facturada = 0 and
+                        ventas.VentasID = "+VentaID+@" 
+                        group by articulos.nombre,
+                        articulos.codigo,
+                        Ventas_Articulos.Cantidad,
+                        TiposdePagos.CATSAT_FormaPagoID";
             try
             {
                 ds = qryToDataSet(Query);
