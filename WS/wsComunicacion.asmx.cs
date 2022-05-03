@@ -4265,10 +4265,10 @@ WHERE
             System.Data.DataSet ds;
             System.Xml.XmlElement xmlElement;
             Query = @"select 
-                        Articulos.codigo
+                        Articulos.codigo,
                         Ventas_Articulos.Cantidad,
                         TiposdePagos.CATSAT_FormaPagoID,
-                        Ventas.FechaHora,
+                        Ventas.FechaVenta,
                         max(VentasTiposPagos.ImporteRecibido) as ImporteRecibido
                     from 
                         ventas,
@@ -4283,11 +4283,11 @@ WHERE
                         VentasTiposPagos.TiposdePagosID = TiposdePagos.TiposdePagosID and
                         ventas.Facturada = 0 and
                         ventas.VentasID = "+VentaID+@" 
-                        group by articulos.nombre,
+                    group by
                         articulos.codigo,
                         Ventas_Articulos.Cantidad,
                         TiposdePagos.CATSAT_FormaPagoID,
-                        Ventas.FechaHora";
+                        Ventas.FechaVenta";
             try
             {
                 ds = qryToDataSet(Query);
