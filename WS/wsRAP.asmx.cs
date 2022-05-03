@@ -281,8 +281,8 @@ namespace WS
                             FROM
 	                            Envios_Detalles_Articulos
 	                            INNER JOIN Envios_Detalles ON Envios_Detalles_Articulos.IDEnvios_Detalles = Envios_Detalles.IDEnvios_Detalles
-	                            INNER JOIN MaterialPeligroso ON Envios_Detalles_Articulos.IDMaterialPeligroso = MaterialPeligroso.IDMaterialPeligroso
-	                            INNER JOIN TipoEmbalaje ON Envios_Detalles_Articulos.IDTipoEmbalaje = TipoEmbalaje.IDTipoEmbalaje
+	                            left JOIN MaterialPeligroso ON Envios_Detalles_Articulos.IDMaterialPeligroso = MaterialPeligroso.IDMaterialPeligroso
+	                            left JOIN TipoEmbalaje ON Envios_Detalles_Articulos.IDTipoEmbalaje = TipoEmbalaje.IDTipoEmbalaje
 	                            inner join Envio_Ruta on Envio_Ruta.Destino = Envios_Detalles.IDDestino
                             WHERE
 	                            Envios_Detalles.IDEnvios=" + EnvioID +
@@ -334,7 +334,7 @@ namespace WS
 	                            inner join Polizas_Datos_SAT on Vehiculo_Datos_SAT.Vehiculo_Datos_SATID=Polizas_Datos_SAT.Vehiculo_Datos_SATID
 	                            INNER JOIN Polizas ON Polizas_Datos_SAT.PolizasID = Polizas.PolizasID
 	                            INNER JOIN Aseguradora ON Polizas.AseguradoraID = Aseguradora.AseguradoraID
-	                            inner join Tipo_Aseguradora on Aseguradora.IDTipo_Aseguradora=Tipo_Aseguradora.IDTipo_Aseguradora
+	                            inner join Tipo_Aseguradora on Polizas.IDTipo_Aseguradora=Tipo_Aseguradora.IDTipo_Aseguradora
 							    inner join CAT_FiguraTransporte on Vehiculo.CAT_FiguraTransporteID = CAT_FiguraTransporte.CAT_FiguraTransporteID
 							    inner join CATSAT_ParteTransporte on Vehiculo.CATSAT_ParteTransporteID=CATSAT_ParteTransporte.CATSAT_ParteTransporteID
                             WHERE 
