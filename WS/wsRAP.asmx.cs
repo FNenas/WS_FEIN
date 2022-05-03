@@ -281,8 +281,8 @@ namespace WS
                             FROM
 	                            Envios_Detalles_Articulos
 	                            INNER JOIN Envios_Detalles ON Envios_Detalles_Articulos.IDEnvios_Detalles = Envios_Detalles.IDEnvios_Detalles
-	                            INNER JOIN MaterialPeligroso ON Envios_Detalles_Articulos.IDMaterialPeligroso = MaterialPeligroso.IDMaterialPeligroso
-	                            INNER JOIN TipoEmbalaje ON Envios_Detalles_Articulos.IDTipoEmbalaje = TipoEmbalaje.IDTipoEmbalaje
+	                            left JOIN MaterialPeligroso ON Envios_Detalles_Articulos.IDMaterialPeligroso = MaterialPeligroso.IDMaterialPeligroso
+	                            left JOIN TipoEmbalaje ON Envios_Detalles_Articulos.IDTipoEmbalaje = TipoEmbalaje.IDTipoEmbalaje
 	                            inner join Envio_Ruta on Envio_Ruta.Destino = Envios_Detalles.IDDestino
                             WHERE
 	                            Envios_Detalles.IDEnvios=" + EnvioID +
