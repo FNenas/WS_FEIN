@@ -4268,6 +4268,7 @@ WHERE
                         Articulos.codigo
                         Ventas_Articulos.Cantidad,
                         TiposdePagos.CATSAT_FormaPagoID,
+                        Ventas.FechaHora,
                         max(VentasTiposPagos.ImporteRecibido) as ImporteRecibido
                     from 
                         ventas,
@@ -4285,7 +4286,8 @@ WHERE
                         group by articulos.nombre,
                         articulos.codigo,
                         Ventas_Articulos.Cantidad,
-                        TiposdePagos.CATSAT_FormaPagoID";
+                        TiposdePagos.CATSAT_FormaPagoID,
+                        Ventas.FechaHora";
             try
             {
                 ds = qryToDataSet(Query);
