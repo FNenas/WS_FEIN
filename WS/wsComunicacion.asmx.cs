@@ -4264,7 +4264,7 @@ WHERE
             string Query;
             System.Data.DataSet ds;
             System.Xml.XmlElement xmlElement;
-            Query = @"select DISTINCT
+            Query = @"select 
                         Articulos.codigo
                     from 
                         ventas,

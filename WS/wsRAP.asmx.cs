@@ -334,7 +334,7 @@ namespace WS
 	                            inner join Polizas_Datos_SAT on Vehiculo_Datos_SAT.Vehiculo_Datos_SATID=Polizas_Datos_SAT.Vehiculo_Datos_SATID
 	                            INNER JOIN Polizas ON Polizas_Datos_SAT.PolizasID = Polizas.PolizasID
 	                            INNER JOIN Aseguradora ON Polizas.AseguradoraID = Aseguradora.AseguradoraID
-	                            inner join Tipo_Aseguradora on Aseguradora.IDTipo_Aseguradora=Tipo_Aseguradora.IDTipo_Aseguradora
+	                            inner join Tipo_Aseguradora on Polizas.IDTipo_Aseguradora=Tipo_Aseguradora.IDTipo_Aseguradora
 							    inner join CAT_FiguraTransporte on Vehiculo.CAT_FiguraTransporteID = CAT_FiguraTransporte.CAT_FiguraTransporteID
 							    inner join CATSAT_ParteTransporte on Vehiculo.CATSAT_ParteTransporteID=CATSAT_ParteTransporte.CATSAT_ParteTransporteID
                             WHERE 
