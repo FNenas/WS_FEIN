@@ -4267,7 +4267,7 @@ WHERE
             Query = @"select 
                         Articulos.codigo,
                         Ventas_Articulos.Cantidad,
-                        TiposdePagos.CATSAT_FormaPagoID,
+                        TiposdePagos.Descripcion,
                         Ventas.FechaVenta,
                         max(VentasTiposPagos.ImporteRecibido) as ImporteRecibido
                     from 
@@ -4286,7 +4286,7 @@ WHERE
                     group by
                         articulos.codigo,
                         Ventas_Articulos.Cantidad,
-                        TiposdePagos.CATSAT_FormaPagoID,
+                        TiposdePagos.Descripcion,
                         Ventas.FechaVenta";
             try
             {
