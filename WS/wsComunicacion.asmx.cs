@@ -4267,6 +4267,8 @@ WHERE
             Query = @"select 
                         Articulos.codigo,
                         Ventas_Articulos.Cantidad,
+                        Ventas_Articulos.precio,
+                        CATSAT_TasasCuotasImpuestos.ValorMaximo,
                         TiposdePagos.Descripcion,
                         Ventas.FechaVenta
                     from 
@@ -4274,12 +4276,14 @@ WHERE
                         Ventas_Articulos,
                         VentasTiposPagos,
                         TiposdePagos,
-                        articulos
+                        articulos,
+                        CATSAT_TasasCuotasImpuestos
                     where 
                         Ventas.VentasID = Ventas_Articulos.VentasID and
                         ventas.VentasID = VentasTiposPagos.VentasID and
                         Ventas_Articulos.ArticulosID = Articulos.ArticulosID and
                         VentasTiposPagos.TiposdePagosID = TiposdePagos.TiposdePagosID and
+                        Articulos.CATSAT_TasasCuotasImpuestosID = CATSAT_TasasCuotasImpuestos.CATSAT_TasasCuotasImpuestosID and
                         ventas.Facturada = 0 and
                         VentasTiposPagos.ImporteRecibido in (
                             select 
