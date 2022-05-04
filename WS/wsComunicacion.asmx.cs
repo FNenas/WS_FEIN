@@ -4268,8 +4268,7 @@ WHERE
                         Articulos.codigo,
                         Ventas_Articulos.Cantidad,
                         TiposdePagos.Descripcion,
-                        Ventas.FechaVenta,
-                        max(VentasTiposPagos.ImporteRecibido) as ImporteRecibido
+                        Ventas.FechaVenta
                     from 
                         ventas,
                         Ventas_Articulos,
@@ -4282,12 +4281,14 @@ WHERE
                         Ventas_Articulos.ArticulosID = Articulos.ArticulosID and
                         VentasTiposPagos.TiposdePagosID = TiposdePagos.TiposdePagosID and
                         ventas.Facturada = 0 and
-                        ventas.VentasID = "+VentaID+@" 
-                    group by
-                        articulos.codigo,
-                        Ventas_Articulos.Cantidad,
-                        TiposdePagos.Descripcion,
-                        Ventas.FechaVenta";
+                        VentasTiposPagos.ImporteRecibido in (
+                            select 
+                                Max(VentasTiposPagos.ImporteRecibido)
+                            from 
+                                VentasTiposPagos
+                            where 
+                                VentasTiposPagos.VentasID = "+VentaID+@" ) and
+                        ventas.VentasID = "+VentaID;
             try
             {
                 ds = qryToDataSet(Query);
