@@ -4267,8 +4267,6 @@ WHERE
             Query = @"select 
                         Articulos.codigo,
                         Ventas_Articulos.Cantidad,
-                        Ventas_Articulos.precio,
-                        CATSAT_TasasCuotasImpuestos.ValorMaximo,
                         TiposdePagos.Descripcion,
                         Ventas.FechaVenta
                     from 
@@ -4276,14 +4274,12 @@ WHERE
                         Ventas_Articulos,
                         VentasTiposPagos,
                         TiposdePagos,
-                        articulos,
-                        CATSAT_TasasCuotasImpuestos
+                        articulos
                     where 
                         Ventas.VentasID = Ventas_Articulos.VentasID and
                         ventas.VentasID = VentasTiposPagos.VentasID and
                         Ventas_Articulos.ArticulosID = Articulos.ArticulosID and
                         VentasTiposPagos.TiposdePagosID = TiposdePagos.TiposdePagosID and
-                        Articulos.CATSAT_TasasCuotasImpuestosID = CATSAT_TasasCuotasImpuestos.CATSAT_TasasCuotasImpuestosID and
                         ventas.Facturada = 0 and
                         VentasTiposPagos.ImporteRecibido in (
                             select 
@@ -4309,5 +4305,48 @@ WHERE
                 return "Ocurrio un error inesperado";
             }
         }
+
+
+     //----------------[Obtener Empleados SION]------------------
+    [WebMethod(Description = "Obtener Empleados SION")]
+        public string ObtenerEmpleadosSION(String sOrdenCompra)
+        {
+            String sQry = @"select 
+	                            Usuarios.Nombre as Usuarios,	
+	                            Empleados.EmpleadosID as UsuarioID,
+	                            Empleados.NombreCompleto as NombreCompleto,
+	                            Puestos.Nombre as Puesto,
+	                            Empleados.FechaIngreso as FechaIngreso
+                            from Usuarios
+	                            inner join Empleados on Usuarios.EmpleadosID = Empleados.EmpleadosID
+	                            inner join Puestos on Empleados.PuestosID = Puestos.PuestosID
+                            WHERE
+	                            Empleados.Activo=1
+                            order by Empleados.NombreCompleto asc";
+            System.Data.DataSet ds;
+            System.Xml.XmlElement xmlElement;
+            try
+            {
+                ds = qryToDataSet(sQry);
+                if (ds.Tables.Count > 0)
+                {
+                    xmlElement = Serialize(ds.Tables[0]);
+                    return xmlElement.OuterXml.ToString();
+                }
+                return "-1";
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "Obtener Empleados SION:" + ex.Message + ex.StackTrace + "\n" + sQry);
+                return "Ocurrio un error inesperado";
+            }
+
+
+        }
+
+
+
+
+
     }
 }
