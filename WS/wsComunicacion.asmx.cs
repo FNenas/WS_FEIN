@@ -4264,22 +4264,28 @@ WHERE
             string Query;
             System.Data.DataSet ds;
             System.Xml.XmlElement xmlElement;
-            Query = @"select 
+            Query = @"select
+                        Articulos.ArticulosID, 
                         Articulos.codigo,
+                        Ventas_Articulos.precio,
+                        CATSAT_TasasCuotasImpuestos.ValorMaximo as PorcentajeImpuesto,
                         Ventas_Articulos.Cantidad,
                         TiposdePagos.Descripcion,
-                        Ventas.FechaVenta
+                        Ventas.FechaVenta,
+                        Ventas_Articulos.Ahorro
                     from 
                         ventas,
                         Ventas_Articulos,
                         VentasTiposPagos,
                         TiposdePagos,
-                        articulos
+                        articulos,
+                        CATSAT_TasasCuotasImpuestos
                     where 
                         Ventas.VentasID = Ventas_Articulos.VentasID and
                         ventas.VentasID = VentasTiposPagos.VentasID and
                         Ventas_Articulos.ArticulosID = Articulos.ArticulosID and
                         VentasTiposPagos.TiposdePagosID = TiposdePagos.TiposdePagosID and
+                        Articulos.CATSAT_TasasCuotasImpuestosID = CATSAT_TasasCuotasImpuestos.CATSAT_TasasCuotasImpuestosID and
                         ventas.Facturada = 0 and
                         VentasTiposPagos.ImporteRecibido in (
                             select 
