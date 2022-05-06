@@ -4272,7 +4272,9 @@ WHERE
                         Ventas_Articulos.Cantidad,
                         TiposdePagos.Descripcion,
                         Ventas.FechaVenta,
-                        Ventas_Articulos.Ahorro
+                        Ventas_Articulos.Ahorro,
+                        Articulos.TiposIEPSID,
+                        Articulos.ValorIEPS as valorIEPS            
                     from 
                         ventas,
                         Ventas_Articulos,
