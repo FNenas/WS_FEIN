@@ -4268,6 +4268,8 @@ WHERE
                         Articulos.ArticulosID, 
                         Articulos.codigo,
                         Ventas_Articulos.precio,
+                        CATSAT_Impuestos.ClaveImpuesto as ClaveImpuesto,
+                        CATSAT_TiposFactores.TipoFactor,
                         CATSAT_TasasCuotasImpuestos.ValorMaximo as PorcentajeImpuesto,
                         Ventas_Articulos.Cantidad,
                         TiposdePagos.Descripcion,
@@ -4281,13 +4283,17 @@ WHERE
                         VentasTiposPagos,
                         TiposdePagos,
                         articulos,
-                        CATSAT_TasasCuotasImpuestos
+                        CATSAT_TasasCuotasImpuestos,
+                        CATSAT_Impuestos,
+                        CATSAT_TiposFactores
                     where 
                         Ventas.VentasID = Ventas_Articulos.VentasID and
                         ventas.VentasID = VentasTiposPagos.VentasID and
                         Ventas_Articulos.ArticulosID = Articulos.ArticulosID and
                         VentasTiposPagos.TiposdePagosID = TiposdePagos.TiposdePagosID and
                         Articulos.CATSAT_TasasCuotasImpuestosID = CATSAT_TasasCuotasImpuestos.CATSAT_TasasCuotasImpuestosID and
+                        Articulos.CATSAT_TiposFactoresID=CATSAT_TiposFactores.CATSAT_TiposFactoresID and
+                        CATSAT_Impuestos.Descripcion=CATSAT_TasasCuotasImpuestos.Impuesto and
                         ventas.Facturada = 0 and
                         VentasTiposPagos.ImporteRecibido in (
                             select 
