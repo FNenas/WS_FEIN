@@ -4317,7 +4317,7 @@ WHERE
 
      //----------------[Obtener Empleados SION]------------------
     [WebMethod(Description = "Obtener Empleados SION")]
-        public string ObtenerEmpleadosSION(String sOrdenCompra)
+        public string ObtenerEmpleadosSION()
         {
             String sQry = @"select 
 	                            Usuarios.Nombre as Usuarios,	
