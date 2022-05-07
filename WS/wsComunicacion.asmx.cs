@@ -4268,6 +4268,7 @@ WHERE
                         Articulos.ArticulosID, 
                         Articulos.codigo,
                         Ventas_Articulos.precio,
+                        CATSAT_ClaveUnidad.ClaveUnidad,
                         CATSAT_Impuestos.ClaveImpuesto as ClaveImpuesto,
                         CATSAT_TiposFactores.TipoFactor,
                         CATSAT_TasasCuotasImpuestos.ValorMaximo as PorcentajeImpuesto,
@@ -4283,6 +4284,7 @@ WHERE
                         VentasTiposPagos,
                         TiposdePagos,
                         articulos,
+                        CATSAT_ClaveUnidad,
                         CATSAT_TasasCuotasImpuestos,
                         CATSAT_Impuestos,
                         CATSAT_TiposFactores
@@ -4291,6 +4293,7 @@ WHERE
                         ventas.VentasID = VentasTiposPagos.VentasID and
                         Ventas_Articulos.ArticulosID = Articulos.ArticulosID and
                         VentasTiposPagos.TiposdePagosID = TiposdePagos.TiposdePagosID and
+                        Articulos.CATSAT_ClaveUnidadID = CATSAT_ClaveUnidad.CATSAT_ClaveUnidadID and
                         Articulos.CATSAT_TasasCuotasImpuestosID = CATSAT_TasasCuotasImpuestos.CATSAT_TasasCuotasImpuestosID and
                         Articulos.CATSAT_TiposFactoresID=CATSAT_TiposFactores.CATSAT_TiposFactoresID and
                         CATSAT_Impuestos.Descripcion=CATSAT_TasasCuotasImpuestos.Impuesto and
