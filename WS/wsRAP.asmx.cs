@@ -133,7 +133,7 @@ namespace WS
                                 Envios.PesoNetoTotal AS PesoNetoTotal,                                                        
 	                            Envios.Folio AS Folio,	
 	                            CONCAT(Tipo_Vehiculo.Descripcion, ' ', Marca.Descripcion, ' ', Modelo.Descripcion) AS Vehiculo,
-                                CONCAT(CAT_FiguraTransporte.Nombre, ' ', CAT_FiguraTransporte.ApellidoPaterno, ' ', CAT_FiguraTransporte.ApellidoPaterno) AS NombreChofer,
+                                CONCAT(CAT_FiguraTransporte.Nombre, ' ', CAT_FiguraTransporte.ApellidoPaterno, ' ', CAT_FiguraTransporte.ApellidoMaterno) AS NombreChofer,
                                 Usuario.Nombre_Completo AS UsuarioGeneroNombre,
 	                            Envios.Fecha_Hora_Generacion AS FechaHoraGeneracion,
 	                            Envios.Facturado AS Facturado
