@@ -128,6 +128,7 @@ namespace WS
                                 Envios.IDEnvios AS EnvioID,
                                 Envios.CAT_FiguraTransporteID AS ChoferesID,
                                 Envios.VehiculoID AS VehiculoID,
+                                Vehiculo.Matricula as Placas,
                                 Envios.IDRemolques AS RemolqueID,
                                 Envios.PesoBrutoTotal AS PesoBrutoTotal,
                                 Envios.PesoNetoTotal AS PesoNetoTotal,                                                        
