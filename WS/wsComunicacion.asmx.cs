@@ -4273,12 +4273,12 @@ WHERE
                         CATSAT_TiposFactores.TipoFactor,
                         CATSAT_TasasCuotasImpuestos.ValorMaximo as PorcentajeImpuesto,
                         Ventas_Articulos.Cantidad,
-                        TiposdePagos.CATSAT_FormaPagoID,
+                        CATSAT_FormasPago.ClaveFormasPago,
                         Ventas.FechaVenta,
                         Ventas_Articulos.Descuento,
                         Articulos.TiposIEPSID,
                         Articulos.ValorIEPS as valorIEPS,
-                        Ventas_Articulos.ProductoGrabadoSIMP          
+                        Ventas_Articulos.ProductoGrabadoSIMP      
                     from 
                         ventas,
                         Ventas_Articulos,
@@ -4288,7 +4288,8 @@ WHERE
                         CATSAT_ClaveUnidad,
                         CATSAT_TasasCuotasImpuestos,
                         CATSAT_Impuestos,
-                        CATSAT_TiposFactores
+                        CATSAT_TiposFactores,
+                        CATSAT_FormasPago
                     where 
                         Ventas.VentasID = Ventas_Articulos.VentasID and
                         ventas.VentasID = VentasTiposPagos.VentasID and
@@ -4298,6 +4299,7 @@ WHERE
                         Articulos.CATSAT_TasasCuotasImpuestosID = CATSAT_TasasCuotasImpuestos.CATSAT_TasasCuotasImpuestosID and
                         Articulos.CATSAT_TiposFactoresID=CATSAT_TiposFactores.CATSAT_TiposFactoresID and
                         CATSAT_Impuestos.Descripcion=CATSAT_TasasCuotasImpuestos.Impuesto and
+                        TiposdePagos.CATSAT_FormaPagoID = CATSAT_FormasPago.CATSAT_FormasPagoID and
                         ventas.Facturada = 0 and
                         VentasTiposPagos.ImporteRecibido in (
                             select 
