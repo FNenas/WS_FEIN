@@ -4267,7 +4267,7 @@ WHERE
             Query = @"select
                         Articulos.ArticulosID, 
                         Articulos.codigo,
-                        Ventas_Articulos.precio,
+                        Ventas_Articulos.ProductoGrabadoSIMP,
                         CATSAT_ClaveUnidad.ClaveUnidad,
                         CATSAT_Impuestos.ClaveImpuesto as ClaveImpuesto,
                         CATSAT_TiposFactores.TipoFactor,
