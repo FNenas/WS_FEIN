@@ -4273,7 +4273,7 @@ WHERE
                         CATSAT_TiposFactores.TipoFactor,
                         CATSAT_TasasCuotasImpuestos.ValorMaximo as PorcentajeImpuesto,
                         Ventas_Articulos.Cantidad,
-                        TiposdePagos.Descripcion,
+                        TiposdePagos.CATSAT_FormaPagoID,
                         Ventas.FechaVenta,
                         Ventas_Articulos.Descuento,
                         Articulos.TiposIEPSID,
