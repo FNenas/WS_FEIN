@@ -4189,8 +4189,7 @@ WHERE
                         Articulos.CATSAT_ClaveProductosServiciosID = CATSAT_ClaveProductosServicios.CATSAT_ClaveProductosServiciosID and
                         Articulos.CATSAT_TiposFactoresID=CATSAT_TiposFactores.CATSAT_TiposFactoresID and
                         Articulosprecios.Nivel = 'NV1' and
-                        Articulosprecios.SucursalesID = "+SucursalID+@" and 
-                        ArticulosPrecios.Activo=1 and
+                        Articulosprecios.SucursalesID = "+SucursalID+@" and
                         Articulos.codigo in ("+CodigoArticulo+")";
             try
             {
