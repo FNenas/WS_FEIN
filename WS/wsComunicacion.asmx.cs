@@ -4364,9 +4364,34 @@ WHERE
 
         }
 
-
-
-
-
+        [WebMethod(Description = "Obtener todos codigos de articulos de una venta especifica")]
+        public string ConsultarDescuento(string VentaID)
+        {
+            string Query;
+            System.Data.DataSet ds;
+            System.Xml.XmlElement xmlElement;
+            Query = @"select 
+                        sum(importe) as Descuento
+                    from 
+                        Ventas_Articulos
+                    where 
+                        Ventas_Articulos.ArticulosID = -1 and 
+                        Ventas_Articulos.VentasID = "+VentaID;
+            try
+            {
+                ds = qryToDataSet(Query);
+                if (ds.Tables.Count > 0)
+                {
+                    xmlElement = Serialize(ds.Tables[0]);
+                    return xmlElement.OuterXml.ToString();
+                }
+                return "";
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "ConsultarArticulo:" + ex.Message + ex.StackTrace + "\n" + Query);
+                return "Ocurrio un error inesperado";
+            }
+        }
     }
 }
