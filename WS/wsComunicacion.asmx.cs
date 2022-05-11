@@ -4191,7 +4191,6 @@ WHERE
                         Articulosprecios.Nivel = 'NV1' and
                         Articulosprecios.SucursalesID = "+SucursalID+@" and 
                         ArticulosPrecios.Activo=1 and
-                        Articulos.SeVende = 1 and
                         Articulos.codigo in ("+CodigoArticulo+")";
             try
             {
