@@ -4390,5 +4390,70 @@ WHERE
                 return "Ocurrio un error inesperado";
             }
         }
+
+        //------------------[Factura Global]-----------------------
+        [WebMethod(Description = "Obtener todos codigos de articulos de una venta especifica")]
+        public string Factutracion_X_ImpuestosAgrupada(string Fecha)
+        {
+            string Query;
+            System.Data.DataSet ds;
+            System.Xml.XmlElement xmlElement;
+            Query = @"SELECT 
+	                    Impuestos.NombreIVA AS NombreIVA,	
+	                    Impuestos.Porcentaje AS Porcentaje,	
+	                    Impuestos.ImpuestosID AS ImpuestosID,	
+	                    Ventas_Articulos.TiposIEPSID AS TiposIEPSID,	
+	                    Ventas_Articulos.ValorIEPS AS ValorIEPS,	
+	                    SUM(ROUND( ( ROUND( Ventas_Articulos.Cantidad ,  3) * ROUND( Ventas_Articulos.Precio ,  2) ) ,  2) ) AS Sum_Subtotal,	
+	                    SUM(ROUND( Ventas_Articulos.Importe ,  2) ) AS sum_Importe,	
+	                    SUM(ROUND( Ventas_Articulos.ImpuestoImporte ,  2) ) AS sum_ImpuestoImporte,	
+	                    SUM(ROUND( Ventas_Articulos.ProductoGrabadoIEPS ,  2) ) AS ProductoGrabadoIEPS,	
+	                    SUM(ROUND( Ventas_Articulos.ProductoGrabadoImporte ,  2) ) AS ProductoGrabadoImporte,	
+	                    SUM(ROUND( Ventas_Articulos.ProductoGrabadoIVA ,  2) ) AS ProductoGrabadoIVA,	
+	                    SUM(ROUND( Ventas_Articulos.ProductoGrabadoSIMP ,  2) ) AS ProductoGrabadoSIMP,	
+	                    SUM(ROUND( Ventas_Articulos.CantidadIEPS ,  2) ) AS CantidadIEPS,	
+	                    SUM(ROUND( ( Ventas_Articulos.ProductoGrabadoIEPS / Ventas_Articulos.ValorIEPS ) ,  3) ) AS IEPSBaseCuota
+                    FROM
+	                    CortesZ,	
+	                    CortesY,	
+	                    Ventas,	
+	                    Ventas_Articulos,	
+	                    Impuestos
+                    WHERE 
+	                    Impuestos.ImpuestosID = Ventas_Articulos.ImpuestoID
+	                    AND		Ventas.VentasID = Ventas_Articulos.VentasID
+	                    AND		CortesY.CortesYID = Ventas.CortesYID
+	                    AND		CortesZ.CortesZID = CortesY.CortesZID
+	                    AND 		Ventas.Cancelada = 0
+	                    AND		Ventas.Facturada = 0
+	                    AND	Ventas.VentaPendiente = 0
+	                    AND	CortesZ.FechaCorteZ =" + Fecha + @"
+                GROUP BY 
+	                Impuestos.NombreIVA,	
+	                Impuestos.Porcentaje,	
+	                Impuestos.ImpuestosID,	
+	                Ventas_Articulos.TiposIEPSID,	
+	                Ventas_Articulos.ValorIEPS
+                ORDER BY 
+	                ImpuestosID ASC,	
+	                TiposIEPSID ASC,	
+	                ValorIEPS ASC";
+            try
+            {
+                ds = qryToDataSet(Query);
+                if (ds.Tables.Count > 0)
+                {
+                    xmlElement = Serialize(ds.Tables[0]);
+                    return xmlElement.OuterXml.ToString();
+                }
+                return "";
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "ConsultarArticulo:" + ex.Message + ex.StackTrace + "\n" + Query);
+                return "Ocurrio un error inesperado";
+            }
+        }
+
     }
 }
