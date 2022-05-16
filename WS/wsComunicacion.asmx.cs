@@ -4361,7 +4361,7 @@ WHERE
 
         }
 
-        [WebMethod(Description = "Obtener todos codigos de articulos de una venta especifica")]
+        [WebMethod(Description = "Consultar descuento de una venta")]
         public string ConsultarDescuento(string VentaID)
         {
             string Query;
@@ -4374,6 +4374,40 @@ WHERE
                     where 
                         Ventas_Articulos.ArticulosID = -1 and 
                         Ventas_Articulos.VentasID = "+VentaID;
+            try
+            {
+                ds = qryToDataSet(Query);
+                if (ds.Tables.Count > 0)
+                {
+                    xmlElement = Serialize(ds.Tables[0]);
+                    return xmlElement.OuterXml.ToString();
+                }
+                return "";
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "ConsultarArticulo:" + ex.Message + ex.StackTrace + "\n" + Query);
+                return "Ocurrio un error inesperado";
+            }
+        }
+
+
+        [WebMethod(Description = "Consultar informacion de la venta")]
+        public string ConsultarInformacionVenta(string VentaID, string SucursalID)
+        {
+            string Query;
+            System.Data.DataSet ds;
+            System.Xml.XmlElement xmlElement;
+            Query = @"select 
+                        ventas.FechaVenta,
+                        Sucursales.Nombre,
+                        Ventas.TotalVenta
+                    from 
+                        Ventas,
+                        Sucursales
+                    WHERE
+                        ventas.VentasID = " + VentaID + @" and 
+                        Sucursales.SucursalesID = " + SucursalID;
             try
             {
                 ds = qryToDataSet(Query);
@@ -4454,6 +4488,7 @@ WHERE
                 return "Ocurrio un error inesperado";
             }
         }
+
 
     }
 }
