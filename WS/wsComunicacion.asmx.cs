@@ -4484,11 +4484,41 @@ WHERE
             }
             catch (Exception ex)
             {
-                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "ConsultarArticulo:" + ex.Message + ex.StackTrace + "\n" + Query);
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "Factutracion_X_ImpuestosAgrupada:" + ex.Message + ex.StackTrace + "\n" + Query);
                 return "Ocurrio un error inesperado";
             }
         }
 
+        [WebMethod(Description = "Obtener Cortes Z Abiertos")]
+        public string Facturacion_ObtenerCortesZ_Abiertos(string Fecha)
+        {
+            string Query;
+            System.Data.DataSet ds;
+            System.Xml.XmlElement xmlElement;
+            Query = @"SELECT 
+	                    CortesZ.FechaCorteZ AS FechaCorteZ,	
+	                    CortesZ.EsCerrado AS EsCerrado
+                    FROM 
+	                    CortesZ
+                    WHERE 
+	                    CortesZ.EsCerrado = 0
+	                    AND	CortesZ.FechaCorteZ = " +Fecha;
+            try
+            {
+                ds = qryToDataSet(Query);
+                if (ds.Tables.Count > 0)
+                {
+                    xmlElement = Serialize(ds.Tables[0]);
+                    return xmlElement.OuterXml.ToString();
+                }
+                return "";
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "ConsultarArticulo:" + ex.Message + ex.StackTrace + "\n" + Query);
+                return "Ocurrio un error inesperado";
+            }
+        }
 
 
     }
