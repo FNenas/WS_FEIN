@@ -4426,7 +4426,7 @@ WHERE
         }
 
         //------------------[Factura Global]-----------------------
-        [WebMethod(Description = "Obtener todos codigos de articulos de una venta especifica")]
+        [WebMethod(Description = "Obtener ImpuestosAgrupada")]
         public string Factutracion_X_ImpuestosAgrupada(string Fecha)
         {
             string Query;
@@ -4435,9 +4435,10 @@ WHERE
             Query = @"SELECT 
 	                    Impuestos.NombreIVA AS NombreIVA,	
 	                    Impuestos.Porcentaje AS Porcentaje,	
-	                    Impuestos.ImpuestosID AS ImpuestosID,	
+	                    Impuestos.ImpuestosID AS ImpuestosID,
 	                    Ventas_Articulos.TiposIEPSID AS TiposIEPSID,	
 	                    Ventas_Articulos.ValorIEPS AS ValorIEPS,	
+                        TiposIEPS.Descripcion as TipoIEPS,
 	                    SUM(ROUND( ( ROUND( Ventas_Articulos.Cantidad ,  3) * ROUND( Ventas_Articulos.Precio ,  2) ) ,  2) ) AS Sum_Subtotal,	
 	                    SUM(ROUND( Ventas_Articulos.Importe ,  2) ) AS sum_Importe,	
 	                    SUM(ROUND( Ventas_Articulos.ImpuestoImporte ,  2) ) AS sum_ImpuestoImporte,	
@@ -4447,21 +4448,23 @@ WHERE
 	                    SUM(ROUND( Ventas_Articulos.ProductoGrabadoSIMP ,  2) ) AS ProductoGrabadoSIMP,	
 	                    SUM(ROUND( Ventas_Articulos.CantidadIEPS ,  2) ) AS CantidadIEPS,	
 	                    SUM(ROUND( ( Ventas_Articulos.ProductoGrabadoIEPS / Ventas_Articulos.ValorIEPS ) ,  3) ) AS IEPSBaseCuota
-                    FROM
+                    FROM 
 	                    CortesZ,	
 	                    CortesY,	
 	                    Ventas,	
 	                    Ventas_Articulos,	
-	                    Impuestos
+	                    Impuestos,
+	                    TiposIEPS
                     WHERE 
 	                    Impuestos.ImpuestosID = Ventas_Articulos.ImpuestoID
 	                    AND		Ventas.VentasID = Ventas_Articulos.VentasID
 	                    AND		CortesY.CortesYID = Ventas.CortesYID
 	                    AND		CortesZ.CortesZID = CortesY.CortesZID
-	                    AND 		Ventas.Cancelada = 0
+	                    AND 	Ventas.Cancelada = 0
 	                    AND		Ventas.Facturada = 0
-	                    AND	Ventas.VentaPendiente = 0
-	                    AND	CortesZ.FechaCorteZ =" + Fecha + @"
+	                    AND		Ventas.VentaPendiente = 0
+	                    AND		TiposIEPS.TiposIEPSID = Ventas_Articulos.TiposIEPSID
+	                    AND		CortesZ.FechaCorteZ =" + Fecha + @"
                 GROUP BY 
 	                Impuestos.NombreIVA,	
 	                Impuestos.Porcentaje,	
