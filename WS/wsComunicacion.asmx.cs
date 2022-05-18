@@ -4297,7 +4297,6 @@ WHERE
                         Articulos.CATSAT_TiposFactoresID=CATSAT_TiposFactores.CATSAT_TiposFactoresID and
                         CATSAT_Impuestos.Descripcion=CATSAT_TasasCuotasImpuestos.Impuesto and
                         TiposdePagos.CATSAT_FormaPagoID = CATSAT_FormasPago.CATSAT_FormasPagoID and
-                        ventas.Facturada = 0 and
                         VentasTiposPagos.ImporteRecibido in (
                             select 
                                 Max(VentasTiposPagos.ImporteRecibido)
@@ -4401,7 +4400,8 @@ WHERE
             Query = @"select 
                         ventas.FechaVenta,
                         Sucursales.Nombre,
-                        Ventas.TotalVenta
+                        Ventas.TotalVenta,
+                        ventas.Facturada
                     from 
                         Ventas,
                         Sucursales
