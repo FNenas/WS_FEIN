@@ -4470,7 +4470,8 @@ WHERE
 	                Impuestos.Porcentaje,	
 	                Impuestos.ImpuestosID,	
 	                Ventas_Articulos.TiposIEPSID,	
-	                Ventas_Articulos.ValorIEPS
+	                Ventas_Articulos.ValorIEPS,
+                    TiposIEPS.Descripcion
                 ORDER BY 
 	                ImpuestosID ASC,	
 	                TiposIEPSID ASC,	
