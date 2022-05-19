@@ -4552,5 +4552,251 @@ WHERE
                 return "Ocurrio un error inesperado";
             }
         }
+
+
+        [WebMethod(Description = "QRY_cortesYDevoluciones_X_Fecha")]
+        public string QRY_cortesYDevoluciones_X_Fecha(string ParamFecha, string ParamImpuestosID)
+        {
+            string Query;
+            System.Data.DataSet ds;
+            System.Xml.XmlElement xmlElement;
+            Query = @"SELECT 
+	                    SUM(CortesYDevoluciones.Total) AS sum_Total,	
+	                    SUM(CortesYDevoluciones.IVA) AS sum_IVA,	
+	                    SUM(CortesYDevoluciones.TotalSinIVA) AS sum_TotalSinIVA,	
+	                    CortesYDevoluciones.ImpuestosID AS ImpuestosID
+                    FROM 
+	                    CortesZ,	
+	                    CortesY,	
+	                    CortesYDevoluciones
+                    WHERE 
+	                    CortesY.CortesYID = CortesYDevoluciones.CortesYID
+	                    AND		CortesZ.CortesZID = CortesY.CortesZID
+	                    AND
+	                    (
+		                    CortesZ.FechaCorteZ = "+ParamFecha+@"
+		                    AND	CortesYDevoluciones.ImpuestosID ="+ParamImpuestosID+@"		                 
+	                    )
+                    GROUP BY 
+	                    CortesYDevoluciones.ImpuestosID
+                    ORDER BY 
+	                    ImpuestosID ASC";
+            try
+            {
+                ds = qryToDataSet(Query);
+                if (ds.Tables.Count > 0)
+                {
+                    xmlElement = Serialize(ds.Tables[0]);
+                    return xmlElement.OuterXml.ToString();
+                }
+                return "";
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "QRY_cortesYDevoluciones_X_Fecha:" + ex.Message + ex.StackTrace + "\n" + Query);
+                return "Ocurrio un error inesperado";
+            }
+        }
+
+        [WebMethod(Description = "QRY_Ventas_ImportePaquete_Sum_FechaCortesZ")]
+        public string QRY_Ventas_ImportePaquete_Sum_FechaCortesZ(string ParamFecha, string ParamFacturada)
+        {
+            string Query;
+            System.Data.DataSet ds;
+            System.Xml.XmlElement xmlElement;
+            Query = @"SELECT 
+	                    SUM(Ventas.Importepaquete) AS sum_Importepaquete
+                    FROM 
+	                    CortesZ,	
+	                    CortesY,	
+	                    Ventas
+                    WHERE 
+	                    CortesZ.CortesZID = CortesY.CortesZID
+	                    AND		CortesY.CortesYID = Ventas.CortesYID
+	                    AND
+	                    (
+		                    Ventas.Cancelada = 0
+		                    AND	Ventas.VentaPaquete = 1
+		                    AND	CortesZ.FechaCorteZ = " + ParamFecha + @"
+		                
+		                    AND	Ventas.Facturada = " + ParamFacturada + @"
+	                    )";
+            try
+            {
+                ds = qryToDataSet(Query);
+                if (ds.Tables.Count > 0)
+                {
+                    xmlElement = Serialize(ds.Tables[0]);
+                    return xmlElement.OuterXml.ToString();
+                }
+                return "";
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "QRY_Ventas_ImportePaquete_Sum_FechaCortesZ:" + ex.Message + ex.StackTrace + "\n" + Query);
+                return "Ocurrio un error inesperado";
+            }
+        }
+
+
+        [WebMethod(Description = "QRY_ImpuestosCortesY_X_FechaCortesZID")]
+        public string QRY_ImpuestosCortesY_X_FechaCortesZID(string ParamFecha)
+        {
+            string Query;
+            System.Data.DataSet ds;
+            System.Xml.XmlElement xmlElement;
+            Query = @"SELECT 
+	                    SUM(ImpuestosCortesY.Cantidad) AS sum_Cantidad,	
+	                    SUM(ImpuestosCortesY.Importe) AS sum_Importe,	
+	                    CortesZ.FechaCorteZ AS FechaCorteZ
+                    FROM 
+	                    CortesZ,	
+	                    CortesY,	
+	                    ImpuestosCortesY
+                    WHERE 
+	                    CortesY.CortesYID = ImpuestosCortesY.CortesYID
+	                    AND		CortesZ.CortesZID = CortesY.CortesZID
+	                    AND
+	                    (
+		                    CortesZ.FechaCorteZ = "+ParamFecha+@"
+	                    )
+                    GROUP BY 
+	                    CortesZ.FechaCorteZ";
+            try
+            {
+                ds = qryToDataSet(Query);
+                if (ds.Tables.Count > 0)
+                {
+                    xmlElement = Serialize(ds.Tables[0]);
+                    return xmlElement.OuterXml.ToString();
+                }
+                return "";
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "QRY_ImpuestosCortesY_X_FechaCortesZID:" + ex.Message + ex.StackTrace + "\n" + Query);
+                return "Ocurrio un error inesperado";
+            }
+        }
+
+
+        [WebMethod(Description = "QRY_CortesYDevoluciones_ImpuestosID_FechaCortesZID")]
+        public string QRY_CortesYDevoluciones_ImpuestosID_FechaCortesZID(string ParamFecha)
+        {
+            string Query;
+            System.Data.DataSet ds;
+            System.Xml.XmlElement xmlElement;
+            Query = @"SELECT 
+	                    SUM(CortesYDevoluciones.Total) AS sum_Total
+                    FROM 
+	                    CortesZ,	
+	                    CortesY,	
+	                    CortesYDevoluciones
+                    WHERE 
+	                    CortesY.CortesYID = CortesYDevoluciones.CortesYID
+	                    AND		CortesZ.CortesZID = CortesY.CortesZID
+	                    AND
+	                    (
+		                    CortesZ.FechaCorteZ = "+ParamFecha+")";
+            try
+            {
+                ds = qryToDataSet(Query);
+                if (ds.Tables.Count > 0)
+                {
+                    xmlElement = Serialize(ds.Tables[0]);
+                    return xmlElement.OuterXml.ToString();
+                }
+                return "";
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "QRY_CortesYDevoluciones_ImpuestosID_FechaCortesZID:" + ex.Message + ex.StackTrace + "\n" + Query);
+                return "Ocurrio un error inesperado";
+            }
+        }
+
+
+        [WebMethod(Description = "QRY_FAC_TotalFacturado_x_FechasSucursalesID")]
+        public string QRY_FAC_TotalFacturado_x_FechasSucursalesID(string ParamFecha)
+        {
+            string Query;
+            System.Data.DataSet ds;
+            System.Xml.XmlElement xmlElement;
+            Query = @"SELECT DISTINCT 
+	                    Facturas.FacturasID AS FacturasID,	
+	                    Facturas.Total AS Total
+                    FROM 
+	                    Facturas,	
+	                    FacturasVentas,	
+	                    Ventas
+                    WHERE 
+	                    FacturasVentas.VentasID = Ventas.VentasID
+	                    AND		Facturas.FacturasID = FacturasVentas.FacturasID
+	                    AND
+	                    (
+		                    Ventas.FechaVenta = "+ParamFecha+@"
+		                    AND	Facturas.EstatusFacturasID = 2000)";
+            try
+            {
+                ds = qryToDataSet(Query);
+                if (ds.Tables.Count > 0)
+                {
+                    xmlElement = Serialize(ds.Tables[0]);
+                    return xmlElement.OuterXml.ToString();
+                }
+                return "";
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "QRY_FAC_TotalFacturado_x_FechasSucursalesID:" + ex.Message + ex.StackTrace + "\n" + Query);
+                return "Ocurrio un error inesperado";
+            }
+        }
+
+
+
+        [WebMethod(Description = "QRY_Consulta_VentasServicio_X_CorteIDZ")]
+        public string QRY_Consulta_VentasServicio_X_CorteIDZ(string ParamFecha)
+        {
+            string Query;
+            System.Data.DataSet ds;
+            System.Xml.XmlElement xmlElement;
+            Query = @"SELECT DISTINCT 
+	                    Ventas.VentasID AS VentasID,	
+	                    Ventas.TotalVenta AS TotalVenta
+                    FROM 
+	                    Ventas,	
+	                    CortesY,	
+	                    Ventas_Articulos,	
+	                    CortesZ
+                    WHERE 
+	                    Ventas.VentasID = Ventas_Articulos.VentasID
+	                    AND		Ventas.CortesYID = CortesY.CortesYID
+	                    AND		CortesY.CortesZID = CortesZ.CortesZID
+	                    AND
+	                    (
+		                    AND	Ventas_Articulos.esServicio = 1
+		                    AND	Ventas.Facturada = 1
+		                    AND	CortesZ.FechaCorteZ " + ParamFecha + ")";
+            try
+            {
+                ds = qryToDataSet(Query);
+                if (ds.Tables.Count > 0)
+                {
+                    xmlElement = Serialize(ds.Tables[0]);
+                    return xmlElement.OuterXml.ToString();
+                }
+                return "";
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "QRY_Consulta_VentasServicio_X_CorteIDZ:" + ex.Message + ex.StackTrace + "\n" + Query);
+                return "Ocurrio un error inesperado";
+            }
+        }
+
+
+
+
     }
 }
