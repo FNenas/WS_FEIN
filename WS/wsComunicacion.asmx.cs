@@ -4825,9 +4825,7 @@ WHERE
 		                    Ventas.Cancelada = 0
 		                    AND	Ventas.Facturada = 0
 		                    AND	Ventas.VentaPendiente = 0
-		                    AND	CortesZ.FechaCorteZ = "+ParamFecha+@"
-		                    AND	CortesZ.SucursalesID = {ParamSucursalesID}
-	                    )";
+		                    AND	CortesZ.FechaCorteZ = "+ParamFecha+")";
             try
             {
                 ds = qryToDataSet(Query);
