@@ -3437,7 +3437,7 @@ WHERE
                 LogTiposMovimientosDesHora.FechaHoraCreacion BETWEEN '" + FechaSolicitudIncio + "' AND '" + FechaSolicitudFinal + @"'
                 AND	LogTiposMovimientosDesHora.SucursalesID = " + SucursalID;
 
-            System.Data.DataSet ds;
+            System.Data.DataSet ds = new System.Data.DataSet();
             System.Xml.XmlElement xmlElement;
             try
             {
@@ -4771,13 +4771,11 @@ WHERE
 	                    CortesZ
                     WHERE 
 	                    Ventas.VentasID = Ventas_Articulos.VentasID
-	                    AND		Ventas.CortesYID = CortesY.CortesYID
-	                    AND		CortesY.CortesZID = CortesZ.CortesZID
-	                    AND
-	                    (
-		                    AND	Ventas_Articulos.esServicio = 1
-		                    AND	Ventas.Facturada = 1
-		                    AND	CortesZ.FechaCorteZ " + ParamFecha + ")";
+	                    AND Ventas.CortesYID = CortesY.CortesYID
+	                    AND	CortesY.CortesZID = CortesZ.CortesZID
+		                AND	Ventas_Articulos.esServicio = 1
+		                AND	Ventas.Facturada = 1
+		                AND	CortesZ.FechaCorteZ = " + ParamFecha;
             try
             {
                 ds = qryToDataSet(Query);
@@ -4973,10 +4971,8 @@ WHERE
 	                    ImpuestosCortesZ
                     WHERE 
 	                    Empleados.EmpleadosID = ImpuestosCortesZ.EmpleadosID
-	                    AND
-	                    (
-		                    ImpuestosCortesZ.Fecha ="+ParamFecha+@"
-		                    AND	ImpuestosCortesZ.FacturaGlobal = "+ParamFacturacionGlobal+")";
+	                    AND ImpuestosCortesZ.Fecha ="+ParamFecha+@"
+		                AND	ImpuestosCortesZ.FacturaGlobal = "+ParamFacturacionGlobal;
             try
             {
                 ds = qryToDataSet(Query);
