@@ -4535,7 +4535,7 @@ WHERE
                     set 
                         ventas.Facturada = 1
                     where 
-                        Ventas.VentasID = "+VentaID;
+                        Ventas.VentasID in ("+VentaID+")";
             try
             {
                 ds = qryToDataSet(Query);
