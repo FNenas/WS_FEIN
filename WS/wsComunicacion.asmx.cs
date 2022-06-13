@@ -4990,5 +4990,56 @@ WHERE
             }
         }
 
+
+        [WebMethod(Description = "AutofacturacionDatosTicket")]
+        public string AutofacturacionDatosTicket(string VentasID)
+        {
+            string Query;
+            System.Data.DataSet ds;
+            System.Xml.XmlElement xmlElement;
+            Query = @"select
+	                    CATSAT_FormasPago.Descripcion as FormaPago,
+	                    CATSAT_FormasPago.ClaveFormasPago as ClaveFormaPago,
+	                    ventas.Subtotal as Subtotal,
+	                    (ventas.TotalVenta - ventas.Subtotal) as Impuesto,
+	                    ventas.TotalVenta as TotalVenta,
+	                    ventas.Facturada as Facturado,
+	                    ventas.Cancelada as Cancelado,
+	                    ventas.FechaHora as FechaHoraGeneracion,
+	                    ventas.SucursalesID as SucursalID,
+	                    VentasTiposPagos.ImporteRecibido as ImporteRecibido
+                    from 
+	                    VentasTiposPagos,
+	                    TiposdePagos, 
+	                    CATSAT_FormasPago,
+	                    ventas
+                    where 
+	                    ventas.VentasID=" + VentasID + @"
+		            and
+	                    VentasTiposPagos.TiposdePagosID = TiposdePagos.TiposdePagosID and
+	                    TiposdePagos.CATSAT_FormaPagoID = CATSAT_FormasPago.CATSAT_FormasPagoID and
+	                    VentasTiposPagos.VentasID = ventas.VentasID 
+                    order by ImporteRecibido desc
+                    limit 1";
+            try
+            {
+                ds = qryToDataSet(Query);
+                if (ds.Tables.Count > 0)
+                {
+                    xmlElement = Serialize(ds.Tables[0]);
+                    return xmlElement.OuterXml.ToString();
+                }
+                return "";
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "QRY_ConfiguracionInpuestos:" + ex.Message + ex.StackTrace + "\n" + Query);
+                return "Ocurrio un error inesperado";
+            }
+        }
+
+
+
+
     }
 }
