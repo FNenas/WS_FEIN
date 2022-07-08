@@ -5038,6 +5038,42 @@ WHERE
             }
         }
 
+        //--------------------------[Rastreo de articulos]---------------------------
+
+        [WebMethod(Description = "Rastreo de Articulos")]
+        public string RastreoArticulos(string ArticuloID, string FechaInicial, string FechaFinal)
+        {
+            string Query;
+            System.Data.DataSet ds;
+            System.Xml.XmlElement xmlElement;
+            Query = @"SELECT DISTINCT
+	                    sum(ConteosArticulos.Diferencia) as ResultadoInventario,
+	                    avg(ConteosArticulos.CostoConIva) as CostoConIVA,
+	                    sum(ConteosArticulos.Diferencia*ConteosArticulos.CostoConIva) as ImporteAfectacion
+                    from
+	                    conteos,
+	                    ConteosArticulos
+                    where 
+	                    conteos.ConteosID = ConteosArticulos.ConteosID
+	                    and ConteosArticulos.ArticulosID = " + ArticuloID + @"
+                        and Conteos.Fecha BETWEEN '" + FechaInicial + "' and '"+ FechaFinal + @"'
+                    ";
+            try
+            {
+                ds = qryToDataSet(Query);
+                if (ds.Tables.Count > 0)
+                {
+                    xmlElement = Serialize(ds.Tables[0]);
+                    return xmlElement.OuterXml.ToString();
+                }
+                return "";
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "QRY_ConfiguracionInpuestos:" + ex.Message + ex.StackTrace + "\n" + Query);
+                return "Ocurrio un error inesperado";
+            }
+        }
 
 
 
