@@ -5040,23 +5040,60 @@ WHERE
 
         //--------------------------[Rastreo de articulos]---------------------------
 
-        [WebMethod(Description = "Rastreo de Articulos")]
-        public string RastreoArticulos(string ArticuloID, string FechaInicial, string FechaFinal)
+        [WebMethod(Description = "Rastreo de Articulos conteos")]
+        public string RastreoArticulos_Conteos(string ArticuloID, string FechaInicial, string FechaFinal, string SucursalID)
         {
             string Query;
             System.Data.DataSet ds;
             System.Xml.XmlElement xmlElement;
-            Query = @"SELECT DISTINCT
+            Query = @"select DISTINCT
 	                    sum(ConteosArticulos.Diferencia) as ResultadoInventario,
 	                    avg(ConteosArticulos.CostoConIva) as CostoConIVA,
-	                    sum(ConteosArticulos.Diferencia*ConteosArticulos.CostoConIva) as ImporteAfectacion
+	                    sum(ConteosArticulos.Diferencia*ConteosArticulos.CostoConIva) as ImporteAfectacion,
+	                    sum(ArticulosExistencias.Existencia) as Existencia
                     from
 	                    conteos,
-	                    ConteosArticulos
+	                    ConteosArticulos,
+	                    ArticulosExistencias
                     where 
 	                    conteos.ConteosID = ConteosArticulos.ConteosID
-	                    and ConteosArticulos.ArticulosID = " + ArticuloID + @"
+	                    and ArticulosExistencias.ArticulosID = ConteosArticulos.ArticulosID
+	                    and ArticulosExistencias.SucursalesID = "+ SucursalID + @"
+                        and ConteosArticulos.ArticulosID =" + ArticuloID + @"
                         and Conteos.Fecha BETWEEN '" + FechaInicial + "' and '"+ FechaFinal + @"'
+                    GROUP by
+	                    ArticulosExistencias.Existencia";
+            try
+            {
+                ds = qryToDataSet(Query);
+                if (ds.Tables.Count > 0)
+                {
+                    xmlElement = Serialize(ds.Tables[0]);
+                    return xmlElement.OuterXml.ToString();
+                }
+                return "";
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "RastreoArticulos_Conteos:" + ex.Message + ex.StackTrace + "\n" + Query);
+                return "Ocurrio un error inesperado";
+            }
+        }
+
+
+        [WebMethod(Description = "Rastreo de Articulos Concentrador")]
+        public string RastreoArticulos_Concentrador(string ArticuloID, string FechaInicial, string FechaFinal)
+        {
+            string Query;
+            System.Data.DataSet ds;
+            System.Xml.XmlElement xmlElement;
+            Query = @"SELECT
+	                    sum (ConcentradosArticulosDia.ImporteCostoCIVA) as Concentrador
+                    from
+	                    ConcentradosArticulosDia	
+                    where
+	                    ConcentradosArticulosDia.ArticulosID = " + ArticuloID + @"
+                        and ConcentradosArticulosDia.Dia BETWEEN '" + FechaInicial + "' and '" + FechaFinal + @"'
                     ";
             try
             {
@@ -5070,7 +5107,80 @@ WHERE
             }
             catch (Exception ex)
             {
-                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "QRY_ConfiguracionInpuestos:" + ex.Message + ex.StackTrace + "\n" + Query);
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "RastreoArticulos_Concentrador:" + ex.Message + ex.StackTrace + "\n" + Query);
+                return "Ocurrio un error inesperado";
+            }
+        }
+
+
+        [WebMethod(Description = "Rastreo de Articulos devoluciones")]
+        public string RastreoArticulos_Devoluciones(string ArticuloID, string FechaInicial, string FechaFinal)
+        {
+            string Query;
+            System.Data.DataSet ds;
+            System.Xml.XmlElement xmlElement;
+            Query = @"SELECT 
+                        SUM (CortesYDevoluciones.Cantidad*CortesYDevoluciones.CostoCIVA) AS ImporteDevolucion
+                    FROM 
+	                    CortesY,	
+	                    CortesYDevoluciones
+                    WHERE 
+	                    CortesY.CortesYID = CortesYDevoluciones.CortesYID
+	                    AND CortesYDevoluciones.ArticulosID = " + ArticuloID + @"
+                        and CortesY.Fecha BETWEEN '" + FechaInicial + "' and '" + FechaFinal + @"'
+                    group by ArticulosID";
+            try
+            {
+                ds = qryToDataSet(Query);
+                if (ds.Tables.Count > 0)
+                {
+                    xmlElement = Serialize(ds.Tables[0]);
+                    return xmlElement.OuterXml.ToString();
+                }
+                return "";
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "RastreoArticulos_Devoluciones:" + ex.Message + ex.StackTrace + "\n" + Query);
+                return "Ocurrio un error inesperado";
+            }
+        }
+
+        [WebMethod(Description = "Rastreo de Articulos UltimoConteo Info")]
+        public string RastreoArticulos_UltimoConteo(string ArticuloID)
+        {
+            string Query;
+            System.Data.DataSet ds;
+            System.Xml.XmlElement xmlElement;
+            Query = @"SELECT DISTINCT 
+	                    Empleados.NombreCompleto,	
+	                    MAX(Conteos.Fecha) AS UltimaFecha
+                    FROM
+	                    Conteos, 
+	                    ConteosArticulos,
+	                    Empleados
+                    WHERE
+	                    Conteos.ConteosID = ConteosArticulos.ConteosID
+                        AND ConteosArticulos.ArticulosID = " + ArticuloID + @"
+                       and Empleados.EmpleadosID = Conteos.UsuarioConto
+                    GROUP BY
+	                    ConteosArticulos.ArticulosID,
+	                    Empleados.NombreCompleto
+                    order by ultimaFecha desc
+                    limit 1";
+            try
+            {
+                ds = qryToDataSet(Query);
+                if (ds.Tables.Count > 0)
+                {
+                    xmlElement = Serialize(ds.Tables[0]);
+                    return xmlElement.OuterXml.ToString();
+                }
+                return "";
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "RastreoArticulos_UltimoConteo:" + ex.Message + ex.StackTrace + "\n" + Query);
                 return "Ocurrio un error inesperado";
             }
         }
