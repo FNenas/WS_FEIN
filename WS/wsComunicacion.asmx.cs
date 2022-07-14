@@ -5045,20 +5045,24 @@ WHERE
 	                    sum(ConteosArticulos.Diferencia) as ResultadoInventario,
 	                    avg(ConteosArticulos.CostoConIva) as CostoConIVA,
 	                    sum(ConteosArticulos.Diferencia*ConteosArticulos.CostoConIva) as ImporteAfectacion,
-	                    sum(ArticulosExistencias.Existencia) as Existencia
+	                    
+						(select ArticulosExistencias.Existencia 
+						from  ArticulosExistencias
+						where 
+						ArticulosExistencias.ArticulosID = " + ArticuloID + @"
+						and ArticulosExistencias.SucursalesID = " + SucursalID + @"
+						) as Existencia 
+
                     from
 	                    conteos,
-	                    ConteosArticulos,
-	                    ArticulosExistencias
+	                    ConteosArticulos
                     where 
-	                    conteos.ConteosID = ConteosArticulos.ConteosID
-	                    and ArticulosExistencias.ArticulosID = ConteosArticulos.ArticulosID
-	                    and ArticulosExistencias.SucursalesID = "+ SucursalID + @"
+	                    conteos.ConteosID = ConteosArticulos.ConteosID	               	                   
                         and ConteosArticulos.ArticulosID =" + ArticuloID + @"
                         and Conteos.Fecha BETWEEN '" + FechaInicial + "' and '"+ FechaFinal + @"'
                         and Conteos.EsBorrador = 0
                     GROUP by
-	                    ArticulosExistencias.Existencia";
+	                    Existencia";
             try
             {
                 ds = qryToDataSet(Query);
