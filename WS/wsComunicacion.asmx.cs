@@ -4722,20 +4722,15 @@ WHERE
             string Query;
             System.Data.DataSet ds;
             System.Xml.XmlElement xmlElement;
-            Query = @"SELECT DISTINCT 
-	                    Facturas.FacturasID AS FacturasID,	
-	                    Facturas.Total AS Total
-                    FROM 
-	                    Facturas,	
-	                    FacturasVentas,	
-	                    Ventas
-                    WHERE 
-	                    FacturasVentas.VentasID = Ventas.VentasID
-	                    AND		Facturas.FacturasID = FacturasVentas.FacturasID
-	                    AND
-	                    (
-		                    Ventas.FechaVenta = "+ParamFecha+@"
-		                    AND	Facturas.EstatusFacturasID = 2000)";
+            Query = @"select 
+	                    sum(ventas.TotalVenta)
+                    from
+	                    ventas
+                    where
+	                    Ventas.Cancelada = 0
+	                    and Ventas.Facturada = 1 
+	                    and Ventas.FechaVenta = " + ParamFecha;
+		                   
             try
             {
                 ds = qryToDataSet(Query);
@@ -5061,6 +5056,7 @@ WHERE
 	                    and ArticulosExistencias.SucursalesID = "+ SucursalID + @"
                         and ConteosArticulos.ArticulosID =" + ArticuloID + @"
                         and Conteos.Fecha BETWEEN '" + FechaInicial + "' and '"+ FechaFinal + @"'
+                        and Conteos.EsBorrador = 0
                     GROUP by
 	                    ArticulosExistencias.Existencia";
             try
