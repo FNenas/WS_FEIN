@@ -5036,7 +5036,7 @@ WHERE
         //--------------------------[Rastreo de articulos]---------------------------
 
         [WebMethod(Description = "Rastreo de Articulos conteos")]
-        public string RastreoArticulos_Conteos(string ArticuloID, string FechaInicial, string FechaFinal, string SucursalID)
+        public string RastreoArticulos_Conteos(string ArticuloID, string FechaInicial, string FechaFinal)
         {
             string Query;
             System.Data.DataSet ds;
@@ -5044,25 +5044,15 @@ WHERE
             Query = @"select DISTINCT
 	                    sum(ConteosArticulos.Diferencia) as ResultadoInventario,
 	                    avg(ConteosArticulos.CostoConIva) as CostoConIVA,
-	                    sum(ConteosArticulos.Diferencia*ConteosArticulos.CostoConIva) as ImporteAfectacion,
-	                    
-						(select ArticulosExistencias.Existencia 
-						from  ArticulosExistencias
-						where 
-						ArticulosExistencias.ArticulosID = " + ArticuloID + @"
-						and ArticulosExistencias.SucursalesID = " + SucursalID + @"
-						) as Existencia 
-
+	                    sum(ConteosArticulos.Diferencia*ConteosArticulos.CostoConIva) as ImporteAfectacion
                     from
 	                    conteos,
 	                    ConteosArticulos
-                    where 
-	                    conteos.ConteosID = ConteosArticulos.ConteosID	               	                   
+                    where   
+                        conteos.ConteosID = ConteosArticulos.ConteosID         	                   
                         and ConteosArticulos.ArticulosID =" + ArticuloID + @"
                         and Conteos.Fecha BETWEEN '" + FechaInicial + "' and '"+ FechaFinal + @"'
-                        and Conteos.EsBorrador = 0
-                    GROUP by
-	                    Existencia";
+                        and Conteos.EsBorrador = 0";
             try
             {
                 ds = qryToDataSet(Query);
@@ -5088,7 +5078,8 @@ WHERE
             System.Data.DataSet ds;
             System.Xml.XmlElement xmlElement;
             Query = @"SELECT
-	                    sum (ConcentradosArticulosDia.ImporteCostoCIVA) as Concentrador
+	                    sum (ConcentradosArticulosDia.ImporteCostoCIVA) as Concentrador,
+                        sum(ConcentradosArticulosDia.Cantidad) as Cantidad
                     from
 	                    ConcentradosArticulosDia	
                     where
@@ -5214,6 +5205,36 @@ WHERE
                 return "Ocurrio un error inesperado";
             }
         }
+
+
+        [WebMethod(Description = "Rastreo de Articulos ultima Existencia")]
+        public string RastreoArticulos_Existencia(string ArticuloID, string SucursalID)
+        {
+            string Query;
+            System.Data.DataSet ds;
+            System.Xml.XmlElement xmlElement;
+            Query = @"select ArticulosExistencias.Existencia 
+						from  ArticulosExistencias
+						where 
+						ArticulosExistencias.ArticulosID = " + ArticuloID + @"
+                       and ArticulosExistencias.SucursalesID =" + SucursalID;
+            try
+            {
+                ds = qryToDataSet(Query);
+                if (ds.Tables.Count > 0)
+                {
+                    xmlElement = Serialize(ds.Tables[0]);
+                    return xmlElement.OuterXml.ToString();
+                }
+                return "";
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "RastreoArticulos_Devoluciones:" + ex.Message + ex.StackTrace + "\n" + Query);
+                return "Ocurrio un error inesperado";
+            }
+        }
+
 
 
     }
