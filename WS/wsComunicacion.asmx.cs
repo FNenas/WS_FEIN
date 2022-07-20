@@ -5201,7 +5201,7 @@ WHERE
             }
             catch (Exception ex)
             {
-                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "ConsultarArticulo:" + ex.Message + ex.StackTrace + "\n" + Query);
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "VentaNoFacturada:" + ex.Message + ex.StackTrace + "\n" + Query);
                 return "Ocurrio un error inesperado";
             }
         }
@@ -5230,12 +5230,45 @@ WHERE
             }
             catch (Exception ex)
             {
-                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "RastreoArticulos_Devoluciones:" + ex.Message + ex.StackTrace + "\n" + Query);
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "RastreoArticulos_Existencia:" + ex.Message + ex.StackTrace + "\n" + Query);
                 return "Ocurrio un error inesperado";
             }
         }
 
-
-
+        //------------------[Rastreo Articulos Linea]-----------------------
+        [WebMethod(Description = "Obtener Articulos Por Linea")]
+        public string ObtenerArticulos_X_Linea(string LineaID, string Descatalogado, string Activo)
+        {
+            string Query;
+            System.Data.DataSet ds;
+            System.Xml.XmlElement xmlElement;
+            Query = @"select
+	                    Articulos.ArticulosID as ArticuloID,
+	                    Articulos.Codigo as Codigo,
+	                    Articulos.Nombre as Descripcion
+                    from
+	                    Articulos
+                    where
+	                    Articulos.Activo = "+Activo+@"
+	                    and Articulos.Descatalogado="+Descatalogado+@"
+	                    and Articulos.LineaID = "+LineaID+@"
+                    order by 
+	                    Descripcion asc";
+            try
+            {
+                ds = qryToDataSet(Query);
+                if (ds.Tables.Count > 0)
+                {
+                    xmlElement = Serialize(ds.Tables[0]);
+                    return xmlElement.OuterXml.ToString();
+                }
+                return "";
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "ObtenerArticulos_X_Linea:" + ex.Message + ex.StackTrace + "\n" + Query);
+                return "Ocurrio un error inesperado";
+            }
+        }
     }
 }
