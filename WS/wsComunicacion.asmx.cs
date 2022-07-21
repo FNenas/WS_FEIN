@@ -5270,5 +5270,56 @@ WHERE
                 return "Ocurrio un error inesperado";
             }
         }
+
+        [WebMethod(Description = "Obtener todos codigos de articulos de una Preventa especifica")]
+        public string consultarCodigosArticulos(string PreventaID)
+        {
+            string Query;
+            System.Data.DataSet ds;
+            System.Xml.XmlElement xmlElement;
+            Query = @"SELECT
+                        Articulos.ArticulosID,
+                        Articulos.codigo,
+                        PreVenta_Mayoreo_Detalle.PrecioUSIVA_Cliente,
+                        PreVenta_Mayoreo_Detalle.Cantidad,
+                        Articulos.TiposIEPSID,
+                        Articulos.ValorIEPS as valorIEPS,  
+                        CATSAT_ClaveUnidad.ClaveUnidad,
+                        CATSAT_Impuestos.ClaveImpuesto as ClaveImpuesto,
+                        CATSAT_TiposFactores.TipoFactor,
+                        CATSAT_TasasCuotasImpuestos.ValorMaximo as PorcentajeImpuesto
+                    FROM
+                        PreVenta_Mayoreo,
+                        PreVenta_Mayoreo_Detalle,
+                        articulos,
+                        CATSAT_ClaveUnidad,
+                        CATSAT_Impuestos,
+                        CATSAT_TasasCuotasImpuestos,
+                        CATSAT_TiposFactores
+                    WHERE 
+                        PreVenta_Mayoreo.PreVenta_MayoreoID = PreVenta_Mayoreo_Detalle.PreVenta_MayoreoID and
+                        PreVenta_Mayoreo_Detalle.ArticulosID = Articulos.ArticulosID and
+                        Articulos.CATSAT_ClaveUnidadID = CATSAT_ClaveUnidad.CATSAT_ClaveUnidadID and
+                        CATSAT_Impuestos.Descripcion=CATSAT_TasasCuotasImpuestos.Impuesto and
+                        Articulos.CATSAT_TasasCuotasImpuestosID = CATSAT_TasasCuotasImpuestos.CATSAT_TasasCuotasImpuestosID and
+                        Articulos.CATSAT_TiposFactoresID=CATSAT_TiposFactores.CATSAT_TiposFactoresID and
+                        PreVenta_Mayoreo.PreVenta_MayoreoID = "+VentaID;
+            try
+            {
+                ds = qryToDataSet(Query);
+                if (ds.Tables.Count > 0)
+                {
+                    xmlElement = Serialize(ds.Tables[0]);
+                    return xmlElement.OuterXml.ToString();
+                }
+                return "";
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "ConsultarArticulo:" + ex.Message + ex.StackTrace + "\n" + Query);
+                return "Ocurrio un error inesperado";
+            }
+        }
+
     }
 }
