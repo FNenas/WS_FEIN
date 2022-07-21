@@ -5272,7 +5272,7 @@ WHERE
         }
 
         [WebMethod(Description = "Obtener todos codigos de articulos de una Preventa especifica")]
-        public string consultarCodigosArticulos(string PreventaID)
+        public string consultarCodigosArticulosPreventa(string PreventaID)
         {
             string Query;
             System.Data.DataSet ds;
