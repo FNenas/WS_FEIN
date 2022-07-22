@@ -5364,6 +5364,7 @@ WHERE
                         Articulos.ArticulosID,
                         Articulos.codigo,
                         PreVenta_Mayoreo_Detalle.PrecioUSIVA_Cliente,
+                        Preventa_Mayoreo_detalle.Importe,
                         PreVenta_Mayoreo_Detalle.Cantidad,
                         Articulos.TiposIEPSID,
                         Articulos.ValorIEPS as valorIEPS,  
