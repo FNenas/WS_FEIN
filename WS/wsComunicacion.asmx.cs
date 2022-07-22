@@ -5407,7 +5407,7 @@ WHERE
 
 
         [WebMethod(Description = "QRY donde se obtiene los Devoluciones")]
-        public string ConsultarPedidos_X_Fecha_Articulo(string SucursalID, string ArticulosID, string FechaInicio, string FechaFin)
+        public string ConsultarDevoluciones_X_Articulos_Fecha(string SucursalID, string ArticulosID, string FechaInicio, string FechaFin)
         {
             string Query;
             System.Data.DataSet ds;
@@ -5444,7 +5444,7 @@ WHERE
             }
             catch (Exception ex)
             {
-                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "ConsultarPedidos_X_Fecha_Articulo:" + ex.Message + ex.StackTrace + "\n" + Query);
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "ConsultarDevoluciones_X_Articulos_Fecha:" + ex.Message + ex.StackTrace + "\n" + Query);
                 return "Ocurrio un error inesperado";
             }
         }
