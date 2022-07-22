@@ -5405,5 +5405,160 @@ WHERE
         }
 
 
+        [WebMethod(Description = "QRY donde se obtiene los Devoluciones")]
+        public string ConsultarPedidos_X_Fecha_Articulo(string SucursalID, string ArticulosID, string FechaInicio, string FechaFin)
+        {
+            string Query;
+            System.Data.DataSet ds;
+            System.Xml.XmlElement xmlElement;
+            Query = @"SELECT 
+                        SUM (CortesYDevoluciones.Cantidad) AS Cantidad,
+	                    SUM(CortesYDevoluciones.CostoSIVA)  AS CostoSIva,
+	                    SUM(CortesYDevoluciones.IVA)AS Iva,
+	                    SUM(CortesYDevoluciones.Total) AS Total,
+	                    SUM(CortesYDevoluciones.TotalSinIVA) AS TotalSinIVA,
+   	                    CortesYDevoluciones.ArticulosID AS ArticulosID
+                    FROM 
+	                    CortesY,	
+	                    CortesYDevoluciones
+                    WHERE 
+	                    CortesY.CortesYID = CortesYDevoluciones.CortesYID
+	                    AND
+	                    (
+		                    CortesY.Fecha BETWEEN '" + FechaInicio + "' AND '" + FechaFin + @"'
+		                    AND	CortesYDevoluciones.ArticulosID IN (" + ArticulosID + @") 
+		                    AND	CortesY.SucursalesID = "+SucursalID+@"
+	                    )
+	                    GROUP BY
+	                    CortesYDevoluciones.ArticulosID";
+            try
+            {
+                ds = qryToDataSet(Query);
+                if (ds.Tables.Count > 0)
+                {
+                    xmlElement = Serialize(ds.Tables[0]);
+                    return xmlElement.OuterXml.ToString();
+                }
+                return "";
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "ConsultarPedidos_X_Fecha_Articulo:" + ex.Message + ex.StackTrace + "\n" + Query);
+                return "Ocurrio un error inesperado";
+            }
+        }
+
+
+
+        [WebMethod(Description = "QRY donde se obtiene los Devoluciones del proveedor")]
+        public string ConsultarDevolucionesProveedor_X_ListaArticulos(string SucursalID, string ArticulosID, string FechaInicio, string FechaFin, string TipoMovimientoID)
+        {
+            string Query;
+            System.Data.DataSet ds;
+            System.Xml.XmlElement xmlElement;
+            Query = @"SELECT 
+	                    Salidas.SalidasID AS SalidasID,	
+	                    Salidas.DestinosID AS DestinosID,	
+	                    Salidas.TiposMovimientosID AS TiposMovimientosID,	
+	                    Salidas.SucursalesID AS SucursalesID,	
+	                    Salidas.ProveedoresID AS ProveedoresID,	
+	                    Salidas.Estatus_MovimientosID AS Estatus_MovimientosID,	
+	                    Salidas.EmpleadoGeneroID AS EmpleadoGeneroID,	
+	                    Salidas.EmpleadoRecibioID AS EmpleadoRecibioID,	
+	                    Salidas.EmpleadoDevolvioID AS EmpleadoDevolvioID,	
+	                    Salidas.EmpleadoCanceloID AS EmpleadoCanceloID,	
+	                    Salidas.FechaSalida AS FechaSalida,	
+	                    Salidas.LineasID AS LineasID,	
+	                    Salidas.CantidadSalida AS CantidadSalida,	
+	                    SalidasArticulos.ArticulosID AS ArticulosID,	
+	                    SalidasArticulos.Cantidad AS Cantidad,	
+	                    SalidasArticulos.CostoSIVA AS CostoSIVA,	
+	                    SalidasArticulos.IVA AS IVA,	
+	                    SalidasArticulos.Notas AS Notas,	
+	                    SalidasArticulos.ImporteCosto AS ImporteCosto,	
+	                    SalidasArticulos.ImporteIVACosto AS ImporteIVACosto,	
+	                    SalidasArticulos.Devuelto AS Devuelto
+                    FROM 
+	                    Salidas,	
+	                    SalidasArticulos
+                    WHERE 
+	                    Salidas.SalidasID = SalidasArticulos.SalidasID
+	                    AND
+	                    (
+		                    Salidas.FechaSalida BETWEEN '" + FechaInicio + "' AND '" + FechaFin + @"'
+		                    AND	SalidasArticulos.ArticulosID IN (" + ArticulosID + @") 
+		                    AND	Salidas.Estatus_MovimientosID = 1
+		                    AND	Salidas.TiposMovimientosID = " + TipoMovimientoID + @"
+		                    AND	Salidas.SucursalesID = " + SucursalID + @"
+	                    )";
+            try
+            {
+                ds = qryToDataSet(Query);
+                if (ds.Tables.Count > 0)
+                {
+                    xmlElement = Serialize(ds.Tables[0]);
+                    return xmlElement.OuterXml.ToString();
+                }
+                return "";
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "ConsultarDevolucionesProveedor_X_ListaArticulos:" + ex.Message + ex.StackTrace + "\n" + Query);
+                return "Ocurrio un error inesperado";
+            }
+        }
+
+
+
+
+        [WebMethod(Description = "QRY_Entradas_Ventas_Proveedor")]
+        public string QRY_Entradas_Ventas_Proveedor(string SucursalID, string ArticulosID, string FechaInicio, string FechaFin, string TipoMovimientoID, string EstatusMovimientosID)
+        {
+            string Query;
+            System.Data.DataSet ds;
+            System.Xml.XmlElement xmlElement;
+            Query = @"SELECT 
+	                    EntradasArticulos.ArticulosID AS ArticulosID,	
+	                    SUM(EntradasArticulos.CantidadRecibida) AS sum_CantidadRecibida,	
+	                    SUM(EntradasArticulos.CantidadBonificacionRecibida) AS sum_CantidadBonificacionRecibida,	
+	                    SUM(EntradasArticulos.ImporteCosto) AS sum_ImporteCosto,	
+	                    SUM(EntradasArticulos.ImporteIVACosto) AS sum_ImporteIVACosto,	
+	                    SUM(EntradasArticulos.Cantidad) AS sum_Cantidad,	
+	                    SUM(EntradasArticulos.CantidadBonificacion) AS sum_CantidadBonificacion
+                    FROM 
+	                    Entradas,	
+	                    EntradasArticulos
+                    WHERE 
+	                    Entradas.EntradasID = EntradasArticulos.EntradasID
+	                    AND
+	                    (
+		                    Entradas.FechaEntrada BETWEEN '" + FechaInicio + "' AND '" + FechaFin + @"'
+		                    AND	Entradas.TiposMovimientosID IN (" + TipoMovimientoID + @") 
+		                    AND	Entradas.Estatus_MovimientosID = " + EstatusMovimientosID + @"
+		                    AND	Entradas.SucursalesID = " + SucursalID + @"
+		                    AND	EntradasArticulos.ArticulosID IN (" + ArticulosID + @") 
+	                    )
+                    GROUP BY 
+	                    EntradasArticulos.ArticulosID";
+            try
+            {
+                ds = qryToDataSet(Query);
+                if (ds.Tables.Count > 0)
+                {
+                    xmlElement = Serialize(ds.Tables[0]);
+                    return xmlElement.OuterXml.ToString();
+                }
+                return "";
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "QRY_Entradas_Ventas_Proveedor:" + ex.Message + ex.StackTrace + "\n" + Query);
+                return "Ocurrio un error inesperado";
+            }
+        }
+
+
+
+
     }
 }
