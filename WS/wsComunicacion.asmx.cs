@@ -5371,7 +5371,8 @@ WHERE
                         CATSAT_ClaveUnidad.ClaveUnidad,
                         CATSAT_Impuestos.ClaveImpuesto as ClaveImpuesto,
                         CATSAT_TiposFactores.TipoFactor,
-                        CATSAT_TasasCuotasImpuestos.ValorMaximo as PorcentajeImpuesto
+                        CATSAT_TasasCuotasImpuestos.ValorMaximo as PorcentajeImpuesto,
+                        PreVenta_Mayoreo.FechaHora
                     FROM
                         PreVenta_Mayoreo,
                         PreVenta_Mayoreo_Detalle,
