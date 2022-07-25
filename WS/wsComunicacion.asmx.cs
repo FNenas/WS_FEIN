@@ -5560,6 +5560,170 @@ WHERE
         }
 
 
+        [WebMethod(Description = "QRY_NotasCredito")]
+        public string QRY_NotasCredito(string SucursalID, string ArticulosID, string FechaInicio, string FechaFin, string RestaAInventario, string EstatusMovimientosID)
+        {
+            string Query;
+            System.Data.DataSet ds;
+            System.Xml.XmlElement xmlElement;
+            Query = @"SELECT 
+                        NotasCreditoArticulos.ArticulosID AS ArticulosID,	
+                        SUM(NotasCreditoArticulos.CantidadAfectacion) AS sum_CantidadAfectacion,	
+                        SUM(( NotasCreditoArticulos.CantidadAfectacion * NotasCreditoArticulos.CostoCIVA ) ) AS sum_TotalAfectacionCIVA,	
+                        SUM(NotasCreditoArticulos.TotalAfectacion) AS sum_TotalAfectacion,	
+                        ConceptosNotasCredito.RestaAInventario AS RestaAInventario
+                     FROM 
+                        ConceptosNotasCredito,	
+                        NotasCreditoArticulos,	
+                        NotasCredito
+                     WHERE 
+                        NotasCredito.NotasCreditoID = NotasCreditoArticulos.NotasCreditoID
+                        AND		ConceptosNotasCredito.ConceptosNotasCreditoID = NotasCreditoArticulos.ConceptosNotasCreditoID
+                        AND
+                        (
+                        NotasCredito.Estatus_MovimientosID = " + EstatusMovimientosID + @"
+                        AND	NotasCreditoArticulos.ArticulosID IN (" + ArticulosID + @") 
+                        AND	NotasCredito.FechaHoraCreacion BETWEEN '" + FechaInicio + "' AND '" + FechaFin + @"'
+                        AND	NotasCredito.SucursalesID = " + SucursalID + @"
+                        AND	ConceptosNotasCredito.RestaAInventario = " + RestaAInventario + @"
+                        )
+                     GROUP BY 
+                        NotasCreditoArticulos.ArticulosID,	
+                        ConceptosNotasCredito.RestaAInventario";
+            try
+            {
+                ds = qryToDataSet(Query);
+                if (ds.Tables.Count > 0)
+                {
+                    xmlElement = Serialize(ds.Tables[0]);
+                    return xmlElement.OuterXml.ToString();
+                }
+                return "";
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "QRY_HistorialCambios_X_ArticuloID_X_FechaInicioFin:" + ex.Message + ex.StackTrace + "\n" + Query);
+                return "Ocurrio un error inesperado";
+            }
+        }
+
+
+        [WebMethod(Description = "QRY_HistorialCambios_X_ArticuloID_X_FechaInicioFin")]
+        public string QRY_HistorialCambios_X_ArticuloID_X_FechaInicioFin(string SucursalID, string CodigoArticulo, string FechaInicio, string FechaFin, string Nivel)
+        {
+            string Query;
+            System.Data.DataSet ds;
+            System.Xml.XmlElement xmlElement;
+            Query = @"SELECT 
+	                    HistorialCambios.ArticulosID AS ArticulosID,	
+	                    HistorialCambios.Nivel AS Nivel,	
+	                    Articulos.Nombre AS Nombre,	
+	                    HistorialCambios.SucursalesID AS SucursalesID,	
+	                    HistorialCambios.FechaHora AS FechaHora,	
+	                    HistorialCambios.PorSistema AS PorSistema,	
+	                    Articulos.FamiliasID AS FamiliasID,	
+	                    Familias.NombreFamilia AS NombreFamilia,	
+	                    Articulos.Codigo AS Codigo,	
+	                    HistorialCambios.NuevoCostoCIVA AS NuevoCostoCIVA,	
+	                    HistorialCambios.NuevoPrecioCIVA AS NuevoPrecioCIVA,	
+	                    HistorialCambios.CostoCIVA AS CostoCIVA,	
+	                    HistorialCambios.PrecioCIVA AS PrecioCIVA,	
+	                    HistorialCambios.EmpleadosID AS EmpleadosID,	
+	                    HistorialCambios.Motivo AS Motivo,	
+	                    Empleados.NombreCompleto AS NombreCompleto,	
+	                    Lineas.NombreLinea AS NombreLinea
+                    FROM 
+	                    Lineas
+	                    INNER JOIN
+	                    (
+		                    Familias
+		                    INNER JOIN
+		                    (
+			                    Articulos
+			                    INNER JOIN
+			                    (
+				                    Empleados
+				                    RIGHT OUTER JOIN
+				                    HistorialCambios
+				                    ON Empleados.EmpleadosID = HistorialCambios.EmpleadosID
+			                    )
+			                    ON Articulos.ArticulosID = HistorialCambios.ArticulosID
+		                    )
+		                    ON Familias.FamiliasID = Articulos.FamiliasID
+	                    )
+	                    ON Lineas.LineasID = Familias.LineasID
+                    WHERE 
+	                    (
+
+	                    AND	HistorialCambios.FechaHora BETWEEN '" + FechaInicio + "' AND '" + FechaFin + @"'
+	                    AND	Articulos.Codigo = " + CodigoArticulo + @"
+	                    AND	HistorialCambios.SucursalesID = " + SucursalID + @"             
+	                    AND	HistorialCambios.Nivel = " + Nivel + @"
+	              
+                    )
+                    ORDER BY 
+	                    FechaHora ASC";
+            try
+            {
+                ds = qryToDataSet(Query);
+                if (ds.Tables.Count > 0)
+                {
+                    xmlElement = Serialize(ds.Tables[0]);
+                    return xmlElement.OuterXml.ToString();
+                }
+                return "";
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "QRY_HistorialCambios_X_ArticuloID_X_FechaInicioFin:" + ex.Message + ex.StackTrace + "\n" + Query);
+                return "Ocurrio un error inesperado";
+            }
+        }
+
+
+
+        [WebMethod(Description = "QRY_ArticulosPreciosCostos_X_ArticulosID_SucursalesID_Nivel")]
+        public string QRY_ArticulosPreciosCostos_X_ArticulosID_SucursalesID_Nivel(string SucursalID, string ArticulosID, string Nivel)
+        {
+            string Query;
+            System.Data.DataSet ds;
+            System.Xml.XmlElement xmlElement;
+            Query = @"SELECT 
+	                    ArticulosPrecios.ArticulosPreciosID AS ArticulosPreciosID,	
+	                    ArticulosPrecios.ArticulosID AS ArticulosID,	
+	                    ArticulosPrecios.SucursalesID AS SucursalesID,	
+	                    ArticulosPrecios.Nivel AS Nivel,	
+	                    ArticulosPrecios.Precio AS Precio,	
+	                    ArticulosPrecios.PrecioCIVA AS PrecioCIVA,	
+	                    ArticulosPrecios.Costo AS Costo,	
+	                    ArticulosPrecios.CostoCIVA AS CostoCIVA,	
+	                    ArticulosPrecios.PrecioAnterior AS PrecioAnterior,	
+	                    ArticulosPrecios.CostoAnterior AS CostoAnterior,	
+	                    ArticulosPrecios.Activo AS Activo,
+	                    ArticulosPrecios.InternalVersion AS InternalVersion
+                    FROM 
+	                    ArticulosPrecios
+                    WHERE 
+	                    ArticulosPrecios.SucursalesID = " + SucursalID + @"  
+	                    AND	ArticulosPrecios.Nivel = " + Nivel + @"  
+	                    AND	ArticulosPrecios.ArticulosID = "+ ArticulosID;
+            try
+            {
+                ds = qryToDataSet(Query);
+                if (ds.Tables.Count > 0)
+                {
+                    xmlElement = Serialize(ds.Tables[0]);
+                    return xmlElement.OuterXml.ToString();
+                }
+                return "";
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "QRY_ArticulosPreciosCostos_X_ArticulosID_SucursalesID_Nivel:" + ex.Message + ex.StackTrace + "\n" + Query);
+                return "Ocurrio un error inesperado";
+            }
+        }
+
 
 
     }
