@@ -5655,14 +5655,14 @@ WHERE
                     WHERE 
 	                    (
 
-	                    AND	HistorialCambios.FechaHora BETWEEN '" + FechaInicio + "' AND '" + FechaFin + @"'
+	                    HistorialCambios.FechaHora BETWEEN '" + FechaInicio + "' AND '" + FechaFin + @"'
 	                    AND	Articulos.Codigo = " + CodigoArticulo + @"
 	                    AND	HistorialCambios.SucursalesID = " + SucursalID + @"             
-	                    AND	HistorialCambios.Nivel = " + Nivel + @"
+	                    AND	HistorialCambios.Nivel = '" + Nivel + @"'
 	              
                     )
                     ORDER BY 
-	                    FechaHora ASC";
+	                    FechaHora DESC";
             try
             {
                 ds = qryToDataSet(Query);
@@ -5705,8 +5705,8 @@ WHERE
 	                    ArticulosPrecios
                     WHERE 
 	                    ArticulosPrecios.SucursalesID = " + SucursalID + @"  
-	                    AND	ArticulosPrecios.Nivel = " + Nivel + @"  
-	                    AND	ArticulosPrecios.ArticulosID = "+ ArticulosID;
+	                    AND	ArticulosPrecios.Nivel = '" + Nivel + @"'  
+	                    AND	ArticulosPrecios.ArticulosID = " + ArticulosID;
             try
             {
                 ds = qryToDataSet(Query);
@@ -5720,6 +5720,47 @@ WHERE
             catch (Exception ex)
             {
                 System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "QRY_ArticulosPreciosCostos_X_ArticulosID_SucursalesID_Nivel:" + ex.Message + ex.StackTrace + "\n" + Query);
+                return "Ocurrio un error inesperado";
+            }
+        }
+
+
+        [WebMethod(Description = "Consutar costos articulos X listado ArticulosID")]
+        public string Consultar_HistorialCambios_X_ArticulosID(string SucursalID, string ArticulosID, string FechaInicio, string FechaFin, string Nivel)
+        {
+            string Query;
+            System.Data.DataSet ds;
+            System.Xml.XmlElement xmlElement;
+            Query = @"select 
+	                    HistorialCambios.ArticulosID,
+	                    max(HistorialCambios.FechaHora) AS FechaHora,
+	                    HistorialCambios.NuevoCostoCIVA AS NuevoCostoCIVA	
+                    from
+	                    HistorialCambios
+                    where
+	                    HistorialCambios.ArticulosID IN (" + ArticulosID + @") 
+	                    and	HistorialCambios.Nivel = '" + Nivel + @"'  
+	                    and	HistorialCambios.FechaHora BETWEEN '" + FechaInicio + "' AND '" + FechaFin + @"'
+	                    and  HistorialCambios.SucursalesID = " + SucursalID + @"  
+                    GROUP by 
+	                    ArticulosID,
+	                    NuevoCostoCIVA
+                    ORDER BY 
+                        ArticulosID,
+                        FechaHora DESC";
+            try
+            {
+                ds = qryToDataSet(Query);
+                if (ds.Tables.Count > 0)
+                {
+                    xmlElement = Serialize(ds.Tables[0]);
+                    return xmlElement.OuterXml.ToString();
+                }
+                return "";
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "Consultar_HistorialCambios_X_ArticulosID:" + ex.Message + ex.StackTrace + "\n" + Query);
                 return "Ocurrio un error inesperado";
             }
         }
