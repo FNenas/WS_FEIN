@@ -5249,11 +5249,17 @@ WHERE
                     from
 	                    Articulos
                     where
-	                    Articulos.Activo = "+Activo+@"
-	                    and Articulos.Descatalogado="+Descatalogado+@"
-	                    and Articulos.LineaID = "+LineaID+@"
-                    order by 
-	                    Descripcion asc";
+	                    Articulos.Activo = " + Activo;
+            if (LineaID != "-1")
+            {
+                Query += " and Articulos.LineaID = " + LineaID;
+            }
+            if (Descatalogado != "2")
+            {
+                Query += " and Articulos.Descatalogado=" + Descatalogado;
+            }
+            Query += "order by Descripcion asc";
+
             try
             {
                 ds = qryToDataSet(Query);
