@@ -5213,10 +5213,12 @@ WHERE
             string Query;
             System.Data.DataSet ds;
             System.Xml.XmlElement xmlElement;
-            Query = @"select ArticulosExistencias.Existencia 
+            Query = @"select 
+                        ArticulosExistencias.ArticulosID,
+                        ArticulosExistencias.Existencia 
 						from  ArticulosExistencias
 						where 
-						ArticulosExistencias.ArticulosID = " + ArticuloID + @"
+						ArticulosExistencias.ArticulosID IN (" + ArticuloID + ")" + @" 
                        and ArticulosExistencias.SucursalesID =" + SucursalID;
             try
             {
@@ -5712,7 +5714,7 @@ WHERE
                     WHERE 
 	                    ArticulosPrecios.SucursalesID = " + SucursalID + @"  
 	                    AND	ArticulosPrecios.Nivel = '" + Nivel + @"'  
-	                    AND	ArticulosPrecios.ArticulosID = " + ArticulosID;
+	                    AND	ArticulosPrecios.ArticulosID IN (" + ArticulosID + @")";
             try
             {
                 ds = qryToDataSet(Query);
