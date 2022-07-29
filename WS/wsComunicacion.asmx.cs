@@ -5662,7 +5662,7 @@ WHERE
 	                    (
 
 	                    HistorialCambios.FechaHora BETWEEN '" + FechaInicio + "' AND '" + FechaFin + @"'
-	                    AND	Articulos.Codigo = " + CodigoArticulo + @"
+	                    AND	Articulos.Codigo = '" + CodigoArticulo + @"' 
 	                    AND	HistorialCambios.SucursalesID = " + SucursalID + @"             
 	                    AND	HistorialCambios.Nivel = '" + Nivel + @"'
 	              
