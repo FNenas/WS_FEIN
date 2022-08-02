@@ -5774,6 +5774,93 @@ WHERE
         }
 
 
+        [WebMethod(Description = "Rastreo de Articulos conteos lineas")]
+        public string RastreoArticulos_ConteosLinea(string ArticulosID, string FechaInicial, string FechaFinal)
+        {
+            string Query;
+            System.Data.DataSet ds;
+            System.Xml.XmlElement xmlElement;
+            Query = @"select DISTINCT
+                        ConteosArticulos.ArticulosID,
+	                    sum(ConteosArticulos.Diferencia) as ResultadoInventario,
+	                    avg(ConteosArticulos.CostoConIva) as CostoConIVA,
+	                    sum(ConteosArticulos.Diferencia*ConteosArticulos.CostoConIva) as ImporteAfectacion
+                    from
+	                    conteos,
+	                    ConteosArticulos
+                    where   
+                        conteos.ConteosID = ConteosArticulos.ConteosID         	                   
+                        and ConteosArticulos.ArticulosID  IN (" + ArticulosID + @") 
+                        and Conteos.Fecha BETWEEN '" + FechaInicial + "' and '" + FechaFinal + @"'
+                        and Conteos.EsBorrador = 0
+                    GROUP by
+                    ArticulosID";
+            try
+            {
+                ds = qryToDataSet(Query);
+                if (ds.Tables.Count > 0)
+                {
+                    xmlElement = Serialize(ds.Tables[0]);
+                    return xmlElement.OuterXml.ToString();
+                }
+                return "";
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "RastreoArticulos_ConteosLinea:" + ex.Message + ex.StackTrace + "\n" + Query);
+                return "Ocurrio un error inesperado";
+            }
+        }
+
+
+
+
+
+        [WebMethod(Description = "RastreoArticulos_Mermas")]
+        public string RastreoArticulos_Mermas(string ArticulosID, string FechaInicial, string FechaFinal, string SucursalID)
+        {
+            string Query;
+            System.Data.DataSet ds;
+            System.Xml.XmlElement xmlElement;
+            Query = @"SELECT DISTINCT 
+	                    Articulos.ArticulosID,	
+	                    sum(Salidas.Importe) AS Importe,
+	                    sum(Salidas.CantidadSalida) AS CantidadSalida
+                    FROM 
+	                    Salidas,
+	                    SalidasArticulos,
+	                    Articulos
+                    WHERE 
+	                    Salidas.SalidasID = SalidasArticulos.SalidasID
+	                    AND SalidasArticulos.ArticulosID=Articulos.ArticulosID
+	                    AND SalidasArticulos.ArticulosID IN (" + ArticulosID + @") 
+	                    AND	Salidas.FechaSalida BETWEEN '" + FechaInicial + "' and '" + FechaFinal + @"'
+	                    AND	Salidas.TiposMovimientosID = 5001
+	                    AND	Salidas.SucursalesID = " + SucursalID + @"  
+	                    AND	Salidas.Estatus_MovimientosID = 1
+	                    AND	Salidas.PendienteAplicarNC = 0
+                    GROUP by Articulos.ArticulosID
+                    ";
+            try
+            {
+                ds = qryToDataSet(Query);
+                if (ds.Tables.Count > 0)
+                {
+                    xmlElement = Serialize(ds.Tables[0]);
+                    return xmlElement.OuterXml.ToString();
+                }
+                return "";
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "RastreoArticulos_Mermas:" + ex.Message + ex.StackTrace + "\n" + Query);
+                return "Ocurrio un error inesperado";
+            }
+        }
+
+
+
+
 
     }
 }
