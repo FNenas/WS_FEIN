@@ -5824,8 +5824,8 @@ WHERE
             System.Xml.XmlElement xmlElement;
             Query = @"SELECT DISTINCT 
 	                    Articulos.ArticulosID,	
-	                    sum(Salidas.Importe) AS Importe,
-	                    sum(Salidas.CantidadSalida) AS CantidadSalida
+	                    sum(SalidasArticulos.ImporteIVACosto) AS Importe,
+	                    sum(SalidasArticulos.Cantidad) AS CantidadSalida
                     FROM 
 	                    Salidas,
 	                    SalidasArticulos,
