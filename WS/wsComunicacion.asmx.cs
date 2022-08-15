@@ -5858,7 +5858,38 @@ WHERE
             }
         }
 
-
+        //------------------------[Ciclicos Gerenciales]----------------------
+        [WebMethod(Description = "RastreoArticulos_Mermas")]
+        public string Proveedores_CiclicosSolicitados()
+        {
+            string Query;
+            System.Data.DataSet ds;
+            System.Xml.XmlElement xmlElement;
+            Query = @"select
+	                    Proveedores.ProveedoresID as ProveedoresID,
+	                    Proveedores.Nombre as Nombre,
+	                    Proveedores.SucursalesID as Ciclicos_Solicitados
+                    from
+	                    Proveedores
+                    where
+	                    Proveedores.Activo = 1
+	                    and Proveedores.SucursalesID > 0";
+            try
+            {
+                ds = qryToDataSet(Query);
+                if (ds.Tables.Count > 0)
+                {
+                    xmlElement = Serialize(ds.Tables[0]);
+                    return xmlElement.OuterXml.ToString();
+                }
+                return "";
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "Proveedores_CiclicosSolicitados:" + ex.Message + ex.StackTrace + "\n" + Query);
+                return "Ocurrio un error inesperado";
+            }
+        }
 
 
 
