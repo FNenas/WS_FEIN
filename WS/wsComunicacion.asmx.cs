@@ -5859,21 +5859,30 @@ WHERE
         }
 
         //------------------------[Ciclicos Gerenciales]----------------------
-        [WebMethod(Description = "RastreoArticulos_Mermas")]
-        public string Proveedores_CiclicosSolicitados()
+        [WebMethod(Description = "Obtener Articulos de un proveedor en base a ProveedorID")]
+        public string Articulos_X_ProvedorID(string Activo, string ProveedorID, string Nivel, string SucursalID)
         {
             string Query;
             System.Data.DataSet ds;
             System.Xml.XmlElement xmlElement;
-            Query = @"select
-	                    Proveedores.ProveedoresID as ProveedoresID,
-	                    Proveedores.Nombre as Nombre,
-	                    Proveedores.SucursalesID as Ciclicos_Solicitados
-                    from
-	                    Proveedores
-                    where
-	                    Proveedores.Activo = 1
-	                    and Proveedores.SucursalesID > 0";
+            Query = @"SELECT 
+	                    Proveedores_Articulos.ArticulosID AS ArticulosID,
+	                    Articulos.Codigo AS Codigo,	
+	                    Articulos.Nombre AS Nombre,
+	                    ArticulosPrecios.CostoCIVA,
+	                    ArticulosPrecios.PrecioCIVA
+                    FROM 
+	                    Articulos,	
+	                    ArticulosPrecios
+	                    Proveedores_Articulos,
+                    WHERE 
+	                    Articulos.ArticulosID = Proveedores_Articulos.ArticulosID
+	                    and ArticulosPrecios.ArticulosID = Proveedores_Articulos.ArticulosID 
+	                    AND Articulos.Activo = " + Activo + @"  
+	                    AND Proveedores_Articulos.ProveedoresID = " + ProveedorID + @"  
+	                    and ArticulosPrecios.Activo = 1
+	                    and ArticulosPrecios.Nivel = " + Nivel + @"  
+	                    and ArticulosPrecios.SucursalesID = " + SucursalID;
             try
             {
                 ds = qryToDataSet(Query);
@@ -5886,7 +5895,7 @@ WHERE
             }
             catch (Exception ex)
             {
-                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "Proveedores_CiclicosSolicitados:" + ex.Message + ex.StackTrace + "\n" + Query);
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "Articulos_X_ProvedorID:" + ex.Message + ex.StackTrace + "\n" + Query);
                 return "Ocurrio un error inesperado";
             }
         }
