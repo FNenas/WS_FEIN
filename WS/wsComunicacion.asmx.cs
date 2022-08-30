@@ -5940,7 +5940,7 @@ WHERE
 
 
         [WebMethod(Description = "Obtener articulos descatalogados de un listado de articulos")]
-        public string Consutar_ArticulosDescatalogados_X_ArticulosID(string ArticulosID, string SucursalID, string Descatalogado, string Inactivo)
+        public string Consutar_ArticulosDescatalogados_X_ArticulosID(string ArticulosID, string SucursalID, string Inactivo)
         {
             string Query;
             System.Data.DataSet ds;
@@ -5949,9 +5949,8 @@ WHERE
 	                    ArticulosDescatalogados.ArticulosID 
 	                 from
 	                    ArticulosDescatalogados
-	                 where
-	                    ArticulosDescatalogados.Descatalogado = " + Descatalogado + @"  
-	                    and ArticulosDescatalogados.Inactivo = " + Inactivo + @"  
+	                 where	               
+	                    ArticulosDescatalogados.Inactivo = " + Inactivo + @"  
 	                    and ArticulosDescatalogados.SucursalesID = " + SucursalID + @"  
 	                    and ArticulosDescatalogados.ArticulosID IN (" + ArticulosID + @")  
                     ";
