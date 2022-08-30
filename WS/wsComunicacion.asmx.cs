@@ -5939,5 +5939,39 @@ WHERE
         }
 
 
+        [WebMethod(Description = "Obtener articulos descatalogados de un listado de articulos")]
+        public string Consutar_ArticulosDescatalogados_X_ArticulosID(string ArticulosID, string SucursalID, string Descatalogado, string Inactivo)
+        {
+            string Query;
+            System.Data.DataSet ds;
+            System.Xml.XmlElement xmlElement;
+            Query = @"SELECT
+	                    ArticulosDescatalogados.ArticulosID 
+	                 from
+	                    ArticulosDescatalogados
+	                 where
+	                    ArticulosDescatalogados.Descatalogado = " + Descatalogado + @"  
+	                    and ArticulosDescatalogados.Inactivo = " + Inactivo + @"  
+	                    and ArticulosDescatalogados.SucursalesID = " + SucursalID + @"  
+	                    and ArticulosDescatalogados.ArticulosID IN (" + ArticulosID + @")  
+                    ";
+            try
+            {
+                ds = qryToDataSet(Query);
+                if (ds.Tables.Count > 0)
+                {
+                    xmlElement = Serialize(ds.Tables[0]);
+                    return xmlElement.OuterXml.ToString();
+                }
+                return "";
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "Consutar_ArticulosDescatalogados_X_ArticulosID:" + ex.Message + ex.StackTrace + "\n" + Query);
+                return "Ocurrio un error inesperado";
+            }
+        }
+
+
     }
 }
