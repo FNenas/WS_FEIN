@@ -5971,6 +5971,59 @@ WHERE
             }
         }
 
-
+        //-------------------[Revision Transferencias Salidas]---------------------
+        [WebMethod(Description = "Obtener detalles de las salidas en base a parametros")]
+        public string Revision_Transferencias_Salidas(string DestinoID, string EstatusMovimientoID, string TiposMovimientosID, string FechaInicial, string FechaFinal)
+        {
+            string Query;
+            System.Data.DataSet ds;
+            System.Xml.XmlElement xmlElement;
+            Query = @"Select
+	                    Salidas.SalidasID as Folio,
+	                    Salidas.FolioMovimiento as FolioMovimiento,
+	                    TiposMovimientos.DescripcionMovimiento as Movimiento,
+	                    Salidas.Referencia as Referencia,
+	                    Destinos.Nombre as DestinoProveedor,
+	                    Salidas.FechaSalida as Fecha,
+	                    Salidas.Importe as Importe,
+	                    Estatus_Movimientos.Nombre as Estatus,
+	                    empleados.NombreCompleto as EmpleadoGenero,
+	                    Salidas.Recibido as Recibido,
+	                    Salidas.CantidadSalida,
+	                    Salidas.Notas
+                    from
+	                    Salidas
+	                    inner JOIN TiposMovimientos on salidas.TiposMovimientosID = TiposMovimientos.TiposMovimientosID
+	                    inner join Destinos on Salidas.DestinosID = Destinos.DestinosID
+	                    inner join Estatus_Movimientos on Salidas.Estatus_MovimientosID = Estatus_Movimientos.Estatus_MovimientosID
+	                    inner join Empleados on Salidas.EmpleadoGeneroID = Empleados.EmpleadosID
+                    where
+	                    Salidas.DestinosID = " + DestinoID;
+            if (EstatusMovimientoID != "NULL")
+            {
+               Query += "and salidas.Estatus_MovimientosID = " + EstatusMovimientoID;
+            }
+            Query+=@"
+                        and Salidas.FechaSalida BETWEEN '" + FechaInicial + "' and '" + FechaFinal + @"'
+	                    and Salidas.TiposMovimientosID = " + TiposMovimientosID + @"  
+                    order by
+	                    Salidas.FechaSalida asc
+                    ";
+            try
+            {
+                ds = qryToDataSet(Query);
+                if (ds.Tables.Count > 0)
+                {
+                    xmlElement = Serialize(ds.Tables[0]);
+                    return xmlElement.OuterXml.ToString();
+                }
+                return "";
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "Revision_Transferencias_Salidas:" + ex.Message + ex.StackTrace + "\n" + Query);
+                return "Ocurrio un error inesperado";
+            }
+        }
     }
 }
