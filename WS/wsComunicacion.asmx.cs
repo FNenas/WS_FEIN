@@ -5973,7 +5973,7 @@ WHERE
 
         //-------------------[Revision Transferencias Salidas]---------------------
         [WebMethod(Description = "Obtener detalles de las salidas en base a parametros")]
-        public string Revision_Transferencias_Salidas(string DestinoID, string EstatusMovimientoID, string TiposMovimientosID, string FechaInicial, string FechaFinal)
+        public string Revision_Transferencias_Salidas(string SucursalID, string EstatusMovimientoID, string TiposMovimientosID, string FechaInicial, string FechaFinal)
         {
             string Query;
             System.Data.DataSet ds;
@@ -5998,7 +5998,7 @@ WHERE
 	                    inner join Estatus_Movimientos on Salidas.Estatus_MovimientosID = Estatus_Movimientos.Estatus_MovimientosID
 	                    inner join Empleados on Salidas.EmpleadoGeneroID = Empleados.EmpleadosID
                     where
-	                    Salidas.DestinosID = " + DestinoID;
+	                    Destinos.SucursalesID = " + SucursalID;
             if (EstatusMovimientoID != "NULL")
             {
                Query += "and salidas.Estatus_MovimientosID = " + EstatusMovimientoID;
