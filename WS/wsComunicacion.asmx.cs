@@ -6024,5 +6024,39 @@ WHERE
                 return "Ocurrio un error inesperado";
             }
         }
+
+        //----------------[FEIN: Factura Global]----------------
+
+        [WebMethod(Description = "QRY_TotalFacturado_x_VentaID")]
+        public string QRY_TotalFacturado_x_VentasID(string VentasID)
+        {
+            string Query;
+            System.Data.DataSet ds;
+            System.Xml.XmlElement xmlElement;
+            Query = @"select 
+	                    sum(ventas.TotalVenta)
+                    from
+	                    ventas
+                    where
+	                    Ventas.Cancelada = 0
+	                    and Ventas.VentasID IN ("+VentasID+")";
+            try
+            {
+                ds = qryToDataSet(Query);
+                if (ds.Tables.Count > 0)
+                {
+                    xmlElement = Serialize(ds.Tables[0]);
+                    return xmlElement.OuterXml.ToString();
+                }
+                return "";
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "QRY_TotalFacturado_x_VentasID:" + ex.Message + ex.StackTrace + "\n" + Query);
+                return "Ocurrio un error inesperado";
+            }
+        }
+
+
     }
 }
