@@ -476,7 +476,37 @@ namespace WS
             }
         }
 
+        //---------------------[Obtener cantidad de envios sin facturar]--------------------------
 
+        [WebMethod(Description = "Obtener Cantidad de envios sin facturar de un rango de fechas")]
+        public string ObtenerCantidadEnvioNoFacturados(String FechaInicial, String FechaFinal)
+        {
+            String sQry = @"SELECT     
+                                COUNT(Envios.IDEnvios) as CantidadEnvios
+                            FROM 
+							    Envios
+                             WHERE
+                                Envios.Facturado = 0
+                                AND Envios.Activo = 1
+                                AND Envios.Fecha_Hora_Generacion BETWEEN '" + FechaInicial + "' and '" + FechaFinal+"'";
+            System.Data.DataSet ds;
+            System.Xml.XmlElement xmlElement;
+            try
+            {
+                ds = qryToDataSet(sQry);
+                if (ds.Tables.Count > 0)
+                {
+                    xmlElement = Serialize(ds.Tables[0]);
+                    return xmlElement.OuterXml.ToString();
+                }
+                return "-1";
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "ObtenerCantidadEnvioNoFacturados:" + ex.Message + ex.StackTrace + "\n" + sQry);
+                return "Ocurrio un error inesperado";
+            }
+        }
 
 
     }
