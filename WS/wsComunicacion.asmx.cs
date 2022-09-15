@@ -6057,6 +6057,48 @@ WHERE
             }
         }
 
+        //----------------[Rastreo de Mercancia Proveedor]----------------
+        [WebMethod(Description = "QRY_Proveedores_Articulos_RPT_Proveedores_X_Activo_descatalogados")]
+        public string QRY_Proveedores_Articulos_RPT_Proveedores_X_Activo_descatalogados(string ProveedoresID, string Activo, string Descatalogado)
+        {
+            string Query;
+            System.Data.DataSet ds;
+            System.Xml.XmlElement xmlElement;
+            Query = @"SELECT DISTINCT 
+	                    Proveedores_Articulos.ArticulosID AS ArticulosID,	
+	                    Articulos.Codigo AS Codigo,	
+	                    Articulos.Nombre AS Nombre
+                    FROM 
+	                    Articulos,	
+	                    Proveedores_Articulos
+                    WHERE 
+	                    Articulos.ArticulosID = Proveedores_Articulos.ArticulosID
+	                    AND
+	                    (
+		                    Proveedores_Articulos.ProveedoresID = " + ProveedoresID + @" 
+		                    AND	Articulos.Activo = " + Activo + @" 
+		                    AND	Articulos.Descatalogado = " + Descatalogado + @" 
+	                    )
+                    ORDER BY 
+	                    Nombre ASC";
+            try
+            {
+                ds = qryToDataSet(Query);
+                if (ds.Tables.Count > 0)
+                {
+                    xmlElement = Serialize(ds.Tables[0]);
+                    return xmlElement.OuterXml.ToString();
+                }
+                return "";
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "QRY_Proveedores_Articulos_RPT_Proveedores_X_Activo_descatalogados:" + ex.Message + ex.StackTrace + "\n" + Query);
+                return "Ocurrio un error inesperado";
+            }
+        }
+
+
 
     }
 }
