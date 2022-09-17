@@ -5152,6 +5152,7 @@ WHERE
 	                    Empleados
                     WHERE
 	                    Conteos.ConteosID = ConteosArticulos.ConteosID
+                        AND Conteos.EsBorrador = 0
                         AND ConteosArticulos.ArticulosID = " + ArticuloID + @"
                        and Empleados.EmpleadosID = Conteos.UsuarioConto
                     GROUP BY
@@ -6076,9 +6077,12 @@ WHERE
 	                    AND
 	                    (
 		                    Proveedores_Articulos.ProveedoresID = " + ProveedoresID + @" 
-		                    AND	Articulos.Activo = " + Activo + @" 
-		                    AND	Articulos.Descatalogado = " + Descatalogado + @" 
-	                    )
+		                    AND	Articulos.Activo = " + Activo;
+            if (Descatalogado != "2")
+            {
+                Query += " AND Articulos.Descatalogado = " + Descatalogado;
+            }
+            Query +=@" )
                     ORDER BY 
 	                    Nombre ASC";
             try
