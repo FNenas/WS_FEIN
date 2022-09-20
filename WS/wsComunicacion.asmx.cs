@@ -4406,6 +4406,7 @@ WHERE
                         Ventas,
                         Sucursales
                     WHERE
+                        ventas.SucursalesID = Sucursales.SucursalesID and
                         ventas.VentasID = " + VentaID + @" and 
                         Sucursales.SucursalesID = " + SucursalID;
             try
