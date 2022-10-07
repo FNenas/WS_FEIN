@@ -3729,8 +3729,23 @@ WHERE
             System.Xml.XmlElement xmlElement;
             try
             {
-                String query = @"Select FechaHora,NombreCliente,Subtotal,importe,EnDolares,ClientesID,Notas,Activo,esAutorizado,
-                IsProcesado,Tipo_Cambio From PreVenta_Mayoreo Where PreVenta_MayoreoID = " + PreventaID;
+                String query = @"Select 
+                                    FechaHora,
+                                    NombreCliente,
+                                    Subtotal,
+                                    importe,
+                                    EnDolares,
+                                    ClientesID,
+                                    Notas,
+                                    Activo,
+                                    esAutorizado,
+                                    IsProcesado,
+                                    Tipo_Cambio 
+                                From 
+                                    PreVenta_Mayoreo 
+                                Where 
+                                    Credito = 1 
+                                    AND PreVenta_MayoreoID = " + PreventaID;
                 System.Data.DataSet ds = qryToDataSet(query);
                 xmlElement = Serialize(ds.Tables[0]);
                 return xmlElement.OuterXml.ToString();
