@@ -4291,6 +4291,7 @@ WHERE
                         Ventas_Articulos.Descuento,
                         Articulos.TiposIEPSID,
                         Articulos.ValorIEPS as valorIEPS,
+                        Articulos.CantidadIEPS,
                         Ventas_Articulos.ProductoGrabadoSIMP      
                     from 
                         ventas,
@@ -5393,7 +5394,8 @@ WHERE
                         Preventa_Mayoreo_detalle.Importe,
                         PreVenta_Mayoreo_Detalle.Cantidad,
                         Articulos.TiposIEPSID,
-                        Articulos.ValorIEPS as valorIEPS,  
+                        Articulos.ValorIEPS as valorIEPS,
+                        Articulos.CantidadIEPS,  
                         CATSAT_ClaveUnidad.ClaveUnidad,
                         CATSAT_Impuestos.ClaveImpuesto as ClaveImpuesto,
                         CATSAT_TiposFactores.TipoFactor,
