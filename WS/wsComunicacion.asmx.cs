@@ -4185,6 +4185,7 @@ WHERE
                         CATSAT_ClaveProductosServicios.ClaveProdServ,
                         Articulos.TiposIEPSID,
                         Articulos.ValorIEPS as valorIEPS,
+                        Articulos.CantidadIEPS,
                         Articulos.PesoPromedio,
                         Articulos.activo as Activo
                     from 
