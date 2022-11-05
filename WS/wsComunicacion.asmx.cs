@@ -4321,8 +4321,9 @@ WHERE
                             from 
                                 VentasTiposPagos
                             where 
-                                VentasTiposPagos.VentasID = "+VentaID+@" ) and
-                        ventas.VentasID = "+VentaID;
+                                VentasTiposPagos.VentasID = "+VentaID+ @" ) and
+                                Ventas.Cancelada = 0 and
+                                ventas.VentasID = " + VentaID;
             try
             {
                 ds = qryToDataSet(Query);
@@ -6120,6 +6121,35 @@ WHERE
                 System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "QRY_Proveedores_Articulos_RPT_Proveedores_X_Activo_descatalogados:" + ex.Message + ex.StackTrace + "\n" + Query);
                 return "Ocurrio un error inesperado";
             }
+        }
+
+
+        //----------------[Calcular Corte Z]----------------
+        [WebMethod(Description = "Calcular Corte Z")]
+        public string ImporteCorteZ_X_FechaCorteZ()
+        {
+            string Query;
+            System.Data.DataSet ds;
+            System.Xml.XmlElement xmlElement;
+            Query = "test";
+            Console.WriteLine(Query);
+            return Query;
+
+            /*  try{
+                  ds = qryToDataSet(Query);
+                  if (ds.Tables.Count > 0)
+                  {
+                      xmlElement = Serialize(ds.Tables[0]);
+                      return xmlElement.OuterXml.ToString();
+                  }
+                  return "";
+              }
+              catch (Exception ex)
+            {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "QRY_Proveedores_Articulos_RPT_Proveedores_X_Activo_descatalogados:" + ex.Message + ex.StackTrace + "\n" + Query);
+                return "Ocurrio un error inesperado";
+            }
+            */
         }
 
 
