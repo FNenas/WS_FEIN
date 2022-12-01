@@ -4278,8 +4278,8 @@ WHERE
             string Query;
             System.Data.DataSet ds;
             System.Xml.XmlElement xmlElement;
-            Query = @"select
-                        Articulos.ArticulosID, 
+            Query = @"select 
+	                    Articulos.ArticulosID, 
                         Articulos.codigo,
                         Ventas_Articulos.precio,
                         CATSAT_ClaveUnidad.ClaveUnidad,
@@ -4294,34 +4294,25 @@ WHERE
                         Articulos.ValorIEPS as valorIEPS,
                         Articulos.CantidadIEPS,
                         Ventas_Articulos.ProductoGrabadoSIMP      
-                    from 
-                        ventas,
-                        Ventas_Articulos,
-                        VentasTiposPagos,
-                        TiposdePagos,
-                        articulos,
-                        CATSAT_ClaveUnidad,
-                        CATSAT_TasasCuotasImpuestos,
-                        CATSAT_Impuestos,
-                        CATSAT_TiposFactores,
-                        CATSAT_FormasPago
-                    where 
-                        Ventas.VentasID = Ventas_Articulos.VentasID and
-                        ventas.VentasID = VentasTiposPagos.VentasID and
-                        Ventas_Articulos.ArticulosID = Articulos.ArticulosID and
-                        VentasTiposPagos.TiposdePagosID = TiposdePagos.TiposdePagosID and
-                        Articulos.CATSAT_ClaveUnidadID = CATSAT_ClaveUnidad.CATSAT_ClaveUnidadID and
-                        Articulos.CATSAT_TasasCuotasImpuestosID = CATSAT_TasasCuotasImpuestos.CATSAT_TasasCuotasImpuestosID and
-                        Articulos.CATSAT_TiposFactoresID=CATSAT_TiposFactores.CATSAT_TiposFactoresID and
-                        CATSAT_Impuestos.Descripcion=CATSAT_TasasCuotasImpuestos.Impuesto and
-                        TiposdePagos.CATSAT_FormaPagoID = CATSAT_FormasPago.CATSAT_FormasPagoID and
-                        VentasTiposPagos.ImporteRecibido in (
+                    from
+	                    ventas
+	                    inner join Ventas_Articulos on ventas.VentasID = Ventas_Articulos.VentasID
+	                    inner join VentasTiposPagos on ventas.VentasID = VentasTiposPagos.VentasID
+	                    inner join TiposdePagos on VentasTiposPagos.TiposdePagosID = TiposdePagos.TiposdePagosID
+	                    inner join Articulos on Ventas_Articulos.ArticulosID = Articulos.ArticulosID
+	                    left  join CATSAT_ClaveUnidad on Articulos.CATSAT_ClaveUnidadID = CATSAT_ClaveUnidad.CATSAT_ClaveUnidadID
+	                    left join CATSAT_TasasCuotasImpuestos on Articulos.CATSAT_TasasCuotasImpuestosID = CATSAT_TasasCuotasImpuestos.CATSAT_TasasCuotasImpuestosID
+	                    left join CATSAT_Impuestos on CATSAT_Impuestos.Descripcion=CATSAT_TasasCuotasImpuestos.Impuesto
+	                    left join CATSAT_TiposFactores on Articulos.CATSAT_TiposFactoresID=CATSAT_TiposFactores.CATSAT_TiposFactoresID
+	                    left join CATSAT_FormasPago on TiposdePagos.CATSAT_FormaPagoID = CATSAT_FormasPago.CATSAT_FormasPagoID
+                    where
+	                    VentasTiposPagos.ImporteRecibido in (
                             select 
                                 Max(VentasTiposPagos.ImporteRecibido)
                             from 
                                 VentasTiposPagos
                             where 
-                                VentasTiposPagos.VentasID = "+VentaID+ @" ) and
+                                VentasTiposPagos.VentasID = " + VentaID+ @" ) and
                                 Ventas.Cancelada = 0 and
                                 ventas.VentasID = " + VentaID;
             try
@@ -6122,36 +6113,6 @@ WHERE
                 return "Ocurrio un error inesperado";
             }
         }
-
-
-        //----------------[Calcular Corte Z]----------------
-        [WebMethod(Description = "Calcular Corte Z")]
-        public string ImporteCorteZ_X_FechaCorteZ()
-        {
-            string Query;
-            System.Data.DataSet ds;
-            System.Xml.XmlElement xmlElement;
-            Query = "test";
-            Console.WriteLine(Query);
-            return Query;
-
-            /*  try{
-                  ds = qryToDataSet(Query);
-                  if (ds.Tables.Count > 0)
-                  {
-                      xmlElement = Serialize(ds.Tables[0]);
-                      return xmlElement.OuterXml.ToString();
-                  }
-                  return "";
-              }
-              catch (Exception ex)
-            {
-                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "QRY_Proveedores_Articulos_RPT_Proveedores_X_Activo_descatalogados:" + ex.Message + ex.StackTrace + "\n" + Query);
-                return "Ocurrio un error inesperado";
-            }
-            */
-        }
-
 
 
     }
