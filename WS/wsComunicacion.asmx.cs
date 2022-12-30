@@ -4308,7 +4308,7 @@ WHERE
 	                    left join CATSAT_TiposFactores on Articulos.CATSAT_TiposFactoresID=CATSAT_TiposFactores.CATSAT_TiposFactoresID
 	                    left join CATSAT_FormasPago on TiposdePagos.CATSAT_FormaPagoID = CATSAT_FormasPago.CATSAT_FormasPagoID
                     where
-	                    VentasTiposPagos.ImporteRecibido in (
+	                    VentasTiposPagos.TiposdePagosID = (
                             select
 								VentasTiposPagos.TiposdePagosID
 							from 
