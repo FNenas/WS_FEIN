@@ -4,6 +4,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Services;
 using System.Drawing;
+using System.Media;
+
 namespace WS
 {
     /// <summary>
@@ -2291,7 +2293,7 @@ WHERE
             String q = "";
             try
             {
-                                q = @"SELECT 
+                q = @"SELECT 
 	                EntradasArticulos.EntradasID AS EntradasID,	
 	                EntradasArticulos.EntradasArticulosID AS EntradasArticulosID,	
 	                EntradasArticulos.ArticulosID AS ArticulosID,	
@@ -2348,7 +2350,7 @@ WHERE
             String q = "";
             try
             {
-                            q = @"SELECT 
+                q = @"SELECT 
 	            EntradasArticulos.EntradasID AS EntradasID,	
 	            EntradasArticulos.EntradasArticulosID AS EntradasArticulosID,	
 	            EntradasArticulos.ArticulosID AS ArticulosID,	
@@ -2405,7 +2407,7 @@ WHERE
             String q = "";
             try
             {
-                            q = @"SELECT 
+                q = @"SELECT 
 	            Ventas.FechaVenta AS FechaVenta,	
 	            Ventas.IPInventarioAfecto AS IPInventarioAfecto,	
 	            Ventas.Cancelada AS Cancelada,	
@@ -3451,7 +3453,7 @@ WHERE
             }
             catch (Exception ex)
             {
-                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "Sistema emergencia historial:" + ex.Message + ex.StackTrace + "\n" + sQry+"\n");
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "Sistema emergencia historial:" + ex.Message + ex.StackTrace + "\n" + sQry + "\n");
                 return "Ocurrio un error inesperado";
             }
         }
@@ -3537,13 +3539,13 @@ WHERE
                           AND Articulos.Activo=" + Param_Articulo_Estatus + @"
                           AND Articulos.SeVende=1 ";
 
-                                    if (Param_Linea_Producto.Length > 0)
-                                    {
+            if (Param_Linea_Producto.Length > 0)
+            {
 
-                                        sQry += " AND Articulos.LineaID=" + Param_Linea_Producto;
-                                    }
+                sQry += " AND Articulos.LineaID=" + Param_Linea_Producto;
+            }
 
-                                    sQry += @" AND Articulos.ArticulosID NOT IN (
+            sQry += @" AND Articulos.ArticulosID NOT IN (
 
                          SELECT DISTINCT(ConteosArticulos. ArticulosID) AS ArticulosID
                          FROM Conteos,ConteosArticulos
@@ -3987,7 +3989,7 @@ WHERE
 
 
 
-[WebMethod(Description = "Obtener Encabezados Pedidos RAP")]
+        [WebMethod(Description = "Obtener Encabezados Pedidos RAP")]
         public string RAP_Pedido_Encabezados(String sPedido)
         {
             String sQry = @"
@@ -4030,7 +4032,7 @@ WHERE
 
 
 
-[WebMethod(Description = "Obtener Encabezados Transferencia RAP")]
+        [WebMethod(Description = "Obtener Encabezados Transferencia RAP")]
         public string RAP_Transferencia_Encabezados(String sTransferencias)
         {
             String sQry = @"
@@ -4069,8 +4071,8 @@ WHERE
         }
 
 
-//-----------------------[Rap Orden de Compra]------------------
-    [WebMethod(Description = "Obtener Orden de Compra por articulo RAP")]
+        //-----------------------[Rap Orden de Compra]------------------
+        [WebMethod(Description = "Obtener Orden de Compra por articulo RAP")]
         public string RAP_Orden_Compra_Por_Articulo(String sOrdenCompra)
         {
             String sQry = @"
@@ -4126,7 +4128,7 @@ WHERE
 
 
 
-  [WebMethod(Description = "Obtener Encabezados Orden Compra RAP")]
+        [WebMethod(Description = "Obtener Encabezados Orden Compra RAP")]
         public string RAP_Orden_Compra_Encabezado(String sOrdenCompra)
         {
             String sQry = @"
@@ -4167,7 +4169,7 @@ WHERE
         }
 
         [WebMethod(Description = "Obtener articulos por codigo")]
-        public string ConsultarArticulo(string CodigoArticulo,string SucursalID)
+        public string ConsultarArticulo(string CodigoArticulo, string SucursalID)
         {
             string Query;
             System.Data.DataSet ds;
@@ -4206,8 +4208,8 @@ WHERE
                         Articulos.CATSAT_ClaveProductosServiciosID = CATSAT_ClaveProductosServicios.CATSAT_ClaveProductosServiciosID and
                         Articulos.CATSAT_TiposFactoresID=CATSAT_TiposFactores.CATSAT_TiposFactoresID and
                         Articulosprecios.Nivel = 'NV1' and
-                        Articulosprecios.SucursalesID = "+SucursalID+@" and
-                        Articulos.codigo in ("+CodigoArticulo+")";
+                        Articulosprecios.SucursalesID = " + SucursalID + @" and
+                        Articulos.codigo in (" + CodigoArticulo + ")";
             try
             {
                 ds = qryToDataSet(Query);
@@ -4251,7 +4253,7 @@ WHERE
                         Articulos.CATSAT_ClaveProductosServiciosID = CATSAT_ClaveProductosServicios.CATSAT_ClaveProductosServiciosID and
                         Articulos.CATSAT_TiposFactoresID=CATSAT_TiposFactores.CATSAT_TiposFactoresID and
                         Articulosprecios.Nivel = 'NV1' and
-                        Articulosprecios.SucursalesID = "+SucursalID+@" and 
+                        Articulosprecios.SucursalesID = " + SucursalID + @" and 
                         ArticulosPrecios.Activo=1 and
                         Articulos.SeVende = 1 and 
                         Articulos.activo = 1
@@ -4307,14 +4309,18 @@ WHERE
 	                    left join CATSAT_FormasPago on TiposdePagos.CATSAT_FormaPagoID = CATSAT_FormasPago.CATSAT_FormasPagoID
                     where
 	                    VentasTiposPagos.ImporteRecibido in (
-                            select 
-                                Max(VentasTiposPagos.ImporteRecibido)
-                            from 
-                                VentasTiposPagos
-                            where 
-                                VentasTiposPagos.VentasID = " + VentaID+ @" ) and
-                                Ventas.Cancelada = 0 and
-                                ventas.VentasID = " + VentaID;
+                            select
+								VentasTiposPagos.TiposdePagosID
+							from 
+								VentasTiposPagos,
+								TiposdePagos
+							where 
+								VentasTiposPagos.VentasID = " + VentaID + @" 
+                                and VentasTiposPagos.TiposdePagosID = TiposdePagos.TiposdePagosID
+							order by VentasTiposPagos.ImporteRecibido desc, TiposdePagos.EsTarjeta desc
+							limit 1	) and
+                            Ventas.Cancelada = 0 and
+                            ventas.VentasID = " + VentaID;
             try
             {
                 ds = qryToDataSet(Query);
@@ -4333,8 +4339,8 @@ WHERE
         }
 
 
-     //----------------[Obtener Empleados SION]------------------
-    [WebMethod(Description = "Obtener Empleados SION")]
+        //----------------[Obtener Empleados SION]------------------
+        [WebMethod(Description = "Obtener Empleados SION")]
         public string ObtenerEmpleadosSION()
         {
             String sQry = @"select 
@@ -4382,7 +4388,7 @@ WHERE
                         Ventas_Articulos
                     where 
                         Ventas_Articulos.ArticulosID = -1 and 
-                        Ventas_Articulos.VentasID = "+VentaID;
+                        Ventas_Articulos.VentasID = " + VentaID;
             try
             {
                 ds = qryToDataSet(Query);
@@ -4517,7 +4523,7 @@ WHERE
 	                    CortesZ
                     WHERE 
 	                    CortesZ.EsCerrado = 0
-	                    AND	CortesZ.FechaCorteZ = " +Fecha;
+	                    AND	CortesZ.FechaCorteZ = " + Fecha;
             try
             {
                 ds = qryToDataSet(Query);
@@ -4546,7 +4552,7 @@ WHERE
                     set 
                         ventas.Facturada = 1
                     where 
-                        Ventas.VentasID in ("+VentaID+")";
+                        Ventas.VentasID in (" + VentaID + ")";
             try
             {
                 ds = qryToDataSet(Query);
@@ -4585,8 +4591,8 @@ WHERE
 	                    AND		CortesZ.CortesZID = CortesY.CortesZID
 	                    AND
 	                    (
-		                    CortesZ.FechaCorteZ = "+ParamFecha+@"
-		                    AND	CortesYDevoluciones.ImpuestosID ="+ParamImpuestosID+@"		                 
+		                    CortesZ.FechaCorteZ = " + ParamFecha + @"
+		                    AND	CortesYDevoluciones.ImpuestosID =" + ParamImpuestosID + @"		                 
 	                    )
                     GROUP BY 
 	                    CortesYDevoluciones.ImpuestosID
@@ -4669,7 +4675,7 @@ WHERE
 	                    AND		CortesZ.CortesZID = CortesY.CortesZID
 	                    AND
 	                    (
-		                    CortesZ.FechaCorteZ = "+ParamFecha+@"
+		                    CortesZ.FechaCorteZ = " + ParamFecha + @"
 	                    )
                     GROUP BY 
 	                    CortesZ.FechaCorteZ";
@@ -4708,7 +4714,7 @@ WHERE
 	                    AND		CortesZ.CortesZID = CortesY.CortesZID
 	                    AND
 	                    (
-		                    CortesZ.FechaCorteZ = "+ParamFecha+")";
+		                    CortesZ.FechaCorteZ = " + ParamFecha + ")";
             try
             {
                 ds = qryToDataSet(Query);
@@ -4741,7 +4747,7 @@ WHERE
 	                    Ventas.Cancelada = 0
 	                    and Ventas.Facturada = 1 
 	                    and Ventas.FechaVenta = " + ParamFecha;
-		                   
+
             try
             {
                 ds = qryToDataSet(Query);
@@ -4830,7 +4836,7 @@ WHERE
 		                    Ventas.Cancelada = 0
 		                    AND	Ventas.Facturada = 0
 		                    AND	Ventas.VentaPendiente = 0
-		                    AND	CortesZ.FechaCorteZ = " + ParamFecha+")";
+		                    AND	CortesZ.FechaCorteZ = " + ParamFecha + ")";
             try
             {
                 ds = qryToDataSet(Query);
@@ -4872,7 +4878,7 @@ WHERE
 	                    AND		TiposdePagos.CATSAT_FormaPagoID = CATSAT_FormasPago.CATSAT_FormasPagoID
 	                    AND
 	                    (
-		                    Ventas.VentasID IN ("+ParamVentasIDs+@") 
+		                    Ventas.VentasID IN (" + ParamVentasIDs + @") 
 	                    )
                     GROUP BY 
 	                    CATSAT_FormasPago.CATSAT_FormasPagoID,	
@@ -4925,7 +4931,7 @@ WHERE
 	                    AND		TiposPagoFacturas.TiposPagoFacturasID = TiposdePagos.TiposPagoFacturasID
 	                    AND
 	                    (
-		                    CortesY.CortesZID = "+ParamCortesZID+@"
+		                    CortesY.CortesZID = " + ParamCortesZID + @"
 	                    )
                     GROUP BY 
 	                    CortesYTiposPagos.TipoCambio,	
@@ -4977,8 +4983,8 @@ WHERE
 	                    ImpuestosCortesZ
                     WHERE 
 	                    Empleados.EmpleadosID = ImpuestosCortesZ.EmpleadosID
-	                    AND ImpuestosCortesZ.Fecha ="+ParamFecha+@"
-		                AND	ImpuestosCortesZ.FacturaGlobal = "+ParamFacturacionGlobal;
+	                    AND ImpuestosCortesZ.Fecha =" + ParamFecha + @"
+		                AND	ImpuestosCortesZ.FacturaGlobal = " + ParamFacturacionGlobal;
             try
             {
                 ds = qryToDataSet(Query);
@@ -5062,7 +5068,7 @@ WHERE
                     where   
                         conteos.ConteosID = ConteosArticulos.ConteosID         	                   
                         and ConteosArticulos.ArticulosID =" + ArticuloID + @"
-                        and Conteos.Fecha BETWEEN '" + FechaInicial + "' and '"+ FechaFinal + @"'
+                        and Conteos.Fecha BETWEEN '" + FechaInicial + "' and '" + FechaFinal + @"'
                         and Conteos.EsBorrador = 0";
             try
             {
@@ -5450,7 +5456,7 @@ WHERE
 	                    (
 		                    CortesY.Fecha BETWEEN '" + FechaInicio + "' AND '" + FechaFin + @"'
 		                    AND	CortesYDevoluciones.ArticulosID IN (" + ArticulosID + @") 
-		                    AND	CortesY.SucursalesID = "+SucursalID+@"
+		                    AND	CortesY.SucursalesID = " + SucursalID + @"
 	                    )
 	                    GROUP BY
 	                    CortesYDevoluciones.ArticulosID";
@@ -5984,7 +5990,7 @@ WHERE
 
         //-------------------[Revision Transferencias Salidas]---------------------
         [WebMethod(Description = "Obtener detalles de las salidas en base a parametros")]
-        public string Revision_Transferencias_Salidas(string SucursalSalidaID,string SucursalEntradaID, string EstatusMovimientoID, string TiposMovimientosID, string FechaInicial, string FechaFinal)
+        public string Revision_Transferencias_Salidas(string SucursalSalidaID, string SucursalEntradaID, string EstatusMovimientoID, string TiposMovimientosID, string FechaInicial, string FechaFinal)
         {
             string Query;
             System.Data.DataSet ds;
@@ -6013,9 +6019,9 @@ WHERE
                         and Salidas.SucursalesID = " + SucursalSalidaID;
             if (EstatusMovimientoID != "NULL")
             {
-               Query += "and salidas.Estatus_MovimientosID = " + EstatusMovimientoID;
+                Query += "and salidas.Estatus_MovimientosID = " + EstatusMovimientoID;
             }
-            Query+=@"
+            Query += @"
                         and Salidas.FechaSalida BETWEEN '" + FechaInicial + "' and '" + FechaFinal + @"'
 	                    and Salidas.TiposMovimientosID = " + TiposMovimientosID + @"  
                     order by
@@ -6052,7 +6058,7 @@ WHERE
 	                    ventas
                     where
 	                    Ventas.Cancelada = 0
-	                    and Ventas.VentasID IN ("+VentasID+")";
+	                    and Ventas.VentasID IN (" + VentasID + ")";
             try
             {
                 ds = qryToDataSet(Query);
@@ -6094,7 +6100,7 @@ WHERE
             {
                 Query += " AND Articulos.Descatalogado = " + Descatalogado;
             }
-            Query +=@" )
+            Query += @" )
                     ORDER BY 
 	                    Nombre ASC";
             try
@@ -6111,6 +6117,23 @@ WHERE
             {
                 System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "QRY_Proveedores_Articulos_RPT_Proveedores_X_Activo_descatalogados:" + ex.Message + ex.StackTrace + "\n" + Query);
                 return "Ocurrio un error inesperado";
+            }
+        }
+
+        //-----[Reproducir Sonido .wav]------
+        [WebMethod(Description = "Reproducir sonido .wav")]
+        public string Play_Sound()
+        {
+            try
+            {
+                System.Media.SoundPlayer simpleSound = new SoundPlayer(@"C:\inetpub\Ganador.wav");
+                simpleSound.Play();
+                return "1";
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.WriteAllText(@"C:\sXML\" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".err", "Reproducir sonido .wav:" + ex.Message + ex.StackTrace);
+                return "0";
             }
         }
 
