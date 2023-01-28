@@ -3760,14 +3760,15 @@ WHERE
             }
             return "-1";
         }
+
         [WebMethod(Description = "Obtener Cliente Informacion por COdigo")]
-        public string ObtenerClienteInformacion(String Codigo)
+        public string ObtenerClienteInformacion()
         {
             System.Xml.XmlElement xmlElement;
             try
             {
-                String query = @"Select ClientesID,NombreCompleto,RFC,CorreoElectronico,NoTelefono
-                From Clientes Where codigo = " + Codigo;
+                String query = @"Select ClientesID,NombreCompleto,RFC,CorreoElectronico,NoTelefono,Codigo
+                From Clientes Where EsMayoreo = 1 and esMayoreoAprovado = 1";
                 System.Data.DataSet ds = qryToDataSet(query);
                 xmlElement = Serialize(ds.Tables[0]);
                 return xmlElement.OuterXml.ToString();
