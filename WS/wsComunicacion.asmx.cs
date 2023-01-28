@@ -3372,6 +3372,7 @@ WHERE
                 AND	AutorizacionMovimientos.FechaHoraSolicitud BETWEEN '" + FechaSolicitudIncio + "' AND '" + FechaSolicitudFinal + @"'
                 AND	AutorizacionMovimientos.SucursalesID = " + SucursalID;
 
+
             System.Data.DataSet ds;
             System.Xml.XmlElement xmlElement;
             try
